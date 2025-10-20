@@ -2,11 +2,20 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import Header from "./components/Header";
 import {
   getPokemons,
   getPokemonPorNome,
   type PokemonDetail,
 } from "./services/PokemonService";
+import InitialSection from "./components/InitialSection";
+import PokemonsHome from "./components/PokemonsHome";
+import Compare from "./components/Compare";
+import FeaturedSection from "./components/FeaturedSection";
+import News from "./components/News";
+import Itens from "./components/Itens";
+import Battle from "./components/Battle";
+import Footer from "./components/Footer";
 
 function App() {
   const [pokemons, setPokemons] = useState<{ name: string; url: string }[]>([]);
@@ -32,6 +41,15 @@ function App() {
 
   return (
     <div>
+      <Header />
+      <InitialSection />
+      <PokemonsHome />
+      <Compare />
+      <FeaturedSection />
+      <News />
+      <Itens />
+      <Battle />
+      <Footer />
       <div>
         <h1>Lista de Pokemons</h1>
         {pokemons.map((pokemon) => (
