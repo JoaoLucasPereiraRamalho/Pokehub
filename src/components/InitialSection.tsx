@@ -12,7 +12,7 @@ function InitialSection() {
           intuitivo e feito para explorar o mundo Pokémon de um jeito totalmente
           novo.
         </h6>
-        <button className="btn-linear mt-5">SAIBA MAIS</button>
+        <button className="btn-linear">SAIBA MAIS</button>
       </div>
       <div className="d-flex w-50 flex-row-reverse image-container">
         <img
