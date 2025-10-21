@@ -1,3 +1,7 @@
+.w-85 {
+  width: 85%;
+}
+
 .title {
   font-size: 60px;
   font-weight: bold;
@@ -19,6 +23,16 @@
   box-shadow: black 3px 3px 6px 1px;
 }
 
+.btn-linear-2 {
+  background: linear-gradient(to right, #004d80, #0a0a20);
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-radius: 50px;
+  color: white;
+}
+
 .btn-border {
   background: none;
   border: 3px solid #7c0b71;
@@ -30,4 +44,20 @@
   font-size: 15px;
   font-weight: lighter;
   border-radius: 50px;
+}
+
+.bg-transparent {
+  background: linear-gradient(
+    to top,
+    rgba(106, 207, 218, 0),
+    #2788a8,
+    rgba(106, 207, 218, 0)
+  );
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-radius: 50px;
+  color: white;
+  box-shadow: black 3px 0px 15px, inset 0 0 50px #a3e9ee;
 }
