@@ -3,8 +3,8 @@ import Card from "./Card";
 function PokemonsHome() {
   return (
     <div className="container-fluid">
-      <h1>Pokemons</h1>
-      <div className="row justify-content-center gap-3">
+      <h1 className="m-5">Pokemons</h1>
+      <div className="d-flex justify-content-center gap-3">
         <Card />
         <Card />
         <Card />
