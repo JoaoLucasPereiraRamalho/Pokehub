@@ -1,17 +1,18 @@
 function InitialSection() {
   return (
-    <div style={{ backgroundColor: "#091D3C" }} className="d-flex">
-      <div className="w-50 p-5 text-white">
-        <h1>DESCUBRA.</h1>
-        <h1>COMPARE.</h1>
-        <h1>BATALHE.</h1>
-        <h5>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard
-        </h5>
-        <button className="rounded-pill w-100 py-5 mt-5 bg-success border-0 text-white shadow-sm">
-          Saiba mais
-        </button>
+    <div style={{ backgroundColor: "#091D3C" }} className="d-flex ">
+      <div className="w-50 p-5 text-white m-4">
+        <h1 className="title">DESCUBRA.</h1>
+        <h1 className="title">COMPARE.</h1>
+        <h1 className="title">BATALHE.</h1>
+        <h6 className="">
+          Pokehub é uma plataforma interativa feita para quem ama o universo
+          Pokémon. Descubra novas espécies, compare seus status e participe de
+          batalhas dinâmicas em tempo real. Tudo isso em um ambiente moderno,
+          intuitivo e feito para explorar o mundo Pokémon de um jeito totalmente
+          novo.
+        </h6>
+        <button className="btn-linear mt-5">SAIBA MAIS</button>
       </div>
       <div className="d-flex w-50 flex-row-reverse image-container">
         <img
