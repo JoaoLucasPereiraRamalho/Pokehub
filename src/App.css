@@ -85,7 +85,7 @@
   padding: 15px 40px;
   font-size: 1.25rem;
   font-weight: bold;
-  border-radius: 50px;
+  border-radius: 3%;
   color: white;
   box-shadow: black 3px 0px 15px, inset 0 0 50px #a3e9ee;
 }
