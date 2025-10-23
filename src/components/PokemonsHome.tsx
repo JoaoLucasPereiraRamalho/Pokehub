@@ -13,6 +13,12 @@ function PokemonsHome() {
         <Card />
         <Card />
       </div>
+      <div className="d-flex justify-content-center gap-3 mt-3">
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </div>
       <div className="d-flex justify-content-center">
         <button className="btn btn-success py-3 mt-5 w-25">
           <h3>Carregar mais</h3>
