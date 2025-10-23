@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import {
@@ -14,6 +15,7 @@ import News from "./components/News";
 import Itens from "./components/Itens";
 import Battle from "./components/Battle";
 import Footer from "./components/Footer";
+import Pokedex from "./components/Pokedex";
 
 function App() {
   const [pokemons, setPokemons] = useState<{ name: string; url: string }[]>([]);
@@ -40,13 +42,23 @@ function App() {
   return (
     <div>
       <Header />
-      <InitialSection />
-      <PokemonsHome />
-      <Compare />
-      <FeaturedSection />
-      <News />
-      <Itens />
-      <Battle />
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <>
+              <InitialSection />
+              <PokemonsHome />
+              <Compare />
+              <FeaturedSection />
+              <News />
+              <Itens />
+              <Battle />
+            </>
+          }
+        ></Route>
+        <Route path="/pokemons" element={<Pokedex />} />
+      </Routes>
       <Footer />
       <div>
         <h1>Lista de Pokemons</h1>

@@ -1,3 +1,69 @@
+.w-5 {
+  width: 5%;
+}
+.image-wrapper {
+  position: relative; /* pai relativo */
+  width: 120px; /* ajuste conforme necessário */
+  height: 120px;
+}
+
+.div-btn-red {
+  position: relative; /* pai relativo */
+  width: 0px; /* ajuste conforme necessário */
+  height: 0px;
+}
+
+.btn-red {
+  position: absolute;
+  margin-top: 0.8%;
+  width: 50px;
+  height: 50px;
+}
+
+.pokedex-fundo {
+  height: 250px;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.sombra {
+  box-shadow: black 3px 0px 15px;
+}
+
+.sombra-red {
+  box-shadow: #c43410 3px 0px 15px;
+}
+
+.input-fundo {
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.image-card-pokedex {
+  position: absolute;
+  left: 25%;
+  top: 10%;
+  width: 120px;
+  height: 120px;
+}
+
+.mt-10 {
+  margin-top: 6rem;
+}
+.w-20 {
+  width: 20%;
+}
+.w-15 {
+  width: 15%;
+}
+
+.h-input-principal {
+  height: 4rem;
+}
+.h-input-filtro {
+  height: 2.5rem;
+}
+
 .div-nao-quadrada {
   width: 100%;
   height: 100%;
