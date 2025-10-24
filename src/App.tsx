@@ -5,7 +5,10 @@ import Header from "./components/Header";
 import {
   getPokemons,
   getPokemonPorNome,
+  getDescricaoPokemonPorNome,
   type PokemonDetail,
+  type DescricaoPokemon,
+  type Pokemon,
 } from "./services/PokemonService";
 import InitialSection from "./components/InitialSection";
 import PokemonsHome from "./components/PokemonsHome";
@@ -18,10 +21,13 @@ import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
 
 function App() {
-  const [pokemons, setPokemons] = useState<{ name: string; url: string }[]>([]);
-  const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
+  let pokemonPesquisado: string = "bulbasaur";
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [pokemonDetail, setPokemonDetails] = useState<PokemonDetail | null>(
     null
   );
+  const [descricaoPokemon, setDescricaoPokemon] =
+    useState<DescricaoPokemon | null>(null);
 
   useEffect(() => {
     const fetchPokemons = async () => {
@@ -32,8 +38,16 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const fetchDescricaoPorNome = async () => {
+      const data = await getDescricaoPokemonPorNome(pokemonPesquisado); //não sera charmander, sera dinamico
+      setDescricaoPokemon(data);
+    };
+    fetchDescricaoPorNome();
+  }, []);
+
+  useEffect(() => {
     const fetchPokemonPorNome = async () => {
-      const data = await getPokemonPorNome("charmander"); //não sera caterpie, sera dinamico
+      const data = await getPokemonPorNome(pokemonPesquisado); //não sera caterpie, sera dinamico
       setPokemonDetails(data);
     };
     fetchPokemonPorNome();
@@ -57,7 +71,16 @@ function App() {
             </>
           }
         ></Route>
-        <Route path="/pokemons" element={<Pokedex />} />
+        <Route
+          path="/pokemons"
+          element={
+            <Pokedex
+              pokemonDetail={pokemonDetail}
+              pokemons={pokemons}
+              descricaoPokemon={descricaoPokemon}
+            />
+          }
+        />
       </Routes>
       <Footer />
       <div>
@@ -69,11 +92,16 @@ function App() {
         ))}
       </div>
       <div>
+        <h1>Lista de Descricoes</h1>
+
+        <p>{descricaoPokemon ? descricaoPokemon.flavor_text : "loading"}</p>
+      </div>
+      <div>
         <h1>Detalhes Pokemon</h1>
-        <div key={pokemonDetails ? pokemonDetails.id : "loading"}>
-          <p>Id: {pokemonDetails ? pokemonDetails.id : "loading"}</p>
-          <p>height: {pokemonDetails ? pokemonDetails.height : "loading"}</p>
-          <p>weight: {pokemonDetails ? pokemonDetails.weight : "loading"}</p>
+        <div key={pokemonDetail ? pokemonDetail.id : "loading"}>
+          <p>Id: {pokemonDetail ? pokemonDetail.id : "loading"}</p>
+          <p>height: {pokemonDetail ? pokemonDetail.height : "loading"}</p>
+          <p>weight: {pokemonDetail ? pokemonDetail.weight : "loading"}</p>
         </div>
       </div>
     </div>

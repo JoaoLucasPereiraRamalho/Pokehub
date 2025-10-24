@@ -1,3 +1,14 @@
+.fundo-abstrato-pokemon {
+  min-height: 500px;
+  padding: 20px;
+  /* Para a Div de Conteúdo (onde estão os Pokémon) */
+}
+
+.fundo-degrade {
+  background: radial-gradient(circle, rgba(48, 127, 132, 1), transparent),
+    #091d3c;
+}
+
 .w-5 {
   width: 5%;
 }
@@ -16,7 +27,7 @@
 .btn-red {
   position: absolute;
   margin-top: 0.8%;
-  width: 50px;
+  width: 60px;
   height: 50px;
 }
 
