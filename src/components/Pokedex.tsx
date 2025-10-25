@@ -6,6 +6,8 @@ import {
   type DescricaoPokemon,
 } from "../services/PokemonService";
 
+type SetFilter = (value: string | null) => void;
+
 interface PokedexProps {
   pokemonDetail: PokemonDetail | null;
   pokemons: PokemonInfoCard[]; // agora aceita a lista
@@ -13,6 +15,15 @@ interface PokedexProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
   onSelectPokemon: (name: string) => void;
+
+  selectedType: string | null;
+  onTypeChange: SetFilter;
+  allTypes: string[];
+
+  // Props de Filtro de Geração
+  selectedGeneration: string | null;
+  onGenerationChange: SetFilter;
+  allGenerations: string[];
 }
 
 function Pokedex({
@@ -22,6 +33,12 @@ function Pokedex({
   searchTerm, // Usado no 'value' do input
   onSearchChange, // Usado para disparar a busca no App
   onSelectPokemon,
+  selectedType, // NOVO
+  onTypeChange, // NOVO
+  allTypes, // NOVO
+  selectedGeneration, // NOVO
+  onGenerationChange, // NOVO
+  allGenerations,
 }: PokedexProps) {
   const [visibleRows, setVisibleRows] = useState(1); // quantas linhas mostrar
   const itemsPerRow = 3; // "posição do vetor" cresce de itemsPerRow em itemsPerRow
@@ -30,6 +47,14 @@ function Pokedex({
 
   const handleSearchClick = () => {
     onSearchChange(localSearchTerm);
+  };
+
+  const handleResetFilters = () => {
+    setLocalSearchTerm(""); // Limpa o estado local de digitação
+    onSearchChange(""); // Limpa o filtro de busca no App
+    onTypeChange(null); // Limpa o filtro de tipo no App
+    onGenerationChange(null); // Limpa o filtro de geração no App
+    // Futuramente, limpamos os outros filtros aqui
   };
 
   const rows = useMemo(() => {
@@ -72,17 +97,17 @@ function Pokedex({
               }}
             ></input>
             <div className="mt-5 gap-4 d-flex w-100">
-              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
-                <option>Tipo</option>
-                <option>Fire</option>
-                <option>Water</option>
-                <option>Grass</option>
-                <option>Electric</option>
-                <option>Psychic</option>
-                <option>Ice</option>
-                <option>Dragon</option>
-                <option>Dark</option>
-                <option>Fairy</option>
+              <select
+                className="w-20 rounded-1 border-0 h-input-filtro sombra"
+                value={selectedType || ""}
+                onChange={(e) => onTypeChange(e.target.value || null)} // CONECTADO AO FILTRO DE TIPO
+              >
+                <option value="">Tipo</option>
+                {allTypes.map((type) => (
+                  <option key={type} value={type} className="text-capitalize">
+                    {type}
+                  </option>
+                ))}
               </select>
 
               <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
@@ -109,18 +134,25 @@ function Pokedex({
                 <option>Dark</option>
                 <option>Fairy</option>
               </select>
-              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
-                <option>Geração</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
+              <select
+                className="w-20 rounded-1 border-0 h-input-filtro sombra"
+                value={selectedGeneration || ""}
+                onChange={(e) => onGenerationChange(e.target.value || null)} // CONECTADO AO FILTRO DE GERAÇÃO
+              >
+                <option value="">Geração</option>
+                {allGenerations.map((gen) => (
+                  <option key={gen} value={gen}>
+                    {gen}
+                  </option>
+                ))}
               </select>
-              <input className="ms-5 w-5 rounded-1 border-0  h-input-filtro sombra"></input>
+              <button
+                className="ms-5 w-5 rounded-1 border-0 h-input-filtro sombra"
+                onClick={handleResetFilters}
+                title="Resetar Filtros"
+              >
+                Reset
+              </button>
             </div>
           </div>
 

@@ -7,6 +7,9 @@ import {
   getPokemonPorNome,
   getDescricaoPokemonPorNome,
   filterPokemonsByName,
+  filterPokemonsCombined,
+  ALL_POKEMON_TYPES,
+  POKEMON_GENERATIONS,
   type PokemonDetail,
   type DescricaoPokemon,
   type PokemonInfoCard,
@@ -22,6 +25,14 @@ import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
 
 function App() {
+  const allTypesList = ALL_POKEMON_TYPES;
+  const allGenerationsList = POKEMON_GENERATIONS.map((g) => g.name);
+
+  const [selectedType, setSelectedType] = useState<string | null>(null); // NOVO
+  const [selectedGeneration, setSelectedGeneration] = useState<string | null>(
+    null
+  ); // NOVO
+
   const [pokemonDetalhes, setPokemonDetalhes] = useState<string>("bulbasaur");
   const [pokemonPesquisado, setPokemonPesquisado] = useState<string>("");
   const [pokemons, setPokemons] = useState<PokemonInfoCard[]>([]);
@@ -35,15 +46,19 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const filteredPokemons = useMemo(() => {
-    // A função de filtro é chamada apenas quando a lista completa (allPokemons)
-    // ou o termo de busca (searchTerm) muda.
-    return filterPokemonsByName(allPokemons, searchTerm);
-  }, [allPokemons, searchTerm]);
+    // Usando a função combinada que você criou.
+    return filterPokemonsCombined(
+      allPokemons,
+      searchTerm,
+      selectedType,
+      selectedGeneration
+    );
+  }, [allPokemons, searchTerm, selectedType, selectedGeneration]);
 
   useEffect(() => {
     const fetchPokemons = async () => {
       // Chama a função otimizada para buscar todos os dados dos cards.
-      const data = await getPokemonInfoCards(40);
+      const data = await getPokemonInfoCards(200);
       // Salva na lista COMPLETA, que é a fonte para a filtragem.
       setAllPokemons(data);
 
@@ -110,6 +125,13 @@ function App() {
               onSearchChange={setSearchTerm}
               // NOVO: Passa a função para selecionar um pokemon (opcional, mas bom para clicar no card)
               onSelectPokemon={setPokemonPesquisado}
+              selectedType={selectedType}
+              onTypeChange={setSelectedType}
+              allTypes={allTypesList} // CORRIGIDO: Passa a lista de tipos
+              // Props de Filtro de Geração
+              selectedGeneration={selectedGeneration}
+              onGenerationChange={setSelectedGeneration}
+              allGenerations={allGenerationsList}
             />
           }
         />
