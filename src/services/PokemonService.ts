@@ -12,8 +12,9 @@ export type Pokemon = {
 export type PokemonInfoCard = {
   name: string;
   id: number;
-  type: string; // Assumindo que você quer o type1
-  img: string; // Imagem animada (GIF)
+  type1: string;
+  type2?: string;
+  img: string;
 };
 
 export type DescricaoPokemon = {
@@ -50,24 +51,21 @@ export const getPokemons = async (limite: number): Promise<Pokemon[]> => {
 };
 
 export const getPokemonInfoCards = async (
-  pokemonList: Pokemon[]
+  limit: number
 ): Promise<PokemonInfoCard[]> => {
-  // 1. Cria um array de Promises, onde cada Promise é uma chamada 'api.get(url)'
+  const pokemonList = await getPokemons(limit);
+
   const detailPromises = pokemonList.map((pokemon) => {
-    // A URL completa para os detalhes já está em pokemon.url
     return api.get(pokemon.url).then((response) => response.data);
   });
 
-  // 2. Executa todas as Promises (requisições de detalhe) em paralelo
   const allDetails = await Promise.all(detailPromises);
 
-  // 3. Mapeia os dados detalhados para o formato PokemonInfoCard
   const infoCards: PokemonInfoCard[] = allDetails.map((d: any) => ({
     name: String(d.name),
     id: Number(d.id),
-    // Tipo: Pega o primeiro tipo (type1)
-    type: String(d.types[0].type.name),
-    // Imagem: Pega o sprite animado (Showdown)
+    type1: String(d.types[0].type.name),
+    type2: String(d.types[1] ? String(d.types[1].type.name) : undefined),
     img: String(d.sprites.other["showdown"].front_default),
   }));
 
@@ -118,4 +116,20 @@ export const getPokemonPorNome = async (
   };
 
   return detail;
+};
+
+export const filterPokemonsByName = (
+  allPokemons: PokemonInfoCard[],
+  searchTerm: string
+): PokemonInfoCard[] => {
+  const lowerCaseSearch = searchTerm.trim().toLowerCase();
+
+  // mudar para não retornar tudo
+  if (!lowerCaseSearch) {
+    return allPokemons;
+  }
+
+  return allPokemons.filter((pokemon) => {
+    return pokemon.name.toLowerCase().includes(lowerCaseSearch);
+  });
 };

@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import {
-  getPokemons,
+  getPokemonInfoCards,
   getPokemonPorNome,
   getDescricaoPokemonPorNome,
+  filterPokemonsByName,
   type PokemonDetail,
   type DescricaoPokemon,
-  type Pokemon,
+  type PokemonInfoCard,
 } from "./services/PokemonService";
 import InitialSection from "./components/InitialSection";
 import PokemonsHome from "./components/PokemonsHome";
@@ -22,16 +23,23 @@ import Pokedex from "./components/Pokedex";
 
 function App() {
   let pokemonPesquisado: string = "bulbasaur";
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [pokemons, setPokemons] = useState<PokemonInfoCard[]>([]);
   const [pokemonDetail, setPokemonDetails] = useState<PokemonDetail | null>(
     null
   );
   const [descricaoPokemon, setDescricaoPokemon] =
     useState<DescricaoPokemon | null>(null);
 
+  const [allPokemons, setAllPokemons] = useState<PokemonInfoCard[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredPokemons = useMemo(() => {
+    return filterPokemonsByName(allPokemons, searchTerm);
+  }, [allPokemons, searchTerm]);
+
   useEffect(() => {
     const fetchPokemons = async () => {
-      const data = await getPokemons(20); //o limite não sera sempre 20
+      const data = await getPokemonInfoCards(40); //o limite não sera sempre 20
       setPokemons(data);
     };
     fetchPokemons();

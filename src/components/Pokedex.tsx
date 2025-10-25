@@ -2,13 +2,13 @@ import React, { useMemo, useState } from "react";
 import PokemonCard from "./PokemonCard";
 import {
   type PokemonDetail,
-  type Pokemon,
+  type PokemonInfoCard,
   type DescricaoPokemon,
 } from "../services/PokemonService";
 
 interface PokedexProps {
   pokemonDetail: PokemonDetail | null;
-  pokemons: Pokemon[]; // agora aceita a lista
+  pokemons: PokemonInfoCard[]; // agora aceita a lista
   descricaoPokemon: DescricaoPokemon | null;
 }
 
@@ -17,7 +17,7 @@ function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
   const itemsPerRow = 3; // "posição do vetor" cresce de itemsPerRow em itemsPerRow
 
   const rows = useMemo(() => {
-    const r: Pokemon[][] = [];
+    const r: PokemonInfoCard[][] = [];
     for (let i = 0; i < pokemons.length; i += itemsPerRow) {
       r.push(pokemons.slice(i, i + itemsPerRow));
     }
@@ -68,8 +68,12 @@ function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
                     <PokemonCard
                       key={p?.name ?? `${rowIndex}-${i}`}
                       name={p?.name}
+                      id={p?.id}
+                      imgAnimada={p?.img}
+                      type1={p?.type1}
+                      type2={p.type2}
                       // exemplo: só usa imgAnimada para o primeiro card
-                      imgAnimada={
+                      imgAnimada2={
                         rowIndex === 0 && i === 0
                           ? pokemonDetail?.imgAnimada
                           : undefined

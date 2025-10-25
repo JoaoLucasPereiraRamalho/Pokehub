@@ -5,8 +5,9 @@ function PokemonCard(props: any) {
       <div className="d-flex flex-column bg-light align-items-center rounded-5 w-100 mt-10 sombra">
         <h6 className="mt-5">{props.id}</h6>
         <h2>{props.name}</h2>
-        <div>
-          <h3>Tipo</h3>
+        <div className="d-flex gap-4 justify-content-between">
+          <h3>{props.type1}</h3>
+          {props.type2 != "undefined" ? <h3>{props.type2}</h3> : null}
         </div>
       </div>
     </div>
