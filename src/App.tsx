@@ -22,7 +22,8 @@ import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
 
 function App() {
-  let pokemonPesquisado: string = "bulbasaur";
+  const [pokemonDetalhes, setPokemonDetalhes] = useState<string>("bulbasaur");
+  const [pokemonPesquisado, setPokemonPesquisado] = useState<string>("");
   const [pokemons, setPokemons] = useState<PokemonInfoCard[]>([]);
   const [pokemonDetail, setPokemonDetails] = useState<PokemonDetail | null>(
     null
@@ -34,32 +35,50 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const filteredPokemons = useMemo(() => {
+    // A função de filtro é chamada apenas quando a lista completa (allPokemons)
+    // ou o termo de busca (searchTerm) muda.
     return filterPokemonsByName(allPokemons, searchTerm);
   }, [allPokemons, searchTerm]);
 
   useEffect(() => {
     const fetchPokemons = async () => {
-      const data = await getPokemonInfoCards(40); //o limite não sera sempre 20
-      setPokemons(data);
+      // Chama a função otimizada para buscar todos os dados dos cards.
+      const data = await getPokemonInfoCards(40);
+      // Salva na lista COMPLETA, que é a fonte para a filtragem.
+      setAllPokemons(data);
+
+      // Define o primeiro pokemon para ser exibido no painel lateral
+      if (data.length > 0) {
+        setPokemonDetalhes(data[0].name);
+      }
     };
     fetchPokemons();
   }, []);
 
   useEffect(() => {
-    const fetchDescricaoPorNome = async () => {
-      const data = await getDescricaoPokemonPorNome(pokemonPesquisado); //não sera charmander, sera dinamico
-      setDescricaoPokemon(data);
+    const fetchData = async () => {
+      // 1. Busca a Descrição (para a div lateral)
+      const descData = await getDescricaoPokemonPorNome(pokemonDetalhes);
+      setDescricaoPokemon(descData);
+
+      // 2. Busca os Detalhes (para a div lateral)
+      const detailData = await getPokemonPorNome(pokemonDetalhes);
+      setPokemonDetails(detailData);
     };
-    fetchDescricaoPorNome();
-  }, []);
+
+    // Só tenta buscar se o nome do Pokémon estiver definido
+    if (pokemonDetalhes) {
+      fetchData();
+    }
+  }, [pokemonDetalhes]);
 
   useEffect(() => {
     const fetchPokemonPorNome = async () => {
-      const data = await getPokemonPorNome(pokemonPesquisado); //não sera caterpie, sera dinamico
-      setPokemonDetails(data);
+      const data = await getPokemonPorNome(pokemonPesquisado);
+      setPokemonDetalhes(String(data.name));
     };
     fetchPokemonPorNome();
-  }, []);
+  }, [pokemonPesquisado]);
 
   return (
     <div>
@@ -84,8 +103,13 @@ function App() {
           element={
             <Pokedex
               pokemonDetail={pokemonDetail}
-              pokemons={pokemons}
+              pokemons={filteredPokemons}
               descricaoPokemon={descricaoPokemon}
+              // NOVO: Passa o termo de busca e a função para atualizá-lo
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              // NOVO: Passa a função para selecionar um pokemon (opcional, mas bom para clicar no card)
+              onSelectPokemon={setPokemonPesquisado}
             />
           }
         />

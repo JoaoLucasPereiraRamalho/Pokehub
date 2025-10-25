@@ -10,11 +10,27 @@ interface PokedexProps {
   pokemonDetail: PokemonDetail | null;
   pokemons: PokemonInfoCard[]; // agora aceita a lista
   descricaoPokemon: DescricaoPokemon | null;
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+  onSelectPokemon: (name: string) => void;
 }
 
-function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
+function Pokedex({
+  pokemonDetail,
+  pokemons,
+  descricaoPokemon,
+  searchTerm, // Usado no 'value' do input
+  onSearchChange, // Usado para disparar a busca no App
+  onSelectPokemon,
+}: PokedexProps) {
   const [visibleRows, setVisibleRows] = useState(1); // quantas linhas mostrar
   const itemsPerRow = 3; // "posição do vetor" cresce de itemsPerRow em itemsPerRow
+
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+
+  const handleSearchClick = () => {
+    onSearchChange(localSearchTerm);
+  };
 
   const rows = useMemo(() => {
     const r: PokemonInfoCard[][] = [];
@@ -33,7 +49,10 @@ function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
         <div className="d-flex flex-column w-75">
           <div className="d-flex flex-column w-100 mt-5 input-fundo">
             <div className="div-btn-red d-flex justify-content-end w-100 px-2">
-              <button className="btn-red sombra-red p-0 border-0 rounded-2">
+              <button
+                className="btn-red sombra-red p-0 border-0 rounded-2"
+                onClick={handleSearchClick} // CONECTADO AO BOTÃO!
+              >
                 <img
                   className="w-100 h-100 object-fit-cover rounded-2"
                   src="/src/assets/poke.png"
@@ -43,12 +62,64 @@ function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
             <input
               className="w-100 rounded-1 border-0 h-input-principal sombra"
               placeholder="Pesquise pelo pokemon"
+              value={localSearchTerm} // Usa o estado local para exibir a digitação
+              onChange={(e) => setLocalSearchTerm(e.target.value)} // Atualiza o estado local enquanto digita
+              onKeyDown={(e) => {
+                // Adicionado para pesquisa ao pressionar ENTER
+                if (e.key === "Enter") {
+                  handleSearchClick();
+                }
+              }}
             ></input>
             <div className="mt-5 gap-4 d-flex w-100">
-              <select className="w-20 rounded-1 border-0  h-input-filtro sombra"></select>
-              <input className="w-20 rounded-1 border-0  h-input-filtro sombra"></input>
-              <input className="w-20 rounded-1 border-0  h-input-filtro sombra"></input>
-              <input className="w-20 rounded-1 border-0  h-input-filtro sombra"></input>
+              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
+                <option>Tipo</option>
+                <option>Fire</option>
+                <option>Water</option>
+                <option>Grass</option>
+                <option>Electric</option>
+                <option>Psychic</option>
+                <option>Ice</option>
+                <option>Dragon</option>
+                <option>Dark</option>
+                <option>Fairy</option>
+              </select>
+
+              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
+                <option>Fraqueza</option>
+                <option>Fire</option>
+                <option>Water</option>
+                <option>Grass</option>
+                <option>Electric</option>
+                <option>Psychic</option>
+                <option>Ice</option>
+                <option>Dragon</option>
+                <option>Dark</option>
+                <option>Fairy</option>
+              </select>
+              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
+                <option>Forte contra</option>
+                <option>Fire</option>
+                <option>Water</option>
+                <option>Grass</option>
+                <option>Electric</option>
+                <option>Psychic</option>
+                <option>Ice</option>
+                <option>Dragon</option>
+                <option>Dark</option>
+                <option>Fairy</option>
+              </select>
+              <select className="w-20 rounded-1 border-0  h-input-filtro sombra">
+                <option>Geração</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+              </select>
               <input className="ms-5 w-5 rounded-1 border-0  h-input-filtro sombra"></input>
             </div>
           </div>
@@ -78,6 +149,7 @@ function Pokedex({ pokemonDetail, pokemons, descricaoPokemon }: PokedexProps) {
                           ? pokemonDetail?.imgAnimada
                           : undefined
                       }
+                      onSelectPokemon={onSelectPokemon}
                     />
                   ))}
                   {/* se o chunk tiver menos que itemsPerRow, renderiza placeholders vazios */}

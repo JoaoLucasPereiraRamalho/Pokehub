@@ -15,6 +15,7 @@ export type PokemonInfoCard = {
   type1: string;
   type2?: string;
   img: string;
+  generation: string;
 };
 
 export type DescricaoPokemon = {
@@ -45,6 +46,25 @@ export type PokemonDetail = {
   imgAnimada: string;
 };
 
+export const POKEMON_GENERATIONS = [
+  { name: "Kanto", startId: 1, endId: 151 },
+  { name: "Johto", startId: 152, endId: 251 },
+  { name: "Hoenn", startId: 252, endId: 386 },
+  { name: "Sinnoh", startId: 387, endId: 493 },
+  { name: "Unova", startId: 494, endId: 649 },
+  { name: "Kalos", startId: 650, endId: 721 },
+  { name: "Alola", startId: 722, endId: 809 },
+  { name: "Galar", startId: 810, endId: 898 },
+  { name: "Paldea", startId: 899, endId: 1025 },
+];
+
+const getGenerationName = (id: number): string => {
+  const generation = POKEMON_GENERATIONS.find(
+    (gen) => id >= gen.startId && id <= gen.endId
+  );
+  return generation ? generation.name : "Desconhecida";
+};
+
 export const getPokemons = async (limite: number): Promise<Pokemon[]> => {
   const response = await api.get(`pokemon?limit=${limite}`);
   return response.data.results;
@@ -67,6 +87,7 @@ export const getPokemonInfoCards = async (
     type1: String(d.types[0].type.name),
     type2: String(d.types[1] ? String(d.types[1].type.name) : undefined),
     img: String(d.sprites.other["showdown"].front_default),
+    generation: getGenerationName(Number(d.id)),
   }));
 
   return infoCards;
