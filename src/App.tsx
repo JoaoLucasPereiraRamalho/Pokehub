@@ -139,27 +139,6 @@ function App() {
         <Route path="/Noticias" element={<Noticias />} />
       </Routes>
       <Footer />
-      <div>
-        <h1>Lista de Pokemons</h1>
-        {pokemons.map((pokemon) => (
-          <div key={pokemon.name}>
-            <p>{pokemon.name}</p>
-          </div>
-        ))}
-      </div>
-      <div>
-        <h1>Lista de Descricoes</h1>
-
-        <p>{descricaoPokemon ? descricaoPokemon.flavor_text : "loading"}</p>
-      </div>
-      <div>
-        <h1>Detalhes Pokemon</h1>
-        <div key={pokemonDetail ? pokemonDetail.id : "loading"}>
-          <p>Id: {pokemonDetail ? pokemonDetail.id : "loading"}</p>
-          <p>height: {pokemonDetail ? pokemonDetail.height : "loading"}</p>
-          <p>weight: {pokemonDetail ? pokemonDetail.weight : "loading"}</p>
-        </div>
-      </div>
     </div>
   );
 }
