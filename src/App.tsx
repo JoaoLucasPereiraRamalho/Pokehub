@@ -8,11 +8,18 @@ import {
   getDescricaoPokemonPorNome,
   filterPokemonsByName,
   filterPokemonsCombined,
+  getItems,
+  getItemInfoCards,
+  filterItemsByName,
+  getItemDetailByName,
+  type ItemData,
+  type ItemCardInfo,
   ALL_POKEMON_TYPES,
   POKEMON_GENERATIONS,
   type PokemonDetail,
   type DescricaoPokemon,
   type PokemonInfoCard,
+  type ItemDetail,
 } from "./services/PokemonService";
 import InitialSection from "./components/InitialSection";
 import PokemonsHome from "./components/PokemonsHome";
@@ -24,6 +31,7 @@ import Battle from "./components/Battle";
 import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
 import Noticias from "./components/Noticias";
+import PageItens from "./components/PageItens";
 
 function App() {
   const allTypesList = ALL_POKEMON_TYPES;
@@ -45,6 +53,52 @@ function App() {
 
   const [allPokemons, setAllPokemons] = useState<PokemonInfoCard[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // Lista completa de todos os itens
+  const [allItems, setAllItems] = useState<ItemCardInfo[]>([]);
+  // Termo de busca para itens
+  const [itemSearchTerm, setItemSearchTerm] = useState<string>("");
+
+  const [selectedItemName, setSelectedItemName] = useState<string>("");
+  const [itemDetail, setItemDetail] = useState<ItemDetail | null>(null);
+
+  // USEMEMO PARA ITENS: Aplica a busca por nome na lista de itens.
+  const filteredItems = useMemo(() => {
+    return filterItemsByName(allItems, itemSearchTerm);
+  }, [allItems, itemSearchTerm]);
+
+  // EFEITO PARA CARREGAMENTO INICIAL DE ITENS
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const listData: ItemData[] = await getItems(50); // Busca os primeiros 50 itens (Limite)
+        const cardsData: ItemCardInfo[] = await getItemInfoCards(listData);
+        setAllItems(cardsData);
+      } catch (error) {
+        console.error("Erro ao carregar itens:", error);
+      }
+    };
+    fetchItems();
+  }, []);
+
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const detail = await getItemDetailByName(selectedItemName);
+        setItemDetail(detail);
+      } catch (error) {
+        console.error(
+          `Erro ao carregar detalhes do item ${selectedItemName}:`,
+          error
+        );
+        setItemDetail(null);
+      }
+    };
+
+    if (selectedItemName) {
+      fetchItemDetails();
+    }
+  }, [selectedItemName]);
 
   const filteredPokemons = useMemo(() => {
     // Usando a função combinada que você criou.
@@ -137,6 +191,18 @@ function App() {
           }
         />
         <Route path="/Noticias" element={<Noticias />} />
+        <Route
+          path="/Itens"
+          element={
+            <PageItens
+              items={filteredItems}
+              searchTerm={itemSearchTerm}
+              onSearchChange={setItemSearchTerm}
+              itemDetail={itemDetail} // Detalhes carregados pelo useEffect
+              onSelectItem={setSelectedItemName} // Função para mudar o item selecionado
+            />
+          }
+        />
       </Routes>
       <Footer />
     </div>

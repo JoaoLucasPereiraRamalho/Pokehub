@@ -99,6 +99,15 @@ export type PokemonDetail = {
   imgAnimada: string;
 };
 
+export type ItemDetail = {
+  name: string;
+  id: number;
+  cost: number;
+  category: string;
+  effect: string;
+  sprite: string;
+};
+
 // =========================================================================
 // 3. FUNÇÕES DE BUSCA DA API
 // =========================================================================
@@ -252,4 +261,85 @@ export const filterPokemonsCombined = (
   }
 
   return currentFilter;
+};
+
+export type ItemData = {
+  name: string;
+  url: string;
+};
+
+export type ItemCardInfo = {
+  name: string;
+  id: number;
+  cost: number;
+  category: string;
+  img: string;
+};
+
+export const getItems = async (limite: number): Promise<ItemData[]> => {
+  const response = await api.get(`item?limit=${limite}`);
+  return response.data.results;
+};
+
+export const getItemInfoCards = async (
+  itemList: ItemData[]
+): Promise<ItemCardInfo[]> => {
+  const detailPromises = itemList.map((item) => {
+    return api.get(item.url).then((response) => response.data);
+  });
+
+  const allDetails = await Promise.all(detailPromises);
+
+  const infoCards: ItemCardInfo[] = allDetails.map((d: any) => ({
+    name: String(d.name),
+    id: Number(d.id),
+    cost: Number(d.cost),
+    category: String(d.category.name),
+    // A imagem do item é acessada diretamente via sprites.default
+    img: String(d.sprites.default),
+  }));
+
+  return infoCards;
+};
+
+//Items
+
+export const filterItemsByName = (
+  allItems: ItemCardInfo[],
+  searchTerm: string
+): ItemCardInfo[] => {
+  const lowerCaseSearch = searchTerm.trim().toLowerCase();
+
+  if (!lowerCaseSearch) {
+    return allItems;
+  }
+
+  return allItems.filter((item) => {
+    return item.name.toLowerCase().includes(lowerCaseSearch);
+  });
+};
+
+export const getItemDetailByName = async (
+  name: string
+): Promise<ItemDetail> => {
+  const response = await api.get(`item/${name}`);
+  const d = response.data;
+
+  // Encontra a descrição do efeito (flavor_text) em inglês ou português se disponível
+  const effectEntry =
+    d.effect_entries.find(
+      (entry: any) =>
+        entry.language.name === "en" || entry.language.name === "pt"
+    ) || d.effect_entries[0];
+
+  const detail: ItemDetail = {
+    name: String(d.name),
+    id: Number(d.id),
+    cost: Number(d.cost),
+    category: String(d.category.name),
+    effect: String(effectEntry?.effect || "No effect description found."),
+    sprite: String(d.sprites.default),
+  };
+
+  return detail;
 };
