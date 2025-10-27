@@ -57,6 +57,11 @@ export const ALL_POKEMON_TYPES = [
 // 2. DEFINIÇÃO DE TIPOS
 // =========================================================================
 
+export type PokemonName = {
+  name: string;
+  url: string;
+};
+
 export type Pokemon = {
   name: string;
   url: string;
@@ -111,6 +116,16 @@ export type ItemDetail = {
 // =========================================================================
 // 3. FUNÇÕES DE BUSCA DA API
 // =========================================================================
+
+export const getPokemonNameList = async (): Promise<PokemonName[]> => {
+  try {
+    const response = await api.get(`pokemon?limit=10000`);
+    return response.data.results;
+  } catch (error) {
+    console.error("Erro ao carregar lista de nomes:", error);
+    return [];
+  }
+};
 
 export const getPokemons = async (limite: number): Promise<Pokemon[]> => {
   const response = await api.get(`pokemon?limit=${limite}`);
@@ -217,14 +232,8 @@ export const filterPokemonsByName = (
   });
 };
 
-/**
- * Filtra a lista de Pokémon com base no termo de busca (nome), no tipo E na Geração selecionada.
- * @param allPokemons A lista completa de todos os PokemonInfoCard.
- * @param searchTerm O texto digitado pelo usuário.
- * @param selectedType O tipo selecionado.
- * @param selectedGeneration A Geração selecionada (NOVO).
- * @returns Um array de PokemonInfoCard que atende aos critérios.
- */
+// Filtra a lista de Pokémon com base no termo de busca (nome), no tipo E na Geração selecionada.
+
 export const filterPokemonsCombined = (
   allPokemons: PokemonInfoCard[],
   searchTerm: string,

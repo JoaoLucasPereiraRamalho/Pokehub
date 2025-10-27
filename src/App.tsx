@@ -12,6 +12,7 @@ import {
   getItemInfoCards,
   filterItemsByName,
   getItemDetailByName,
+  getPokemonNameList,
   type ItemData,
   type ItemCardInfo,
   ALL_POKEMON_TYPES,
@@ -20,6 +21,7 @@ import {
   type DescricaoPokemon,
   type PokemonInfoCard,
   type ItemDetail,
+  type PokemonName,
 } from "./services/PokemonService";
 import InitialSection from "./components/InitialSection";
 import PokemonsHome from "./components/PokemonsHome";
@@ -32,6 +34,7 @@ import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
 import Noticias from "./components/Noticias";
 import PageItens from "./components/PageItens";
+import ComparePage from "./components/ComparePage";
 
 function App() {
   const allTypesList = ALL_POKEMON_TYPES;
@@ -54,6 +57,8 @@ function App() {
   const [allPokemons, setAllPokemons] = useState<PokemonInfoCard[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  //ITENSSSSS
+
   // Lista completa de todos os itens
   const [allItems, setAllItems] = useState<ItemCardInfo[]>([]);
   // Termo de busca para itens
@@ -61,6 +66,27 @@ function App() {
 
   const [selectedItemName, setSelectedItemName] = useState<string>("");
   const [itemDetail, setItemDetail] = useState<ItemDetail | null>(null);
+
+  //NOVO: ESTADOS PARA COMPARAÇÃO
+
+  // Lista de todos os nomes para popular os seletores de comparação
+  const [allPokemonNamesList, setAllPokemonNamesList] = useState<PokemonName[]>(
+    []
+  );
+
+  // Nomes dos Pokémon selecionados para comparação
+  const [selectedPokemon1Name, setSelectedPokemon1Name] =
+    useState<string>("bulbasaur");
+  const [selectedPokemon2Name, setSelectedPokemon2Name] =
+    useState<string>("charmander");
+
+  // Detalhes dos Pokémon para comparação
+  const [pokemon1Detail, setPokemon1Detail] = useState<PokemonDetail | null>(
+    null
+  );
+  const [pokemon2Detail, setPokemon2Detail] = useState<PokemonDetail | null>(
+    null
+  );
 
   // USEMEMO PARA ITENS: Aplica a busca por nome na lista de itens.
   const filteredItems = useMemo(() => {
@@ -143,12 +169,48 @@ function App() {
   }, [pokemonDetalhes]);
 
   useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        const names = await getPokemonNameList();
+        setAllPokemonNamesList(names); // CORRIGIDO: Preenche a lista de nomes!
+      } catch (error) {
+        console.error(
+          "Erro ao carregar lista de nomes para comparação:",
+          error
+        );
+      }
+    };
+    fetchNames();
+  }, []);
+
+  useEffect(() => {
     const fetchPokemonPorNome = async () => {
       const data = await getPokemonPorNome(pokemonPesquisado);
       setPokemonDetalhes(String(data.name));
     };
     fetchPokemonPorNome();
   }, [pokemonPesquisado]);
+
+  useEffect(() => {
+    const fetchDetail1 = async () => {
+      if (selectedPokemon1Name) {
+        const data = await getPokemonPorNome(selectedPokemon1Name);
+        setPokemon1Detail(data);
+      }
+    };
+    fetchDetail1();
+  }, [selectedPokemon1Name]);
+
+  // --- NOVO: BUSCA DE DETALHES PARA COMPARAÇÃO (POKÉMON 2) ---
+  useEffect(() => {
+    const fetchDetail2 = async () => {
+      if (selectedPokemon2Name) {
+        const data = await getPokemonPorNome(selectedPokemon2Name);
+        setPokemon2Detail(data);
+      }
+    };
+    fetchDetail2();
+  }, [selectedPokemon2Name]);
 
   return (
     <div>
@@ -200,6 +262,20 @@ function App() {
               onSearchChange={setItemSearchTerm}
               itemDetail={itemDetail} // Detalhes carregados pelo useEffect
               onSelectItem={setSelectedItemName} // Função para mudar o item selecionado
+            />
+          }
+        />
+        <Route
+          path="/Comparar"
+          element={
+            <ComparePage
+              pokemonNames={allPokemonNamesList}
+              selectedPokemon1={selectedPokemon1Name}
+              selectedPokemon2={selectedPokemon2Name}
+              pokemon1Detail={pokemon1Detail}
+              pokemon2Detail={pokemon2Detail}
+              onSelectPokemon1={setSelectedPokemon1Name}
+              onSelectPokemon2={setSelectedPokemon2Name}
             />
           }
         />

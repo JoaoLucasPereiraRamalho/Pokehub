@@ -1,4 +1,57 @@
-.bg-orange {
+--teste
+
+/* Fundo customizado (Azul Escuro/Teal) */
+.compare-bg {
+  background: linear-gradient(180deg, #103254 0%, #081a2e 100%);
+  min-height: 100vh;
+}
+
+/* Estilo do Card de Detalhes (Branco/Sombra) */
+.pokemon-card-compare {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  height: 480px; /* Altura fixa para alinhamento */
+}
+
+/* Fundo da Imagem (Amarelo/Laranja, similar ao Pikachu) */
+.pokemon-card-image-bg {
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  border-bottom: 3px solid #ffd700;
+}
+
+/* Estilos para as Barras de Status */
+.stat-bar-container {
+  height: 15px;
+  background-color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.stat-bar-fill-p1 {
+  background-color: #4caf50; /* Verde */
+}
+.stat-bar-fill-p2 {
+  background-color: #f44336; /* Vermelho */
+}
+
+/* Estilo do Botão COMPRAR */
+.btn-comparar {
+  background-color: #cc3333; /* Vermelho escuro */
+  color: white;
+  font-weight: bold;
+  padding: 12px 30px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s;
+}
+.btn-comparar:hover {
+  background-color: #b32d2d;
+  color: white;
+}
+
+--teste .bg-orange {
   background-color: #c43410;
 }
 
