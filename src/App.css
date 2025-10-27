@@ -1,3 +1,19 @@
+.bg-orange {
+  background-color: #c43410;
+}
+
+.text-orange {
+  color: #c43410;
+}
+
+.bg-noticias {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.h-card {
+  height: 550px;
+}
+
 .fundo-abstrato-pokemon {
   min-height: 500px;
   padding: 20px;

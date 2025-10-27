@@ -23,6 +23,7 @@ import Itens from "./components/Itens";
 import Battle from "./components/Battle";
 import Footer from "./components/Footer";
 import Pokedex from "./components/Pokedex";
+import Noticias from "./components/Noticias";
 
 function App() {
   const allTypesList = ALL_POKEMON_TYPES;
@@ -135,6 +136,7 @@ function App() {
             />
           }
         />
+        <Route path="/Noticias" element={<Noticias />} />
       </Routes>
       <Footer />
       <div>
