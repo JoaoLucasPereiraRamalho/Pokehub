@@ -1,7 +1,7 @@
 function InitialSection() {
   return (
-    <div style={{ backgroundColor: "#091D3C" }} className="d-flex ">
-      <div className="w-50 p-5 text-white m-4">
+    <div style={{ backgroundColor: "#091D3C" }} className="d-flex">
+      <div className="w-40 px-10 py-4 text-white m-4">
         <h1 className="title">DESCUBRA.</h1>
         <h1 className="title">COMPARE.</h1>
         <h1 className="title">BATALHE.</h1>
@@ -14,7 +14,7 @@ function InitialSection() {
         </h6>
         <button className="btn-linear">SAIBA MAIS</button>
       </div>
-      <div className="d-flex w-50 flex-row-reverse image-container">
+      <div className="d-flex w-60 flex-row-reverse image-container">
         <img
           className="img-fluid mx-auto d-block"
           src="/src/assets/haunter_sem_fundo.png"

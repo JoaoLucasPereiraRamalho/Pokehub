@@ -4,6 +4,7 @@ import {
   type PokemonName,
 } from "../services/PokemonService";
 import CompareCircle from "./CompareCircle"; // Componente do gráfico de radar
+import Card from "./Card"; // Componente Card adaptado
 
 // Define as propriedades que este componente receberá do App.tsx
 interface ComparePageProps {
@@ -49,7 +50,7 @@ const STAT_COLOR_MAP: { [key: string]: string } = {
  * Retorna a cor da barra de status com base no tipo de estatística.
  */
 const getStatColor = (statName: string): string => {
-  return STAT_COLOR_MAP[statName as keyof typeof STAT_MAP] || "#A8A8A8"; // Cinza como fallback
+  return STAT_COLOR_MAP[statName as keyof typeof STAT_MAP] || "#A8A8A8";
 };
 
 /**
@@ -70,7 +71,6 @@ const getWinnerClass = (
   return "bg-secondary text-white"; // Empate
 };
 
-// --- FUNÇÃO AUXILIAR DE SUGESTÕES ---
 const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
   if (input.length < 2) return [];
   const lowerInput = input.toLowerCase();
@@ -79,7 +79,6 @@ const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
     .slice(0, 10);
 };
 
-// --- SUBCOMPONENTE DE PESQUISA (INPUT E SUGESTÕES) ---
 const SearchInput: React.FC<{
   searchName: string;
   setSearchName: (name: string) => void;
@@ -118,7 +117,6 @@ const SearchInput: React.FC<{
           }
         }}
       />
-      {/* Lista de Sugestões (Dropdown) */}
       {suggestions.length > 0 && searchName.length >= 2 && (
         <ul
           className="list-group position-absolute w-100 mt-1 shadow-lg"
@@ -140,123 +138,6 @@ const SearchInput: React.FC<{
   );
 };
 
-// --- SUBCOMPONENTE CardDetail (ADAPTADO AO NOVO DESIGN DE CARD) ---
-const CardDetail: React.FC<{
-  pokemon: PokemonDetail | null;
-  bst: number;
-  onDetailClick: (name: string) => void;
-}> = ({ pokemon, bst, onDetailClick }) => {
-  // Determina a cor de fundo com base no tipo principal
-  const cardColorClass = useMemo(() => {
-    if (!pokemon) return "bg-secondary";
-    switch (pokemon.type1.toLowerCase()) {
-      case "grass":
-      case "bug":
-        return "bg-success";
-      case "fire":
-      case "fighting":
-        return "bg-danger";
-      case "water":
-      case "ice":
-        return "bg-info";
-      case "electric":
-        return "bg-warning";
-      case "ghost":
-      case "poison":
-        return "bg-dark";
-      default:
-        return "bg-secondary";
-    }
-  }, [pokemon]);
-
-  return (
-    <div
-      style={{ width: 250, overflow: "hidden" }}
-      className={`rounded-3 shadow-lg ${cardColorClass}`}
-    >
-      {pokemon ? (
-        <>
-          <div className="position-relative text-white p-2">
-            {/* 1. Número da Pokédex (ID) - Dinâmico */}
-            <h6 className="position-absolute end-0 m-2 fw-bold">
-              #{pokemon.id.toString().padStart(3, "0")}
-            </h6>
-
-            {/* 2. Imagem do Pokémon - Dinâmico */}
-            <img
-              className="w-100 img-fluid mx-auto d-block"
-              src={pokemon.img}
-              alt={pokemon.name}
-              style={{ maxHeight: 150 }}
-            />
-          </div>
-
-          {/* Informações e Botões */}
-          <div className="bg-light p-0">
-            <div className="d-flex justify-content-between align-items-center m-2">
-              {/* 3. Nome do Pokémon - Dinâmico */}
-              <h2 className="fs-3 fw-bold text-capitalize m-0">
-                {pokemon.name}
-              </h2>
-
-              {/* 4. Ícone de Habilidade - Dinâmico (usando a primeira letra da habilidade) */}
-              <span
-                className={`badge ${cardColorClass} text-white p-2 rounded-circle`}
-                style={{ width: 30, height: 30 }}
-              >
-                <small className="text-uppercase">
-                  {pokemon.abilitie1.charAt(0)}
-                </small>
-              </span>
-            </div>
-
-            <div className="d-flex mt-2">
-              {/* Botão Ver Detalhes */}
-              <div
-                className="btn btn-dark rounded-3 w-50 d-flex align-items-center justify-content-center m-2 p-1"
-                onClick={() => onDetailClick(pokemon.name)}
-                style={{ cursor: "pointer" }}
-              >
-                <div>
-                  <h6 className="text-white m-0">
-                    Ver <br /> Detalhes
-                  </h6>
-                </div>
-                <button
-                  className="m-2 rounded-circle border-0 bg-info"
-                  style={{ width: 35, height: 35, padding: 0 }}
-                >
-                  <span className="text-white fw-bold">i</span>
-                </button>
-              </div>
-
-              {/* 5. BST e Botão "A" - Dinâmico */}
-              <div className="d-flex flex-column justify-content-center align-items-center gap-1 w-50 m-2">
-                <button
-                  className={`w-100 border-1 ${cardColorClass} text-white rounded-pill p-1 fw-bold`}
-                >
-                  BST:{bst}
-                </button>
-                <button className="w-100 border-1 bg-dark text-white rounded-pill p-1 fw-bold">
-                  A
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div
-          className="d-flex flex-column align-items-center justify-content-center bg-light p-3 rounded-3 text-dark"
-          style={{ height: "250px" }}
-        >
-          <p className="text-muted">Selecione um Pokémon.</p>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// --- COMPONENTE PRINCIPAL ComparePage ---
 function ComparePage({
   pokemonNames,
   selectedPokemon1,
@@ -269,7 +150,6 @@ function ComparePage({
   const [searchName1, setSearchName1] = useState(selectedPokemon1);
   const [searchName2, setSearchName2] = useState(selectedPokemon2);
 
-  // Gera sugestões dinamicamente
   const suggestions1 = useMemo(
     () => getSuggestions(pokemonNames, searchName1),
     [pokemonNames, searchName1]
@@ -279,7 +159,6 @@ function ComparePage({
     [pokemonNames, searchName2]
   );
 
-  // Calcula o BST (reutilizando a lógica anterior)
   const bst1 = useMemo(
     () =>
       pokemon1Detail
@@ -301,13 +180,12 @@ function ComparePage({
     [pokemon2Detail]
   );
 
-  // Função de renderização das Barras de Status
   const renderStatBars = (pokemon: PokemonDetail | null, isP1: boolean) => {
     if (!pokemon)
       return (
         <div className="p-4 text-center text-muted">Aguardando seleção...</div>
       );
-    const maxStat = 255; // Máximo base stat possível
+    const maxStat = 255;
 
     return (
       <div className="w-100 px-3">
@@ -315,7 +193,7 @@ function ComparePage({
           const value = pokemon[statName] as number;
           const label = STAT_MAP[statName as keyof typeof STAT_MAP];
           const percentage = (value / maxStat) * 100;
-          const statColor = getStatColor(statName.toString()); // Obtém a cor dinâmica
+          const statColor = getStatColor(statName.toString());
 
           return (
             <div key={statName} className="mb-3">
@@ -323,14 +201,13 @@ function ComparePage({
                 <span className="fw-semibold text-uppercase">{label}</span>
                 <small className="text-white">{value}</small>
               </div>
-              {/* Barra de Progresso Customizada (usando estilo inline) */}
               <div className="stat-bar-container">
                 <div
-                  className="progress-bar" // Classe base sem cor fixa
+                  className="progress-bar"
                   role="progressbar"
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor: statColor, // Aplica a cor dinâmica
+                    backgroundColor: statColor,
                   }}
                   aria-valuenow={value}
                   aria-valuemin={0}
@@ -344,7 +221,6 @@ function ComparePage({
     );
   };
 
-  // Função de renderização da tabela de comparação
   const renderComparisonStats = () => {
     if (!pokemon1Detail || !pokemon2Detail) {
       return (
@@ -360,7 +236,6 @@ function ComparePage({
           Tabela de Estatísticas Base
         </h2>
 
-        {/* Tabela de Comparação */}
         <table className="table table-bordered table-striped text-center">
           <thead>
             <tr className="table-secondary">
@@ -375,7 +250,6 @@ function ComparePage({
                 <td className="py-3 px-4 fw-semibold text-start text-capitalize">
                   {STAT_MAP[statName as keyof typeof STAT_MAP]}
                 </td>
-                {/* Status do Pokémon 1 com destaque */}
                 <td
                   className={`py-3 px-4 ${getWinnerClass(
                     statName,
@@ -385,7 +259,6 @@ function ComparePage({
                 >
                   {pokemon1Detail[statName] as number}
                 </td>
-                {/* Status do Pokémon 2 com destaque */}
                 <td
                   className={`py-3 px-4 ${getWinnerClass(
                     statName,
@@ -398,10 +271,8 @@ function ComparePage({
               </tr>
             ))}
 
-            {/* Linha Total BST (Base Stat Total) */}
             <tr className="table-info fw-bold border-top border-3 border-primary">
               <td className="py-3 px-4 text-dark fs-5 text-start">Total BST</td>
-              {/* Destaque para o BST do Pokémon 1 */}
               <td
                 className={`py-3 px-4 fs-5 ${
                   bst1 > bst2
@@ -413,7 +284,6 @@ function ComparePage({
               >
                 {bst1}
               </td>
-              {/* Destaque para o BST do Pokémon 2 */}
               <td
                 className={`py-3 px-4 fs-5 ${
                   bst2 > bst1
@@ -438,7 +308,6 @@ function ComparePage({
   };
 
   return (
-    // bg-dark e min-vh-100 para fundo escuro
     <div className="min-vh-100 bg-dark text-white p-5">
       <div className="container-fluid mx-auto">
         <h1 className="fs-1 fw-bold mb-2">COMPARAR E DESCOBRIR!</h1>
@@ -446,9 +315,7 @@ function ComparePage({
           Compare os status de dois Pokémon de maneira simples e rápida.
         </p>
 
-        {/* CARDS DE VISUALIZAÇÃO */}
         <div className="d-flex justify-content-around align-items-start gap-4">
-          {/* Coluna 1 */}
           <div className="d-flex flex-column align-items-center w-25">
             <div className="mb-2 w-100" style={{ width: 250 }}>
               <SearchInput
@@ -459,8 +326,7 @@ function ComparePage({
                 onSelect={onSelectPokemon1}
               />
             </div>
-            {/* Card 1 */}
-            <CardDetail
+            <Card
               pokemon={pokemon1Detail}
               bst={bst1}
               onDetailClick={() => {}}
@@ -471,7 +337,6 @@ function ComparePage({
             VS
           </span>
 
-          {/* Coluna 2 */}
           <div className="d-flex flex-column align-items-center w-25">
             <div className="mb-2 w-100" style={{ width: 250 }}>
               <SearchInput
@@ -482,8 +347,8 @@ function ComparePage({
                 onSelect={onSelectPokemon2}
               />
             </div>
-            {/* Card 2 */}
-            <CardDetail
+
+            <Card
               pokemon={pokemon2Detail}
               bst={bst2}
               onDetailClick={() => {}}
@@ -491,16 +356,13 @@ function ComparePage({
           </div>
         </div>
 
-        {/* Botão de Comparar (Para Alinhar com o original) */}
         <div className="text-center my-5">
           <button className="btn btn-danger fs-4 fw-bold p-3 shadow-lg">
             COMPARAR
           </button>
         </div>
 
-        {/* VISUALIZAÇÃO DE ESTATÍSTICAS (Barras de Progresso e Gráfico Central) */}
         <div className="row text-white mt-5 pt-5 align-items-center">
-          {/* Barras do Pokémon 1 */}
           <div className="col-sm-12 col-md-5">
             <h5 className="text-uppercase text-center mb-4 text-success">
               Estatísticas de {pokemon1Detail?.name || "Pokémon 1"}
@@ -508,7 +370,6 @@ function ComparePage({
             {renderStatBars(pokemon1Detail, true)}
           </div>
 
-          {/* GRÁFICO DE RADAR CENTRAL */}
           <div className="col-sm-12 col-md-2 d-flex justify-content-center align-items-center my-4">
             <CompareCircle
               pokemon1={pokemon1Detail}
@@ -516,7 +377,6 @@ function ComparePage({
             />
           </div>
 
-          {/* Barras do Pokémon 2 */}
           <div className="col-sm-12 col-md-5">
             <h5 className="text-uppercase text-center mb-4 text-danger">
               Estatísticas de {pokemon2Detail?.name || "Pokémon 2"}
@@ -525,7 +385,6 @@ function ComparePage({
           </div>
         </div>
 
-        {/* TABELA DE COMPARAÇÃO */}
         {renderComparisonStats()}
       </div>
     </div>
