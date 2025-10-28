@@ -56,7 +56,7 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
 
       <div className="bg-light p-3">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fs-3 fw-bold text-capitalize m-0">{pokemon.name}</h2>
+          <h2 className="fs-3 fw-bold text-black m-0">{pokemon.name}</h2>
           <span
             className={`badge ${cardColorClass} text-white p-2 rounded-circle d-flex align-items-center justify-content-center`}
             style={{ width: 30, height: 30 }}

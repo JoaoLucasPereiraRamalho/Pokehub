@@ -1,3 +1,26 @@
+.w-70 {
+  width: 70%;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.pokedex-painel {
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
 .featured-section {
   position: relative;
   overflow: hidden;
@@ -225,10 +248,10 @@
 .image-wrapper {
   position: relative;
   width: 120px;
-  height: 120px;
+  height: 100px;
 }
 
-.div-btn-red {
+.image .div-btn-red {
   position: relative;
   width: 0px;
   height: 0px;
@@ -244,7 +267,7 @@
 .pokedex-fundo {
   height: 250px;
   padding-left: 15%;
-  padding-right: 15%;
+  padding-right: 7%;
 }
 
 .sombra {
@@ -257,15 +280,28 @@
 
 .input-fundo {
   padding-left: 15%;
-  padding-right: 15%;
+  padding-right: 10%;
 }
 
 .image-card-pokedex {
   position: absolute;
-  left: 25%;
-  top: 10%;
-  width: 120px;
-  height: 120px;
+  left: 50%;
+  transform: translateX(
+    -50%
+  ); /* Move o elemento de volta pela metade da sua largura */
+
+  /* Ajusta a posição vertical para "flutuar" acima do card */
+  top: -15%; /* Ajuste este valor conforme o desejado, -10% ou -20% também podem funcionar */
+
+  /* Aumenta o tamanho da imagem */
+  width: 150px; /* Ajuste conforme o tamanho ideal que você deseja */
+  height: 150px; /* Manter width e height iguais para uma imagem quadrada */
+
+  /* Opcional: Garante que a imagem fique sobre outros elementos se houver sobreposição */
+  z-index: 10;
+
+  /* Garante que a imagem não seja cortada se for maior que seu container original */
+  object-fit: contain;
 }
 
 .mt-10 {

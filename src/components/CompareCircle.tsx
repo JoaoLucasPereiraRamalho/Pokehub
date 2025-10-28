@@ -6,7 +6,6 @@ interface CompareCircleProps {
   pokemon2: PokemonDetail | null;
 }
 
-// Lista das estatísticas para o gráfico (na ordem do hexágono)
 const RADAR_STATS: Array<keyof PokemonDetail> = [
   "hp",
   "attack",
@@ -15,14 +14,12 @@ const RADAR_STATS: Array<keyof PokemonDetail> = [
   "specialDefense",
   "speed",
 ];
-const MAX_STAT_VALUE = 255; // O valor máximo que uma estatística base pode ter (para dimensionamento)
-const SIZE = 200; // Tamanho do SVG
+const MAX_STAT_VALUE = 255;
+const SIZE = 200;
 const CENTER = SIZE / 2;
 const NUM_SIDES = RADAR_STATS.length;
 const ANGLE_SLICE = (2 * Math.PI) / NUM_SIDES;
 
-// Mapeamento visual das estatísticas
-// CORREÇÃO: Definimos o tipo explicitamente para as 6 chaves de estatísticas.
 const STAT_MAP: { [key: string]: string } = {
   hp: "HP",
   attack: "ATK",
@@ -32,18 +29,15 @@ const STAT_MAP: { [key: string]: string } = {
   speed: "SPD",
 };
 
-// Função auxiliar para calcular as coordenadas de um ponto do polígono
 const getCoordinate = (value: number, index: number) => {
-  // Escala o valor entre 0 e o raio máximo (SIZE/2)
   const r = (value / MAX_STAT_VALUE) * (CENTER * 0.7);
-  const angle = ANGLE_SLICE * index - Math.PI / 2; // -PI/2 para começar no topo
+  const angle = ANGLE_SLICE * index - Math.PI / 2;
   return {
     x: CENTER + r * Math.cos(angle),
     y: CENTER + r * Math.sin(angle),
   };
 };
 
-// Gera a string SVG 'points' para o polígono de estatísticas
 const generatePoints = (pokemon: PokemonDetail | null) => {
   if (!pokemon) return "";
   return RADAR_STATS.map((stat, i) => {
@@ -57,7 +51,6 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
   pokemon1,
   pokemon2,
 }) => {
-  // Se faltar dados, mostra apenas a estrutura
   if (!pokemon1 && !pokemon2) {
     return (
       <div
@@ -74,13 +67,11 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
     );
   }
 
-  // Gera os pontos dos polígonos
   const points1 = generatePoints(pokemon1);
   const points2 = generatePoints(pokemon2);
 
-  // Gera os pontos para as linhas de fundo (grid)
   const gridLines = RADAR_STATS.map((_, i) => {
-    const { x, y } = getCoordinate(MAX_STAT_VALUE, i); // Usa o valor máximo
+    const { x, y } = getCoordinate(MAX_STAT_VALUE, i);
     return (
       <line
         key={`line-${i}`}
@@ -94,9 +85,8 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
     );
   });
 
-  // Gera os labels das estatísticas
   const statLabels = RADAR_STATS.map((stat, i) => {
-    const { x, y } = getCoordinate(MAX_STAT_VALUE * 1.1, i); // Ponto ligeiramente fora
+    const { x, y } = getCoordinate(MAX_STAT_VALUE * 1.1, i);
     return (
       <text
         key={`label-${stat}`}
@@ -115,7 +105,6 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
 
   return (
     <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
-      {/* Círculos de Fundo */}
       <circle
         cx={CENTER}
         cy={CENTER}
@@ -141,30 +130,26 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
         strokeWidth="1"
       />
 
-      {/* Linhas de Eixo (Grid) */}
       {gridLines}
 
-      {/* Polígono do Pokémon 2 (Camada Inferior - Vermelho) */}
       {points2 && (
         <polygon
           points={points2}
-          fill="rgba(220, 53, 69, 0.5)" // Cor de Perdedor/P2 (Danger)
+          fill="rgba(220, 53, 69, 0.5)"
           stroke="rgb(220, 53, 69)"
           strokeWidth="2"
         />
       )}
 
-      {/* Polígono do Pokémon 1 (Camada Superior - Verde) */}
       {points1 && (
         <polygon
           points={points1}
-          fill="rgba(40, 167, 69, 0.5)" // Cor de Vencedor/P1 (Success)
+          fill="rgba(40, 167, 69, 0.5)"
           stroke="rgb(40, 167, 69)"
           strokeWidth="2"
         />
       )}
 
-      {/* Labels das Estatísticas */}
       {statLabels}
     </svg>
   );

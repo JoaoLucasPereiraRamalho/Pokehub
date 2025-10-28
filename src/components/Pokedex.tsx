@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import PokemonCard from "./PokemonCard";
 import {
   type PokemonDetail,
   type PokemonInfoCard,
   type DescricaoPokemon,
 } from "../services/PokemonService";
+import Status from "./Status";
 
 type SetFilter = (value: string | null) => void;
 
@@ -30,18 +31,18 @@ function Pokedex({
   pokemonDetail,
   pokemons,
   descricaoPokemon,
-  searchTerm, // Usado no 'value' do input
-  onSearchChange, // Usado para disparar a busca no App
+  searchTerm,
+  onSearchChange,
   onSelectPokemon,
-  selectedType, // NOVO
-  onTypeChange, // NOVO
-  allTypes, // NOVO
-  selectedGeneration, // NOVO
-  onGenerationChange, // NOVO
+  selectedType,
+  onTypeChange,
+  allTypes,
+  selectedGeneration,
+  onGenerationChange,
   allGenerations,
 }: PokedexProps) {
   const [visibleRows, setVisibleRows] = useState(1); // quantas linhas mostrar
-  const itemsPerRow = 3; // "posição do vetor" cresce de itemsPerRow em itemsPerRow
+  const itemsPerRow = 3; // cresce de itemsPerRow em itemsPerRow
 
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
@@ -54,7 +55,6 @@ function Pokedex({
     onSearchChange(""); // Limpa o filtro de busca no App
     onTypeChange(null); // Limpa o filtro de tipo no App
     onGenerationChange(null); // Limpa o filtro de geração no App
-    // Futuramente, limpamos os outros filtros aqui
   };
 
   const rows = useMemo(() => {
@@ -71,12 +71,12 @@ function Pokedex({
         <h1 className="text-white">Pokedex</h1>
       </div>
       <div className="d-flex">
-        <div className="d-flex flex-column w-75">
+        <div className="d-flex flex-column w-70">
           <div className="d-flex flex-column w-100 mt-5 input-fundo">
-            <div className="div-btn-red d-flex justify-content-end w-100 px-2">
+            <div className="div-btn-red d-flex justify-content-end w-100 px-2 py-1">
               <button
                 className="btn-red sombra-red p-0 border-0 rounded-2"
-                onClick={handleSearchClick} // CONECTADO AO BOTÃO!
+                onClick={handleSearchClick}
               >
                 <img
                   className="w-100 h-100 object-fit-cover rounded-2"
@@ -87,10 +87,9 @@ function Pokedex({
             <input
               className="w-100 rounded-1 border-0 h-input-principal sombra"
               placeholder="Pesquise pelo pokemon"
-              value={localSearchTerm} // Usa o estado local para exibir a digitação
-              onChange={(e) => setLocalSearchTerm(e.target.value)} // Atualiza o estado local enquanto digita
+              value={localSearchTerm}
+              onChange={(e) => setLocalSearchTerm(e.target.value)}
               onKeyDown={(e) => {
-                // Adicionado para pesquisa ao pressionar ENTER
                 if (e.key === "Enter") {
                   handleSearchClick();
                 }
@@ -100,7 +99,7 @@ function Pokedex({
               <select
                 className="w-20 rounded-1 border-0 h-input-filtro sombra"
                 value={selectedType || ""}
-                onChange={(e) => onTypeChange(e.target.value || null)} // CONECTADO AO FILTRO DE TIPO
+                onChange={(e) => onTypeChange(e.target.value || null)}
               >
                 <option value="">Tipo</option>
                 {allTypes.map((type) => (
@@ -137,7 +136,7 @@ function Pokedex({
               <select
                 className="w-20 rounded-1 border-0 h-input-filtro sombra"
                 value={selectedGeneration || ""}
-                onChange={(e) => onGenerationChange(e.target.value || null)} // CONECTADO AO FILTRO DE GERAÇÃO
+                onChange={(e) => onGenerationChange(e.target.value || null)}
               >
                 <option value="">Geração</option>
                 {allGenerations.map((gen) => (
@@ -147,18 +146,20 @@ function Pokedex({
                 ))}
               </select>
               <button
-                className="ms-5 w-5 rounded-1 border-0 h-input-filtro sombra"
+                className="ms-5 w-5 rounded-1 border-0 h-input-filtro sombra p-0"
                 onClick={handleResetFilters}
                 title="Resetar Filtros"
               >
-                Reset
+                <img
+                  src="src/assets/reset.png"
+                  className="w-100 h-100 object-fit-cover rounded-1"
+                />
               </button>
             </div>
           </div>
 
           {/* TESTEEEEEEEEEEEEEEEEEEEEEEEEE */}
-          <div>
-            {/* renderiza dinamicamente as linhas (cada linha contém itemsPerRow cards) */}
+          <div className="pokedex-painel m-5">
             {rows.length === 0 ? (
               <p className="text-white">Nenhum pokemon</p>
             ) : (
@@ -175,7 +176,6 @@ function Pokedex({
                       imgAnimada={p?.img}
                       type1={p?.type1}
                       type2={p.type2}
-                      // exemplo: só usa imgAnimada para o primeiro card
                       imgAnimada2={
                         rowIndex === 0 && i === 0
                           ? pokemonDetail?.imgAnimada
@@ -184,7 +184,6 @@ function Pokedex({
                       onSelectPokemon={onSelectPokemon}
                     />
                   ))}
-                  {/* se o chunk tiver menos que itemsPerRow, renderiza placeholders vazios */}
                   {chunk.length < itemsPerRow &&
                     Array.from({ length: itemsPerRow - chunk.length }).map(
                       (_, k) => <PokemonCard key={`empty-${rowIndex}-${k}`} />
@@ -192,8 +191,6 @@ function Pokedex({
                 </div>
               ))
             )}
-
-            {/* botão para carregar mais linhas */}
             {visibleRows < rows.length && (
               <div className="d-flex justify-content-center mt-3">
                 <button
@@ -208,77 +205,62 @@ function Pokedex({
 
           {/* TESTEEEEEEEEEEEEEEEEEEEEEEEEE */}
         </div>
-        <div className="d-flex w-25 justify-content-center">
-          <div className="w-100 bg-light mt-5 rounded-5 d-flex flex-column sombra align-items-center p-3">
-            <div className="align-items-center image-wrapper w-100">
+
+        <div className="col-12 col-md-4 col-lg-3 d-flex justify-content-center mt-5 mt-md-0">
+          <div
+            className="w-100 bg-light rounded-5 d-flex flex-column shadow align-items-center p-3 scrollable-panel"
+            style={{ position: "relative", zIndex: 1, overflowY: "auto" }}
+          >
+            <div
+              className="align-items-center image-wrapper w-100 position-relative"
+              style={{ height: "75px" }}
+            >
               <img
-                className="image-card-pokedex w-50"
+                className="image-card-pokedex"
                 src={pokemonDetail?.img}
+                alt={pokemonDetail?.name || "Pokémon"}
               ></img>
             </div>
-            <div className="w-100 d-flex flex-column justify-content-center mt-10 p-3">
-              <h1>{pokemonDetail?.name}</h1>
-              <h4>{pokemonDetail?.id}</h4>
-              <div>
-                <h3>{pokemonDetail?.type1}</h3>
-                <h3>{pokemonDetail?.type2}</h3>
+            <div className="w-100 d-flex flex-column justify-content-center pt-5 p-3 text-dark">
+              <h1 className="fs-3 fw-bold text-capitalize">
+                {pokemonDetail?.name}
+              </h1>
+              <h4 className="text-muted">#{pokemonDetail?.id}</h4>
+              <div className="d-flex gap-2 mt-2">
+                {pokemonDetail?.type1 && (
+                  <span className="badge bg-primary">
+                    {pokemonDetail.type1}
+                  </span>
+                )}
+                {pokemonDetail?.type2 && (
+                  <span className="badge bg-info">{pokemonDetail.type2}</span>
+                )}
               </div>
-              <div className="mt-5">
-                <h6>POKEDEX ENTRY</h6>
-                <h6>
-                  {descricaoPokemon ? descricaoPokemon.flavor_text : "loading"}
-                </h6>
+              <div className="mt-4">
+                <h6 className="fw-bold text-uppercase">Pokédex Entry</h6>
+                <p className="text-muted small">
+                  {descricaoPokemon?.flavor_text || "Buscando descrição..."}
+                </p>
               </div>
-              <div className="mt-5">
-                <h6>ABILITIES</h6>
-                <h6>{pokemonDetail?.abilitie1}</h6>
-                <h6>{pokemonDetail?.abilitie2}</h6>
-              </div>
-              <div className="mt-5 w-100 d-flex flex-column">
-                <h6>STATS</h6>
 
-                <div className="w-100 d-flex gap-2 justify-content-between">
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      HP
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.hp}</p>
-                  </div>
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      ATK
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.attack}</p>
-                  </div>
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      DEF
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.defense}</p>
-                  </div>
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      SpA
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.specialAttack}</p>
-                  </div>
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      SpD
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.specialDefense}</p>
-                  </div>
-                  <div className="bg-warning w-15 rounded-5">
-                    <button className="btn btn-primary m-1 rounded-circle py-2">
-                      SPD
-                    </button>
-                    <p className="px-3 py-2">{pokemonDetail?.speed}</p>
-                  </div>
-                </div>
+              <div className="mt-4">
+                <h6 className="fw-bold text-uppercase">Abilities</h6>
+                <p className="small m-0">{pokemonDetail?.abilitie1}</p>
+                <p className="small">{pokemonDetail?.abilitie2}</p>
               </div>
+
+              <div className="mt-4 w-100 d-flex flex-column">
+                <Status pokemonDetail={pokemonDetail} />
+              </div>
+
               <div className="mt-5">
-                <h6>EVOLUTIONS</h6>
+                <h6 className="fw-bold text-uppercase">Evolutions</h6>
+                <p className="small text-muted">
+                  Informação de evolução não implementada.
+                </p>
               </div>
+
+              <div style={{ height: "50px" }}></div>
             </div>
           </div>
         </div>

@@ -3,10 +3,9 @@ import {
   type PokemonDetail,
   type PokemonName,
 } from "../services/PokemonService";
-import CompareCircle from "./CompareCircle"; // Componente do gráfico de radar
-import Card from "./Card"; // Componente Card adaptado
+import CompareCircle from "./CompareCircle";
+import Card from "./Card";
 
-// Define as propriedades que este componente receberá do App.tsx
 interface ComparePageProps {
   pokemonNames: PokemonName[];
   selectedPokemon1: string;
@@ -17,7 +16,6 @@ interface ComparePageProps {
   onSelectPokemon2: (name: string) => void;
 }
 
-// Lista das estatísticas base na ordem correta
 const STAT_NAMES: Array<keyof PokemonDetail> = [
   "hp",
   "attack",
@@ -27,7 +25,6 @@ const STAT_NAMES: Array<keyof PokemonDetail> = [
   "speed",
 ];
 
-// Mapeamento visual das estatísticas
 const STAT_MAP: { [key: string]: string } = {
   hp: "HP",
   attack: "ATK",
@@ -37,38 +34,30 @@ const STAT_MAP: { [key: string]: string } = {
   speed: "SPD",
 };
 
-const STAT_COLOR_MAP: { [key: string]: string } = {
-  hp: "#FF0000", // Vermelho
-  attack: "#F08030", // Laranja
-  defense: "#F8D030", // Amarelo
-  specialAttack: "#6890F0", // Azul
-  specialDefense: "#78C850", // Verde Claro
-  speed: "#F85888", // Rosa
-};
-
-/**
- * Retorna a cor da barra de status com base no tipo de estatística.
- */
-const getStatColor = (statName: string): string => {
-  return STAT_COLOR_MAP[statName as keyof typeof STAT_MAP] || "#A8A8A8";
-};
-
-/**
- * Determina qual Pokémon tem a estatística mais alta e retorna a classe CSS de destaque.
- */
-const getWinnerClass = (
+const getWinnerOrLoserClass = (
   statName: keyof PokemonDetail,
   p1: PokemonDetail | null,
-  p2: PokemonDetail | null
+  p2: PokemonDetail | null,
+  isP1: boolean
 ): string => {
-  if (!p1 || !p2) return "bg-light";
+  if (!p1 || !p2) return "";
 
   const stat1 = p1[statName] as number;
   const stat2 = p2[statName] as number;
 
-  if (stat1 > stat2) return "bg-success text-white fw-bold"; // Vencedor
-  if (stat2 > stat1) return "bg-danger text-white fw-bold"; // Perdedor
-  return "bg-secondary text-white"; // Empate
+  if (stat1 === stat2) {
+    return ""; // Empate, sem destaque
+  }
+
+  if (isP1) {
+    if (stat1 > stat2) return "text-success fw-bold";
+    if (stat1 < stat2) return "text-danger fw-bold";
+  } else {
+    if (stat2 > stat1) return "text-success fw-bold";
+    if (stat2 < stat1) return "text-danger fw-bold";
+  }
+
+  return "";
 };
 
 const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
@@ -92,31 +81,43 @@ const SearchInput: React.FC<{
   };
 
   return (
-    <div className="position-relative w-100 mb-3">
-      <input
-        type="text"
-        className="form-control p-2 text-dark bg-white w-100 text-capitalize shadow-sm border-0"
-        placeholder={
-          isPokemon1 ? "Pesquise por Pokémon 1" : "Pesquise por Pokémon 2"
-        }
-        value={searchName}
-        onChange={(e) => setSearchName(e.target.value)}
-        onBlur={() => {
-          setTimeout(() => {
-            const exactMatch = suggestions.find(
-              (p) => p.name.toLowerCase() === searchName.toLowerCase()
-            );
-            if (exactMatch) {
-              handleInputConfirm(exactMatch.name);
-            }
-          }, 150);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && searchName.trim()) {
-            handleInputConfirm(searchName);
+    <div className="position-relative w-100 mb-0">
+      <div className="input-group">
+        <input
+          type="text"
+          className="form-control p-2 text-dark bg-white w-100 text-capitalize shadow-sm border-0"
+          placeholder={
+            isPokemon1 ? "Pesquise por Pokémon 1" : "Pesquise por Pokémon 2"
           }
-        }}
-      />
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          onBlur={() => {
+            setTimeout(() => {
+              const exactMatch = suggestions.find(
+                (p) => p.name.toLowerCase() === searchName.toLowerCase()
+              );
+              if (exactMatch) {
+                handleInputConfirm(exactMatch.name);
+              }
+            }, 150);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && searchName.trim()) {
+              handleInputConfirm(searchName);
+            }
+          }}
+        />
+        <button
+          className="btn btn-outline-secondary border-0 text-dark bg-warning shadow-sm"
+          type="button"
+          onClick={() => handleInputConfirm(searchName)}
+          disabled={!searchName.trim()}
+          style={{ width: "40px" }}
+        >
+          <i className="bi bi-search"></i>
+        </button>
+      </div>
+
       {suggestions.length > 0 && searchName.length >= 2 && (
         <ul
           className="list-group position-absolute w-100 mt-1 shadow-lg"
@@ -187,13 +188,15 @@ function ComparePage({
       );
     const maxStat = 255;
 
+    // Determina a cor da barra com base no Pokémon:
+    const barColor = isP1 ? "#4CAF50" : "#F44336";
+
     return (
       <div className="w-100 px-3">
         {STAT_NAMES.map((statName) => {
           const value = pokemon[statName] as number;
           const label = STAT_MAP[statName as keyof typeof STAT_MAP];
           const percentage = (value / maxStat) * 100;
-          const statColor = getStatColor(statName.toString());
 
           return (
             <div key={statName} className="mb-3">
@@ -207,7 +210,7 @@ function ComparePage({
                   role="progressbar"
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor: statColor,
+                    backgroundColor: barColor,
                   }}
                   aria-valuenow={value}
                   aria-valuemin={0}
@@ -251,19 +254,23 @@ function ComparePage({
                   {STAT_MAP[statName as keyof typeof STAT_MAP]}
                 </td>
                 <td
-                  className={`py-3 px-4 ${getWinnerClass(
+                  className={`py-3 px-4 ${getWinnerOrLoserClass(
+                    // Chamada da nova função
                     statName,
                     pokemon1Detail,
-                    pokemon2Detail
+                    pokemon2Detail,
+                    true
                   )}`}
                 >
                   {pokemon1Detail[statName] as number}
                 </td>
                 <td
-                  className={`py-3 px-4 ${getWinnerClass(
+                  className={`py-3 px-4 ${getWinnerOrLoserClass(
+                    // Chamada da nova função
                     statName,
                     pokemon1Detail,
-                    pokemon2Detail
+                    pokemon2Detail,
+                    false
                   )}`}
                 >
                   {pokemon2Detail[statName] as number}
@@ -271,26 +278,27 @@ function ComparePage({
               </tr>
             ))}
 
-            <tr className="table-info fw-bold border-top border-3 border-primary">
+            <tr className="fw-bold border-top border-3 border-primary">
               <td className="py-3 px-4 text-dark fs-5 text-start">Total BST</td>
               <td
                 className={`py-3 px-4 fs-5 ${
                   bst1 > bst2
-                    ? "text-success"
-                    : bst2 > bst1
-                    ? "text-danger"
-                    : "text-secondary"
+                    ? "text-success fw-bold" // P1 BST é maior
+                    : bst1 < bst2
+                    ? "text-danger fw-bold" // P1 BST é menor
+                    : "" // Empate
                 }`}
               >
                 {bst1}
               </td>
+              {/* P2 BST */}
               <td
                 className={`py-3 px-4 fs-5 ${
                   bst2 > bst1
-                    ? "text-success"
-                    : bst1 > bst2
-                    ? "text-danger"
-                    : "text-secondary"
+                    ? "text-success fw-bold" // P2 BST é maior
+                    : bst2 < bst1
+                    ? "text-danger fw-bold" // P2 BST é menor
+                    : "" // Empate
                 }`}
               >
                 {bst2}
@@ -301,31 +309,33 @@ function ComparePage({
 
         <p className="text-sm text-muted mt-3 text-center">
           <span className="text-success fw-bold">Verde</span> indica a
-          estatística mais alta.
+          estatística mais alta.{" "}
+          <span className="text-danger fw-bold">Vermelho</span> indica a
+          estatística mais baixa.
         </p>
       </div>
     );
   };
 
   return (
-    <div className="min-vh-100 bg-dark text-white p-5">
+    <div className="min-vh-100 fundo-degrade text-white p-5">
       <div className="container-fluid mx-auto">
-        <h1 className="fs-1 fw-bold mb-2">COMPARAR E DESCOBRIR!</h1>
-        <p className="lead text-info mb-5">
-          Compare os status de dois Pokémon de maneira simples e rápida.
-        </p>
+        <div className="d-flex justify-content-center mb-5">
+          <h1 className="fs-1 fw-bold mb-2">COMPARE JÁ!</h1>
+        </div>
 
-        <div className="d-flex justify-content-around align-items-start gap-4">
-          <div className="d-flex flex-column align-items-center w-25">
-            <div className="mb-2 w-100" style={{ width: 250 }}>
-              <SearchInput
-                searchName={searchName1}
-                setSearchName={setSearchName1}
-                suggestions={suggestions1}
-                isPokemon1={true}
-                onSelect={onSelectPokemon1}
-              />
-            </div>
+        <div className="d-flex justify-content-center align-items-center gap-5">
+          <div
+            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
+            style={{ width: "400px", maxWidth: "45%" }}
+          >
+            <SearchInput
+              searchName={searchName1}
+              setSearchName={setSearchName1}
+              suggestions={suggestions1}
+              isPokemon1={true}
+              onSelect={onSelectPokemon1}
+            />
             <Card
               pokemon={pokemon1Detail}
               bst={bst1}
@@ -333,33 +343,25 @@ function ComparePage({
             />
           </div>
 
-          <span className="fs-3 fw-bold align-self-center text-secondary d-none d-sm-block">
-            VS
-          </span>
+          <span className="fs-3 fw-bold text-white d-none d-sm-block">VS</span>
 
-          <div className="d-flex flex-column align-items-center w-25">
-            <div className="mb-2 w-100" style={{ width: 250 }}>
-              <SearchInput
-                searchName={searchName2}
-                setSearchName={setSearchName2}
-                suggestions={suggestions2}
-                isPokemon1={false}
-                onSelect={onSelectPokemon2}
-              />
-            </div>
-
+          <div
+            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
+            style={{ width: "400px", maxWidth: "45%" }}
+          >
+            <SearchInput
+              searchName={searchName2}
+              setSearchName={setSearchName2}
+              suggestions={suggestions2}
+              isPokemon1={false}
+              onSelect={onSelectPokemon2}
+            />
             <Card
               pokemon={pokemon2Detail}
               bst={bst2}
               onDetailClick={() => {}}
             />
           </div>
-        </div>
-
-        <div className="text-center my-5">
-          <button className="btn btn-danger fs-4 fw-bold p-3 shadow-lg">
-            COMPARAR
-          </button>
         </div>
 
         <div className="row text-white mt-5 pt-5 align-items-center">

@@ -49,7 +49,6 @@ function PokemonsHome() {
         Pokemons
       </h1>
 
-      {/* Primeira linha: pokémons 1-4 */}
       <div className="d-flex justify-content-center gap-3">
         {pokemonDetails.slice(0, 4).map((pokemon) => (
           <Card
@@ -68,7 +67,6 @@ function PokemonsHome() {
         ))}
       </div>
 
-      {/* Segunda linha: pokémons 5-8 */}
       <div className="d-flex justify-content-center gap-3 mt-3">
         {pokemonDetails.slice(4, 8).map((pokemon) => (
           <Card
