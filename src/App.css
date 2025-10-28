@@ -1,5 +1,22 @@
 --teste
 
+/* Seu App.css ou arquivo de estilos customizados */
+
+.stat-bar-container {
+  height: 10px; /* Altura da barra */
+  background-color: #444; /* Cor de fundo (vazio) */
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  /* Define o progress-bar para ser preenchido */
+  height: 100%;
+  /* Transição para suavizar a mudança de cor e tamanho */
+  transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
+  border-radius: 5px;
+}
+
 /* Fundo customizado (Azul Escuro/Teal) */
 .compare-bg {
   background: linear-gradient(180deg, #103254 0%, #081a2e 100%);

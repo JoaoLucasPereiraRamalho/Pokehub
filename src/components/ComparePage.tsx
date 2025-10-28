@@ -36,6 +36,22 @@ const STAT_MAP: { [key: string]: string } = {
   speed: "SPD",
 };
 
+const STAT_COLOR_MAP: { [key: string]: string } = {
+  hp: "#FF0000", // Vermelho
+  attack: "#F08030", // Laranja
+  defense: "#F8D030", // Amarelo
+  specialAttack: "#6890F0", // Azul
+  specialDefense: "#78C850", // Verde Claro
+  speed: "#F85888", // Rosa
+};
+
+/**
+ * Retorna a cor da barra de status com base no tipo de estatística.
+ */
+const getStatColor = (statName: string): string => {
+  return STAT_COLOR_MAP[statName as keyof typeof STAT_MAP] || "#A8A8A8"; // Cinza como fallback
+};
+
 /**
  * Determina qual Pokémon tem a estatística mais alta e retorna a classe CSS de destaque.
  */
@@ -54,7 +70,7 @@ const getWinnerClass = (
   return "bg-secondary text-white"; // Empate
 };
 
-//
+// --- FUNÇÃO AUXILIAR DE SUGESTÕES ---
 const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
   if (input.length < 2) return [];
   const lowerInput = input.toLowerCase();
@@ -63,7 +79,7 @@ const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
     .slice(0, 10);
 };
 
-//
+// --- SUBCOMPONENTE DE PESQUISA (INPUT E SUGESTÕES) ---
 const SearchInput: React.FC<{
   searchName: string;
   setSearchName: (name: string) => void;
@@ -102,7 +118,7 @@ const SearchInput: React.FC<{
           }
         }}
       />
-      {/* Lista de Sugestões */}
+      {/* Lista de Sugestões (Dropdown) */}
       {suggestions.length > 0 && searchName.length >= 2 && (
         <ul
           className="list-group position-absolute w-100 mt-1 shadow-lg"
@@ -124,7 +140,7 @@ const SearchInput: React.FC<{
   );
 };
 
-//SUBCOMPONENTE CardDetail (Irá virar outro arquivo futuramente)
+// --- SUBCOMPONENTE CardDetail (ADAPTADO AO NOVO DESIGN DE CARD) ---
 const CardDetail: React.FC<{
   pokemon: PokemonDetail | null;
   bst: number;
@@ -161,12 +177,12 @@ const CardDetail: React.FC<{
       {pokemon ? (
         <>
           <div className="position-relative text-white p-2">
-            {/* Número da Pokédex (ID) - Dinâmico */}
+            {/* 1. Número da Pokédex (ID) - Dinâmico */}
             <h6 className="position-absolute end-0 m-2 fw-bold">
               #{pokemon.id.toString().padStart(3, "0")}
             </h6>
 
-            {/*Imagem do Pokémon Dinâmico */}
+            {/* 2. Imagem do Pokémon - Dinâmico */}
             <img
               className="w-100 img-fluid mx-auto d-block"
               src={pokemon.img}
@@ -178,12 +194,12 @@ const CardDetail: React.FC<{
           {/* Informações e Botões */}
           <div className="bg-light p-0">
             <div className="d-flex justify-content-between align-items-center m-2">
-              {/* Nome do Pokémon Dinâmico */}
+              {/* 3. Nome do Pokémon - Dinâmico */}
               <h2 className="fs-3 fw-bold text-capitalize m-0">
                 {pokemon.name}
               </h2>
 
-              {/*Ícone de Habilidade - Dinâmico (usando a primeira letra da habilidade) */}
+              {/* 4. Ícone de Habilidade - Dinâmico (usando a primeira letra da habilidade) */}
               <span
                 className={`badge ${cardColorClass} text-white p-2 rounded-circle`}
                 style={{ width: 30, height: 30 }}
@@ -214,7 +230,7 @@ const CardDetail: React.FC<{
                 </button>
               </div>
 
-              {/*BST e Botão "A" Dinâmico */}
+              {/* 5. BST e Botão "A" - Dinâmico */}
               <div className="d-flex flex-column justify-content-center align-items-center gap-1 w-50 m-2">
                 <button
                   className={`w-100 border-1 ${cardColorClass} text-white rounded-pill p-1 fw-bold`}
@@ -240,6 +256,7 @@ const CardDetail: React.FC<{
   );
 };
 
+// --- COMPONENTE PRINCIPAL ComparePage ---
 function ComparePage({
   pokemonNames,
   selectedPokemon1,
@@ -262,7 +279,7 @@ function ComparePage({
     [pokemonNames, searchName2]
   );
 
-  // Calcula o BST
+  // Calcula o BST (reutilizando a lógica anterior)
   const bst1 = useMemo(
     () =>
       pokemon1Detail
@@ -298,6 +315,7 @@ function ComparePage({
           const value = pokemon[statName] as number;
           const label = STAT_MAP[statName as keyof typeof STAT_MAP];
           const percentage = (value / maxStat) * 100;
+          const statColor = getStatColor(statName.toString()); // Obtém a cor dinâmica
 
           return (
             <div key={statName} className="mb-3">
@@ -305,14 +323,15 @@ function ComparePage({
                 <span className="fw-semibold text-uppercase">{label}</span>
                 <small className="text-white">{value}</small>
               </div>
-              {/* Barra de Progresso Customizada (usando classes customizadas) */}
+              {/* Barra de Progresso Customizada (usando estilo inline) */}
               <div className="stat-bar-container">
                 <div
-                  className={`progress-bar ${
-                    isP1 ? "stat-bar-fill-p1" : "stat-bar-fill-p2"
-                  }`}
+                  className="progress-bar" // Classe base sem cor fixa
                   role="progressbar"
-                  style={{ width: `${percentage}%` }}
+                  style={{
+                    width: `${percentage}%`,
+                    backgroundColor: statColor, // Aplica a cor dinâmica
+                  }}
                   aria-valuenow={value}
                   aria-valuemin={0}
                   aria-valuemax={maxStat}
@@ -379,7 +398,7 @@ function ComparePage({
               </tr>
             ))}
 
-            {/* Linha Total BST */}
+            {/* Linha Total BST (Base Stat Total) */}
             <tr className="table-info fw-bold border-top border-3 border-primary">
               <td className="py-3 px-4 text-dark fs-5 text-start">Total BST</td>
               {/* Destaque para o BST do Pokémon 1 */}
@@ -409,6 +428,11 @@ function ComparePage({
             </tr>
           </tbody>
         </table>
+
+        <p className="text-sm text-muted mt-3 text-center">
+          <span className="text-success fw-bold">Verde</span> indica a
+          estatística mais alta.
+        </p>
       </div>
     );
   };
@@ -465,6 +489,13 @@ function ComparePage({
               onDetailClick={() => {}}
             />
           </div>
+        </div>
+
+        {/* Botão de Comparar (Para Alinhar com o original) */}
+        <div className="text-center my-5">
+          <button className="btn btn-danger fs-4 fw-bold p-3 shadow-lg">
+            COMPARAR
+          </button>
         </div>
 
         {/* VISUALIZAÇÃO DE ESTATÍSTICAS (Barras de Progresso e Gráfico Central) */}
