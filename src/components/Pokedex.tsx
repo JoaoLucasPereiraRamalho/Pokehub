@@ -6,6 +6,7 @@ import {
   type DescricaoPokemon,
 } from "../services/PokemonService";
 import Status from "./Status";
+import { getTypeColor } from "../services/MapCores";
 
 type SetFilter = (value: string | null) => void;
 
@@ -182,6 +183,8 @@ function Pokedex({
                           : undefined
                       }
                       onSelectPokemon={onSelectPokemon}
+                      type1Color={p?.type1 ? getTypeColor(p.type1) : undefined}
+                      type2Color={p?.type2 ? getTypeColor(p.type2) : undefined}
                     />
                   ))}
                   {chunk.length < itemsPerRow &&

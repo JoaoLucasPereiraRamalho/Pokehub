@@ -48,31 +48,31 @@ function Compare() {
   return (
     <div
       style={{ backgroundColor: "#091D3C" }}
-      className="d-flex justify-content-center card-compare"
+      className="d-flex justify-content-center p-3 p-md-5"
     >
-      <div className="m-5 bg-transparent d-flex rounded-5 w-85">
-        <div className="w-40 m-5">
-          <div className="w-100 h-75">
-            <h1 className="text-white display-3 fw-bold">
+      <div className="bg-transparent d-flex flex-column flex-md-row rounded-5 w-100 w-lg-85">
+        <div className="w-100 w-md-40 p-4 p-md-5 text-center text-md-start">
+          <div className="w-100 mb-4 mb-md-0">
+            <h1 className="text-white display-5 display-md-3 fw-bold">
               COMPARAR E DESCOBRIR!
             </h1>
-            <h5 className="mb-5 text-white">
+            <h5 className="mb-4 text-white">
               Compare os status dos pokemons de maneira simples e rápida
             </h5>
           </div>
-          <div className="d-flex flex-column-reverse h-25">
-            <button className="btn-linear-2 py-4 w-75 sombra">
+          <div className="mt-4 mt-md-5">
+            <button className="btn-linear-2 py-4 w-100 w-md-75 sombra">
               COMPARE JÁ
             </button>
           </div>
         </div>
-        <div className="w-60 d-flex p-5 gap-3 align-items-center justify-content-center">
+        <div className="w-100 w-md-60 d-flex flex-column flex-md-row p-4 p-md-5 gap-3 align-items-center justify-content-center">
           <Card
             pokemon={pokemon1}
             bst={pokemon1 ? calculateBST(pokemon1) : 0}
             onDetailClick={(name) => console.log(`Detalhes de ${name}`)}
           />
-          <h1 className="text-white">VS</h1>
+          <h1 className="text-white my-3 my-md-0">VS</h1>
           <Card
             pokemon={pokemon2}
             bst={pokemon2 ? calculateBST(pokemon2) : 0}

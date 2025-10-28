@@ -13,8 +13,8 @@ function Battle() {
 
           <div className="p-3 bg-transparent" style={{ width: "250px" }}>
             <div className="d-flex justify-content-between mb-1">
-              <h5 className="mb-0">Nome Lv.XX</h5>
-              <span className="badge bg-danger">TIPO</span>
+              <h5 className="mb-0">PikachuLv.14</h5>
+              <span className="badge bg-danger">ELETRIC</span>
             </div>
             <div className="progress mb-2" style={{ height: "8px" }}>
               <div
@@ -23,7 +23,7 @@ function Battle() {
               ></div>
             </div>
             <hr></hr>
-            <h6 className="mb-0 small">Treinador XXXXX</h6>
+            <h6 className="mb-0 small">Treinador Marcos</h6>
           </div>
         </div>
 
@@ -37,8 +37,8 @@ function Battle() {
         <div className="d-flex justify-content-between align-items-center mt-3">
           <div className="p-3 bg-transparent" style={{ width: "250px" }}>
             <div className="d-flex justify-content-between mb-1">
-              <h5 className="mb-0">Nome Lv.XX</h5>
-              <span className="badge bg-danger">TIPO</span>
+              <h5 className="mb-0">Squirtle Lv.13</h5>
+              <span className="badge bg-danger">WATER</span>
             </div>
             <div className="progress mb-2" style={{ height: "8px" }}>
               <div
@@ -46,7 +46,8 @@ function Battle() {
                 style={{ width: "100%" }}
               ></div>
             </div>
-            <h6 className="mb-0 small">Treinador YYYYY</h6>
+            <hr></hr>
+            <h6 className="mb-0 small">Treinador Ash</h6>
           </div>
 
           <div className="ms-5">

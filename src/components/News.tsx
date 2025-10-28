@@ -38,7 +38,7 @@ function News() {
               </div>
             </div>
 
-            <div className="w-100 bg-warning shadow-lg overflow-hidden">
+            <div className="w-100 h-100 bg-warning shadow-lg overflow-hidden">
               <img
                 className="w-100 h-100 object-fit-cover"
                 src="/src/assets/haunter_sem_fundo.png"

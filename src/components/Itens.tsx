@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, MouseEvent } from "react";
+import { useRef, useState, useEffect, MouseEvent } from "react";
 import CardItem from "./CardItem";
 
 function Itens() {

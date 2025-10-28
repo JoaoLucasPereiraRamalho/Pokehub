@@ -76,7 +76,7 @@ function PageItens({
               rows.slice(0, visibleRows).map((chunk, rowIndex) => (
                 <div
                   key={rowIndex}
-                  className="w-100 d-flex gap-4 p-2 mt-4 justify-content-between"
+                  className="w-100 d-flex gap-4 p-2 mt-4 justify-content-between pokedex-fundo"
                 >
                   {chunk.map((item) => (
                     <div

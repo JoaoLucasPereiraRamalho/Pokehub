@@ -1,11 +1,14 @@
 function InitialSection() {
   return (
-    <div style={{ backgroundColor: "#091D3C" }} className="d-flex">
-      <div className="w-40 px-10 py-4 text-white m-4">
+    <div
+      style={{ backgroundColor: "#091D3C" }}
+      className="d-flex flex-column flex-md-row py-4 py-md-5 px-3 px-md-5"
+    >
+      <div className="w-100 w-md-50 w-lg-40 text-white p-3 p-md-5">
         <h1 className="title">DESCUBRA.</h1>
         <h1 className="title">COMPARE.</h1>
         <h1 className="title">BATALHE.</h1>
-        <h6 className="">
+        <h6 className="mt-4 mb-4">
           Pokehub é uma plataforma interativa feita para quem ama o universo
           Pokémon. Descubra novas espécies, compare seus status e participe de
           batalhas dinâmicas em tempo real. Tudo isso em um ambiente moderno,
@@ -14,11 +17,8 @@ function InitialSection() {
         </h6>
         <button className="btn-linear">SAIBA MAIS</button>
       </div>
-      <div className="d-flex w-60 flex-row-reverse image-container">
-        <img
-          className="img-fluid mx-auto d-block"
-          src="/src/assets/haunter_sem_fundo.png"
-        />
+      <div className="d-flex w-100 w-md-50 w-lg-60 justify-content-center align-items-center image-container mt-4 mt-md-0">
+        <img className="img-fluid" src="/src/assets/haunter_sem_fundo.png" />
       </div>
     </div>
   );

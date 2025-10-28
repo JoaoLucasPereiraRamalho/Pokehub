@@ -8,9 +8,17 @@ function FeaturedSection() {
         className="featured-dragon-img"
       />
 
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-6 col-md-8">
+      {/* Usamos o contêiner do Bootstrap para padding e centralização */}
+      <div className="container p-0">
+        {/* A linha agora usa flex-column-reverse no mobile (xs) para a imagem aparecer primeiro,
+            e flex-md-row no Medium e Large para o layout lado a lado. */}
+        <div className="row flex-column-reverse flex-md-row m-0 w-100">
+          {/* Coluna do Conteúdo:
+              - xs: Ocupa 12 colunas, centralizado.
+              - md: Ocupa 8 colunas (como antes).
+              - lg: Ocupa 6 colunas (como antes).
+          */}
+          <div className="col-12 col-md-8 col-lg-6">
             <div className="featured-content">
               <h2 className="featured-title">Novidade</h2>
               <p className="featured-text">
@@ -22,8 +30,9 @@ function FeaturedSection() {
                 Pokémon com habilidades únicas e histórias fascinantes. Encontre
                 seu próximo companheiro de aventura aqui!
               </p>
-              <div className="d-flex justify-content-center">
-                <button className="btn-linear-2 rounded-pill w-50">
+              {/* O botão ocupará 75% da largura no mobile para ser maior, e 50% no desktop. */}
+              <div className="d-flex justify-content-center justify-content-md-start">
+                <button className="btn-linear-2 rounded-pill w-75 w-md-50">
                   Saiba mais
                 </button>
               </div>

@@ -1,6 +1,6 @@
 function Noticia() {
   return (
-    <div className="w-25 h-card">
+    <div className="w-75 h-card">
       <img
         src="/src/assets/imagem1_feature_section.jpeg"
         alt="Noticia"
