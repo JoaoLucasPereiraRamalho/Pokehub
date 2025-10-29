@@ -86,6 +86,7 @@ function PageItens({
                         flexGrow: 1,
                         minWidth: "100px",
                       }}
+                      className="gap-2"
                     >
                       <ItemCard
                         name={item.name}
@@ -113,10 +114,10 @@ function PageItens({
             {visibleRows < rows.length && (
               <div className="d-flex justify-content-center mt-3">
                 <button
-                  className=" btn btn-primary py-3 mt-5 w-25"
+                  className=" btn-linear-2 py-3 mt-5 w-25"
                   onClick={() => setVisibleRows((v) => v + 1)}
                 >
-                  Carregar mais itens
+                  Carregar mais
                 </button>
               </div>
             )}

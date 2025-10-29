@@ -58,15 +58,15 @@ function Itens() {
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
           >
-            <CardItem>Item 1</CardItem>
-            <CardItem>Item 2</CardItem>
-            <CardItem>Item 3</CardItem>
-            <CardItem>Item 4</CardItem>
-            <CardItem>Item 5</CardItem>
-            <CardItem>Item 6</CardItem>
-            <CardItem>Item 7</CardItem>
-            <CardItem>Item 8</CardItem>
-            <CardItem>Item 9</CardItem>
+            <CardItem>Poke-ball</CardItem>
+            <CardItem>Master-ball</CardItem>
+            <CardItem>Incenso</CardItem>
+            <CardItem>Calcio</CardItem>
+            <CardItem>Zinco</CardItem>
+            <CardItem>Thunder TM</CardItem>
+            <CardItem>Metal Coat</CardItem>
+            <CardItem>TM Charge</CardItem>
+            <CardItem>Ultra-ball</CardItem>
           </div>
         </div>
       </div>

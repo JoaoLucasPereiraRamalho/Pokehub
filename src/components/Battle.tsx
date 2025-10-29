@@ -2,7 +2,10 @@ function Battle() {
   const containerBg = "#091D3C";
 
   return (
-    <div style={{ backgroundColor: containerBg }} className="text-white p-5">
+    <div
+      style={{ backgroundColor: containerBg }}
+      className="text-white p-5 fundo-degrade-itens"
+    >
       <div className="container" style={{ maxWidth: "1000px" }}>
         <h1 className="mb-4 fw-bold">Batalhar</h1>
 
@@ -13,8 +16,8 @@ function Battle() {
 
           <div className="p-3 bg-transparent" style={{ width: "250px" }}>
             <div className="d-flex justify-content-between mb-1">
-              <h5 className="mb-0">PikachuLv.14</h5>
-              <span className="badge bg-danger">ELETRIC</span>
+              <h5 className="mb-0">Pikachu Lv.14</h5>
+              <span className="badge bg-warning">ELETRIC</span>
             </div>
             <div className="progress mb-2" style={{ height: "8px" }}>
               <div
@@ -38,7 +41,7 @@ function Battle() {
           <div className="p-3 bg-transparent" style={{ width: "250px" }}>
             <div className="d-flex justify-content-between mb-1">
               <h5 className="mb-0">Squirtle Lv.13</h5>
-              <span className="badge bg-danger">WATER</span>
+              <span className="badge bg-primary">WATER</span>
             </div>
             <div className="progress mb-2" style={{ height: "8px" }}>
               <div
@@ -51,7 +54,7 @@ function Battle() {
           </div>
 
           <div className="ms-5">
-            <img src="/src/assets/pikachu.png" style={{ width: "120px" }} />
+            <img src="/src/assets/squirtle.png" style={{ width: "120px" }} />
           </div>
         </div>
 

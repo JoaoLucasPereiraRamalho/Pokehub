@@ -45,11 +45,11 @@ const Status: React.FC<StatusProps> = ({ pokemonDetail }) => {
           return (
             <div
               key={statKey}
-              className="bg-warning rounded-5 d-flex flex-column align-items-center p-1"
+              className="bg-light rounded-5 d-flex flex-column align-items-center p-1 sombra"
               style={{ flexGrow: 1 }}
             >
               <button
-                className="btn btn-primary rounded-circle w-100 p-1"
+                className="btn btn-dark rounded-circle w-100 p-1"
                 style={{ aspectRatio: "1 / 1" }}
               >
                 {label}

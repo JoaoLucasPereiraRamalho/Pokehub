@@ -23,17 +23,17 @@ function News() {
               <div className="w-50 bg-primary shadow-lg overflow-hidden">
                 <img
                   className="w-100 h-100 object-fit-cover"
-                  src="/src/assets/imagem1_feature_section.jpeg"
+                  src="/src/assets/mega-dragnite.jpeg"
                   alt="Notícia 1"
-                  style={{ minHeight: "100px" }}
+                  style={{ minHeight: "70px" }}
                 />
               </div>
               <div className="w-50 bg-success shadow-lg overflow-hidden">
                 <img
                   className="w-100 h-100 object-fit-cover"
-                  src="/src/assets/imagem1_feature_section.jpeg"
+                  src="/src/assets/Mega-Hawlucha.jpg"
                   alt="Notícia 2"
-                  style={{ minHeight: "100px" }}
+                  style={{ minHeight: "70px" }}
                 />
               </div>
             </div>
@@ -41,7 +41,7 @@ function News() {
             <div className="w-100 h-100 bg-warning shadow-lg overflow-hidden">
               <img
                 className="w-100 h-100 object-fit-cover"
-                src="/src/assets/haunter_sem_fundo.png"
+                src="/src/assets/drampa.webp"
                 alt="Haunter em destaque"
               />
             </div>
@@ -52,23 +52,30 @@ function News() {
           <div className="bg-light p-4 shadow-lg d-flex flex-column align-items-center justify-content-center text-center h-100">
             <h2 className="fs-3 fw-bold">Elas chegaram!</h2>
             <h4 className="text-secondary mb-3">
-              Novas megas evoluções chegam ao jogo Zn
+              Novas megas evoluções chegam ao jogo Z-A
             </h4>
 
             <img
               className="my-4 img-fluid"
-              src="/src/assets/imagem1_feature_section.jpeg"
+              src="/src/assets/mega-evolution-symbol.png"
               alt="Imagem da Notícia"
               style={{ maxWidth: "300px" }}
             />
 
             <h6 className="text-secondary text-justify mb-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen.
+              A "mega evolução" é um tipo de transformação temporária em alguns
+              Pokémon que aumenta seu poder, muda sua aparência e, às vezes, seu
+              tipo. A mecânica de mega evolução está retornando no jogo futuro
+              Pokémon Legends: Z-A e é um elemento central na expansão para o
+              jogo, que incluirá uma série de novas mega evoluções. Nos jogos
+              principais, a mega evolução é ativada durante a batalha quando um
+              treinador e seu Pokémon têm uma forte ligação, e os dois itens
+              necessários para a transformação são o Key Stone (do treinador) e
+              o Mega Stone (do Pokémon).
             </h6>
-            <button className="btn btn-primary btn-lg mt-3">Ler mais</button>
+            <button className="btn-linear-2 btn-lg mt-3 sombra">
+              Ler mais
+            </button>
           </div>
         </div>
       </div>

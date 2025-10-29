@@ -279,6 +279,7 @@ function App() {
             />
           }
         />
+        <Route path="/Battle" element={<Battle />} />
       </Routes>
       <Footer />
     </div>

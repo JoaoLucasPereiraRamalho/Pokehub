@@ -39,7 +39,7 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
 
   return (
     <div
-      style={{ width: 250, overflow: "hidden" }}
+      style={{ minWidth: 200, overflow: "hidden" }}
       className={`rounded-3 sombra ${cardColorClass}`}
     >
       <div className="position-relative text-white p-2">

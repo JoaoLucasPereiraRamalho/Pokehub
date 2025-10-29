@@ -56,8 +56,10 @@ function Compare() {
             <h1 className="text-white display-5 display-md-3 fw-bold">
               COMPARAR E DESCOBRIR!
             </h1>
-            <h5 className="mb-4 text-white">
-              Compare os status dos pokemons de maneira simples e rápida
+            <h5 className="mb-4 text-white mt-1">
+              Compare os status dos pokemons de maneira simples e rápida, veja
+              de maneira dinamica os melhores status, decida qual pokemon usar
+              no seu time e descubra quais os pokemons mais fortes!
             </h5>
           </div>
           <div className="mt-4 mt-md-5">

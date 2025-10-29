@@ -21,7 +21,7 @@ function Footer() {
         <img
           className="mb-3"
           style={{ width: "80px", height: "80px" }}
-          src="/src/assets/pikachu.png"
+          src="/src/assets/lunala_2.png"
         />
         <h6>Email de contato:</h6>
         <h6 className="mb-0">jucasramalho@gmail.com</h6>

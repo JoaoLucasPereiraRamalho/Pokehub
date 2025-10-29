@@ -1,18 +1,75 @@
-import Button from "./Button";
-import ButtonBorder from "./ButtonBorder";
+import React from "react";
+// 1. Importa o hook useNavigate para navegação programática
+import { useNavigate } from "react-router-dom";
+
+// ==========================================================
+// SIMULAÇÃO DE COMPONENTES (Para garantir a compilação)
+// ==========================================================
+
+// Simulação do componente Button com prop 'onClick'
+const Button = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) => (
+  <button
+    className="btn text-white text-decoration-none px-3 py-2 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition duration-200 w-full text-left w-md-auto"
+    onClick={onClick}
+    style={{ whiteSpace: "nowrap" }}
+  >
+    {children}
+  </button>
+);
+
+// Simulação do componente ButtonBorder com prop 'onClick'
+const ButtonBorder = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) => (
+  <button
+    className="btn border-2 border-white text-white px-3 py-2 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition duration-200 w-full w-md-auto"
+    onClick={onClick}
+    style={{ whiteSpace: "nowrap" }}
+  >
+    {children}
+  </button>
+);
+
+// ==========================================================
+// COMPONENTE HEADER
+// ==========================================================
 
 function Header() {
+  // Inicializa o hook de navegação
+  const navigate = useNavigate();
+
+  // Função centralizada para navegação
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <nav
       style={{ backgroundColor: "#091D3C" }}
       className="navbar navbar-expand-md"
     >
       <div className="container-fluid">
-        <div className="w-100 w-md-25 p-2">
+        {/* Logo que navega para /home ao ser clicado */}
+        <div
+          className="w-100 w-md-25 p-2"
+          onClick={() => handleNavigate("/home")}
+          style={{ cursor: "pointer" }}
+        >
           <img
             style={{ width: "80px", height: "80px" }}
             className="d-block mx-auto mx-md-0"
             src="/src/assets/logo_pokehub.png"
+            alt="Logo PokeHub"
           />
         </div>
 
@@ -37,14 +94,23 @@ function Header() {
         >
           <div className="navbar-nav d-flex flex-column flex-md-row align-items-md-center w-100 justify-content-end gap-2 p-3 p-md-0">
             <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4">
-              <Button>HOME</Button>
-              <Button>POKEMONS</Button>
-              <Button>ITENS</Button>
-              <Button>COMPARAR</Button>
-              <Button>NOTICIAS</Button>
+              {/* Navegação para as rotas */}
+              <Button onClick={() => handleNavigate("/home")}>HOME</Button>
+              <Button onClick={() => handleNavigate("/pokemons")}>
+                POKEMONS
+              </Button>
+              <Button onClick={() => handleNavigate("/Itens")}>ITENS</Button>
+              <Button onClick={() => handleNavigate("/Comparar")}>
+                COMPARAR
+              </Button>
+              <Button onClick={() => handleNavigate("/Noticias")}>
+                NOTICIAS
+              </Button>
             </div>
             <div className="mt-2 mt-md-0">
-              <ButtonBorder>BATALHAR</ButtonBorder>
+              <ButtonBorder onClick={() => handleNavigate("/Battle")}>
+                BATALHAR
+              </ButtonBorder>
             </div>
           </div>
         </div>
@@ -53,4 +119,5 @@ function Header() {
   );
 }
 
+// O componente precisa estar dentro de <BrowserRouter> para que useNavigate funcione.
 export default Header;

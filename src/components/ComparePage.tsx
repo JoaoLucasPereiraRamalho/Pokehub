@@ -318,7 +318,7 @@ function ComparePage({
   };
 
   return (
-    <div className="min-vh-100 fundo-degrade text-white p-5">
+    <div className="min-vh-100 fundo-degrade-compare text-white p-5">
       <div className="container-fluid mx-auto">
         <div className="d-flex justify-content-center mb-5">
           <h1 className="fs-1 fw-bold mb-2">COMPARE JÁ!</h1>
@@ -327,7 +327,7 @@ function ComparePage({
         <div className="d-flex justify-content-center align-items-center gap-5">
           <div
             className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
-            style={{ width: "400px", maxWidth: "45%" }}
+            style={{ width: "400px", maxWidth: "50%" }}
           >
             <SearchInput
               searchName={searchName1}
@@ -347,7 +347,7 @@ function ComparePage({
 
           <div
             className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
-            style={{ width: "400px", maxWidth: "45%" }}
+            style={{ width: "400px", maxWidth: "50%" }}
           >
             <SearchInput
               searchName={searchName2}
