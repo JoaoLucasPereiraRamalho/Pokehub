@@ -3,7 +3,6 @@ function FeaturedSection() {
     <section className="featured-section sombra">
       <div className="featured-background-splitter"></div>
 
-      {/* Imagem absoluta usada somente em md+ (mantém sua classe existente) */}
       <img
         src="/src/assets/charizard-mega-x.png"
         alt="Pokémon de Destaque"
@@ -12,7 +11,6 @@ function FeaturedSection() {
 
       <div className="container p-0">
         <div className="row align-items-center m-0 w-100">
-          {/* Coluna de conteúdo: no mobile ocupa 12, em md+ ocupa 6 (ou ajuste conforme necessário) */}
           <div className="col-12 col-md-6">
             <div className="featured-content col-6 col-md-12">
               <h2 className="featured-title">Novidade</h2>
@@ -32,10 +30,7 @@ function FeaturedSection() {
             </div>
           </div>
 
-          {/* Coluna "placeholder" para manter espaço para a imagem em md+.
-              Em telas pequenas, exibimos a imagem dentro do fluxo (abaixo/ao lado do conteúdo). */}
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-end">
-            {/* Imagem para telas pequenas — evita o comportamento absoluto que sobrepõe */}
             <img
               src="/src/assets/charizard-mega-x.png"
               alt="Pokémon de Destaque"
@@ -46,8 +41,6 @@ function FeaturedSection() {
                 transform: "scaleX(-1)",
               }}
             />
-            {/* A coluna md (em telas maiores) não precisa conter nada visível porque a imagem absoluta
-                (.featured-dragon-img) vai posicionar-se sobre esta área. */}
           </div>
         </div>
       </div>

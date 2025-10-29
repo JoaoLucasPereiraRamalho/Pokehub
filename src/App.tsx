@@ -1,13 +1,29 @@
 import { useEffect, useState, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
+// Importa o arquivo de estilos
 import "./App.css";
+
+// Importa todos os componentes
 import Header from "./components/Header";
+import InitialSection from "./components/InitialSection";
+import PokemonsHome from "./components/PokemonsHome";
+import Compare from "./components/Compare";
+import FeaturedSection from "./components/FeaturedSection";
+import News from "./components/News";
+import Itens from "./components/Itens";
+import Battle from "./components/Battle";
+import Footer from "./components/Footer";
+import Pokedex from "./components/Pokedex";
+import Noticias from "./components/Noticias";
+import PageItens from "./components/PageItens";
+import ComparePage from "./components/ComparePage";
+
+// Importa todas as funções de serviço e tipos
 import {
   getPokemonInfoCards,
   getPokemonPorNome,
   getDescricaoPokemonPorNome,
-  filterPokemonsByName,
-  filterPokemonsCombined,
+  filterPokemonsCombined, // Função de filtro combinada
   getItems,
   getItemInfoCards,
   filterItemsByName,
@@ -23,53 +39,68 @@ import {
   type ItemDetail,
   type PokemonName,
 } from "./services/PokemonService";
-import InitialSection from "./components/InitialSection";
-import PokemonsHome from "./components/PokemonsHome";
-import Compare from "./components/Compare";
-import FeaturedSection from "./components/FeaturedSection";
-import News from "./components/News";
-import Itens from "./components/Itens";
-import Battle from "./components/Battle";
-import Footer from "./components/Footer";
-import Pokedex from "./components/Pokedex";
-import Noticias from "./components/Noticias";
-import PageItens from "./components/PageItens";
-import ComparePage from "./components/ComparePage";
 
 function App() {
+  // =====================================================================
+  // CONSTANTES E CONFIGURAÇÕES INICIAIS
+  // =====================================================================
+
+  // Listas prontas para passar aos componentes de filtro
   const allTypesList = ALL_POKEMON_TYPES;
   const allGenerationsList = POKEMON_GENERATIONS.map((g) => g.name);
 
-  const [selectedType, setSelectedType] = useState<string | null>(null); // NOVO
+  // =====================================================================
+  // ESTADOS DE POKÉMON GERAL E FILTRO
+  // =====================================================================
+
+  // Lista completa (fonte de verdade) de todos os Pokémon carregados para cards
+  const [allPokemons, setAllPokemons] = useState<PokemonInfoCard[]>([]);
+
+  // Estado para o termo de busca por nome na Pokédex
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // Estados para filtros de Tipo e Geração
+  const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedGeneration, setSelectedGeneration] = useState<string | null>(
     null
-  ); // NOVO
+  );
 
+  // =====================================================================
+  // ESTADOS DE DETALHES DO POKÉMON SELECIONADO (Painel Lateral da Pokedéx)
+  // =====================================================================
+
+  // Nome do Pokémon cujos detalhes devem ser exibidos no painel lateral
   const [pokemonDetalhes, setPokemonDetalhes] = useState<string>("bulbasaur");
+
+  // Armazena o nome do Pokémon pesquisado (usado para mudar o 'pokemonDetalhes')
   const [pokemonPesquisado, setPokemonPesquisado] = useState<string>("");
-  const [pokemons, setPokemons] = useState<PokemonInfoCard[]>([]);
+
+  // Detalhes completos e descrição do Pokémon selecionado
   const [pokemonDetail, setPokemonDetails] = useState<PokemonDetail | null>(
     null
   );
   const [descricaoPokemon, setDescricaoPokemon] =
     useState<DescricaoPokemon | null>(null);
 
-  const [allPokemons, setAllPokemons] = useState<PokemonInfoCard[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  // =====================================================================
+  // ESTADOS DE ITENS
+  // =====================================================================
 
-  //ITENSSSSS
-
-  // Lista completa de todos os itens
+  // Lista completa de todos os itens carregados para cards
   const [allItems, setAllItems] = useState<ItemCardInfo[]>([]);
-  // Termo de busca para itens
+
+  // Termo de busca para itens na página de Itens
   const [itemSearchTerm, setItemSearchTerm] = useState<string>("");
 
+  // Nome e detalhes do item selecionado para exibição detalhada
   const [selectedItemName, setSelectedItemName] = useState<string>("");
   const [itemDetail, setItemDetail] = useState<ItemDetail | null>(null);
 
-  //NOVO: ESTADOS PARA COMPARAÇÃO
+  // =====================================================================
+  // ESTADOS DE COMPARAÇÃO
+  // =====================================================================
 
-  // Lista de todos os nomes para popular os seletores de comparação
+  // Lista de todos os nomes de Pokémon para popular os seletores (dropdowns)
   const [allPokemonNamesList, setAllPokemonNamesList] = useState<PokemonName[]>(
     []
   );
@@ -80,7 +111,7 @@ function App() {
   const [selectedPokemon2Name, setSelectedPokemon2Name] =
     useState<string>("charmander");
 
-  // Detalhes dos Pokémon para comparação
+  // Detalhes completos dos Pokémon para comparação
   const [pokemon1Detail, setPokemon1Detail] = useState<PokemonDetail | null>(
     null
   );
@@ -88,16 +119,172 @@ function App() {
     null
   );
 
-  // USEMEMO PARA ITENS: Aplica a busca por nome na lista de itens.
+  // =====================================================================
+  // USE MEMO (Filtros e Dados Computados)
+  // =====================================================================
+
+  /**
+   * Filtra a lista principal de Pokémon cards
+   */
+  const filteredPokemons = useMemo(() => {
+    return filterPokemonsCombined(
+      allPokemons,
+      searchTerm,
+      selectedType,
+      selectedGeneration
+    );
+  }, [allPokemons, searchTerm, selectedType, selectedGeneration]);
+
+  /**
+   * Filtra a lista principal de Itens cards
+   */
   const filteredItems = useMemo(() => {
     return filterItemsByName(allItems, itemSearchTerm);
   }, [allItems, itemSearchTerm]);
 
-  // EFEITO PARA CARREGAMENTO INICIAL DE ITENS
+  // =====================================================================
+  // USE EFFECTS (Carregamento de Dados da API)
+  // =====================================================================
+
+  /**
+   * Efeito para carregar a lista inicial de cards de Pokémon
+   */
+  useEffect(() => {
+    const fetchPokemons = async () => {
+      try {
+        // Busca os dados dos cards (limitado a 200)
+        const data = await getPokemonInfoCards(200);
+        setAllPokemons(data);
+
+        // Define o primeiro pokemon para exibição inicial no painel lateral
+        if (data.length > 0) {
+          setPokemonDetalhes(data[0].name);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar lista de Pokémon cards:", error);
+      }
+    };
+    fetchPokemons();
+  }, []);
+
+  /**
+   * Efeito para buscar os detalhes e descrição do Pokémon selecionado
+   */
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 1. Busca a Descrição
+        const descData = await getDescricaoPokemonPorNome(pokemonDetalhes);
+        setDescricaoPokemon(descData);
+
+        // 2. Busca os Detalhes
+        const detailData = await getPokemonPorNome(pokemonDetalhes);
+        setPokemonDetails(detailData);
+      } catch (error) {
+        console.error(
+          `Erro ao carregar detalhes de ${pokemonDetalhes}:`,
+          error
+        );
+        setPokemonDetails(null);
+        setDescricaoPokemon(null);
+      }
+    };
+
+    if (pokemonDetalhes) {
+      fetchData();
+    }
+  }, [pokemonDetalhes]);
+
+  /**
+   * Efeito para atualizar o painel lateral quando o usuário digita
+   */
+  useEffect(() => {
+    const fetchPokemonPorNome = async () => {
+      // Nota: Esta função apenas busca os dados para o painel,
+      // mas o painel só é atualizado via `pokemonDetalhes`
+      try {
+        const data = await getPokemonPorNome(pokemonPesquisado);
+        setPokemonDetalhes(String(data.name));
+      } catch (error) {
+        // Ignora erros de "não encontrado" durante a digitação
+        // console.warn(`Pokémon "${pokemonPesquisado}" não encontrado.`);
+      }
+    };
+    if (pokemonPesquisado) {
+      fetchPokemonPorNome();
+    }
+  }, [pokemonPesquisado]);
+
+  //EFEITOS DE COMPARAÇÃO
+
+  /**
+   * Efeito para carregar a lista completa de nomes de Pokémon,
+   */
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        const names = await getPokemonNameList();
+        setAllPokemonNamesList(names);
+      } catch (error) {
+        console.error(
+          "Erro ao carregar lista de nomes para comparação:",
+          error
+        );
+      }
+    };
+    fetchNames();
+  }, []);
+
+  /**
+   * Efeito para carregar detalhes do Pokémon 1 para comparação.
+   */
+  useEffect(() => {
+    const fetchDetail1 = async () => {
+      if (selectedPokemon1Name) {
+        try {
+          const data = await getPokemonPorNome(selectedPokemon1Name);
+          setPokemon1Detail(data);
+        } catch (error) {
+          console.error(
+            `Erro ao carregar detalhes do Pokémon 1: ${selectedPokemon1Name}`,
+            error
+          );
+          setPokemon1Detail(null);
+        }
+      }
+    };
+    fetchDetail1();
+  }, [selectedPokemon1Name]);
+
+  /**
+   * Efeito para carregar detalhes do Pokémon 2 para comparação.
+   */
+  useEffect(() => {
+    const fetchDetail2 = async () => {
+      if (selectedPokemon2Name) {
+        try {
+          const data = await getPokemonPorNome(selectedPokemon2Name);
+          setPokemon2Detail(data);
+        } catch (error) {
+          console.error(
+            `Erro ao carregar detalhes do Pokémon 2: ${selectedPokemon2Name}`,
+            error
+          );
+          setPokemon2Detail(null);
+        }
+      }
+    };
+    fetchDetail2();
+  }, [selectedPokemon2Name]);
+
+  //EFEITOS DE ITENS
+  /**
+   * Efeito para carregar a lista inicial de cards de Itens
+   */
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const listData: ItemData[] = await getItems(50); // Busca os primeiros 50 itens (Limite)
+        const listData: ItemData[] = await getItems(50); // Limite de 50 itens
         const cardsData: ItemCardInfo[] = await getItemInfoCards(listData);
         setAllItems(cardsData);
       } catch (error) {
@@ -107,6 +294,10 @@ function App() {
     fetchItems();
   }, []);
 
+  /**
+   * Efeito para buscar os detalhes do item selecionado.
+   * Roda toda vez que selectedItemName muda.
+   */
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
@@ -126,96 +317,15 @@ function App() {
     }
   }, [selectedItemName]);
 
-  const filteredPokemons = useMemo(() => {
-    // Usando a função combinada que você criou.
-    return filterPokemonsCombined(
-      allPokemons,
-      searchTerm,
-      selectedType,
-      selectedGeneration
-    );
-  }, [allPokemons, searchTerm, selectedType, selectedGeneration]);
-
-  useEffect(() => {
-    const fetchPokemons = async () => {
-      // Chama a função otimizada para buscar todos os dados dos cards.
-      const data = await getPokemonInfoCards(200);
-      // Salva na lista COMPLETA, que é a fonte para a filtragem.
-      setAllPokemons(data);
-
-      // Define o primeiro pokemon para ser exibido no painel lateral
-      if (data.length > 0) {
-        setPokemonDetalhes(data[0].name);
-      }
-    };
-    fetchPokemons();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      // 1. Busca a Descrição (para a div lateral)
-      const descData = await getDescricaoPokemonPorNome(pokemonDetalhes);
-      setDescricaoPokemon(descData);
-
-      // 2. Busca os Detalhes (para a div lateral)
-      const detailData = await getPokemonPorNome(pokemonDetalhes);
-      setPokemonDetails(detailData);
-    };
-
-    // Só tenta buscar se o nome do Pokémon estiver definido
-    if (pokemonDetalhes) {
-      fetchData();
-    }
-  }, [pokemonDetalhes]);
-
-  useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        const names = await getPokemonNameList();
-        setAllPokemonNamesList(names); // CORRIGIDO: Preenche a lista de nomes!
-      } catch (error) {
-        console.error(
-          "Erro ao carregar lista de nomes para comparação:",
-          error
-        );
-      }
-    };
-    fetchNames();
-  }, []);
-
-  useEffect(() => {
-    const fetchPokemonPorNome = async () => {
-      const data = await getPokemonPorNome(pokemonPesquisado);
-      setPokemonDetalhes(String(data.name));
-    };
-    fetchPokemonPorNome();
-  }, [pokemonPesquisado]);
-
-  useEffect(() => {
-    const fetchDetail1 = async () => {
-      if (selectedPokemon1Name) {
-        const data = await getPokemonPorNome(selectedPokemon1Name);
-        setPokemon1Detail(data);
-      }
-    };
-    fetchDetail1();
-  }, [selectedPokemon1Name]);
-
-  // --- NOVO: BUSCA DE DETALHES PARA COMPARAÇÃO (POKÉMON 2) ---
-  useEffect(() => {
-    const fetchDetail2 = async () => {
-      if (selectedPokemon2Name) {
-        const data = await getPokemonPorNome(selectedPokemon2Name);
-        setPokemon2Detail(data);
-      }
-    };
-    fetchDetail2();
-  }, [selectedPokemon2Name]);
+  // =====================================================================
+  // RENDERIZAÇÃO E ROTAS
+  // =====================================================================
 
   return (
     <div>
       <Header />
       <Routes>
+        {/* Rota da Página Inicial (Home) */}
         <Route
           path="/home"
           element={
@@ -230,21 +340,25 @@ function App() {
             </>
           }
         ></Route>
+
+        {/* Rota da Pokédex (Filtros e Detalhes) */}
         <Route
           path="/pokemons"
           element={
             <Pokedex
+              // Detalhes e Descrição do Painel Lateral
               pokemonDetail={pokemonDetail}
-              pokemons={filteredPokemons}
               descricaoPokemon={descricaoPokemon}
-              // NOVO: Passa o termo de busca e a função para atualizá-lo
+              // Lista de Pokémon filtrada
+              pokemons={filteredPokemons}
+              // Props de Busca por Nome
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
-              // NOVO: Passa a função para selecionar um pokemon (opcional, mas bom para clicar no card)
               onSelectPokemon={setPokemonPesquisado}
+              // Props de Filtro de Tipo
               selectedType={selectedType}
               onTypeChange={setSelectedType}
-              allTypes={allTypesList} // CORRIGIDO: Passa a lista de tipos
+              allTypes={allTypesList}
               // Props de Filtro de Geração
               selectedGeneration={selectedGeneration}
               onGenerationChange={setSelectedGeneration}
@@ -252,7 +366,11 @@ function App() {
             />
           }
         />
+
+        {/* Rota de Notícias */}
         <Route path="/Noticias" element={<Noticias />} />
+
+        {/* Rota de Itens (Filtros e Detalhes de Itens) */}
         <Route
           path="/Itens"
           element={
@@ -260,11 +378,13 @@ function App() {
               items={filteredItems}
               searchTerm={itemSearchTerm}
               onSearchChange={setItemSearchTerm}
-              itemDetail={itemDetail} // Detalhes carregados pelo useEffect
-              onSelectItem={setSelectedItemName} // Função para mudar o item selecionado
+              itemDetail={itemDetail}
+              onSelectItem={setSelectedItemName}
             />
           }
         />
+
+        {/* Rota de Comparação de Pokémon */}
         <Route
           path="/Comparar"
           element={
@@ -279,6 +399,8 @@ function App() {
             />
           }
         />
+
+        {/* Rota de Batalha (Battle) */}
         <Route path="/Battle" element={<Battle />} />
       </Routes>
       <Footer />

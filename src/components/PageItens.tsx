@@ -3,12 +3,16 @@ import ItemCard from "./ItemCard"; // Card para itens
 
 import { type ItemCardInfo, type ItemDetail } from "../services/PokemonService";
 
+// =========================================================================
+// 1. PROPS
+// =========================================================================
+
 interface PageItensProps {
-  items: ItemCardInfo[];
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-  itemDetail: ItemDetail | null;
-  onSelectItem: (name: string) => void;
+  items: ItemCardInfo[]; // Lista filtrada de itens
+  searchTerm: string; // Termo de busca global
+  onSearchChange: (term: string) => void; // Função para atualizar a busca global
+  itemDetail: ItemDetail | null; // Detalhes do item selecionado
+  onSelectItem: (name: string) => void; // Função para selecionar um item para detalhe
 }
 
 function PageItens({
@@ -18,15 +22,23 @@ function PageItens({
   itemDetail,
   onSelectItem,
 }: PageItensProps) {
-  const [visibleRows, setVisibleRows] = useState(1);
-  const itemsPerRow = 4; // Itens usam 4 por linha
+  // =========================================================================
+  // 2. ESTADOS E LÓGICA LOCAL
+  // =========================================================================
 
+  // Controla quantas linhas de cards estão visíveis
+  const [visibleRows, setVisibleRows] = useState(1);
+  const itemsPerRow = 4; // Define 4 itens por linha
+
+  // Estado local para o input de busca
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
+  // Função para aplicar a busca global
   const handleSearchClick = () => {
     onSearchChange(localSearchTerm);
   };
 
+  // Divide a lista de itens em linhas para exibição (otimizado com useMemo)
   const rows = useMemo(() => {
     const r: ItemCardInfo[][] = [];
     for (let i = 0; i < items.length; i += itemsPerRow) {
@@ -35,20 +47,29 @@ function PageItens({
     return r;
   }, [items]);
 
+  // =========================================================================
+  // 3. RENDERIZAÇÃO
+  // =========================================================================
+
   return (
     <div className="fundo-abstrato-pokemon fundo-degrade">
       <div className=" d-flex input-fundo w-100">
         <h1 className="text-white">Itens do Pokémon</h1>
       </div>
 
+      {/* Layout principal: Lista de itens (esquerda) + Painel de detalhes (direita) */}
       <div className="d-flex flex-wrap flex-md-nowrap">
+        {/* Coluna da esquerda: Busca e Cards de Itens */}
         <div className="col-12 col-md-8 col-lg-9 d-flex flex-column">
+          {/* Seção de Busca */}
           <div className="d-flex flex-column w-100 mt-5 input-fundo">
+            {/* Botão de Busca */}
             <div className="div-btn-red d-flex justify-content-end w-100 px-2 py-1">
               <button
                 className="btn-red sombra-red p-0 border-0 rounded-2"
                 onClick={handleSearchClick}
               >
+                {/* Imagem do botão */}
                 <img
                   className="w-100 h-100 object-fit-cover rounded-2"
                   src="/src/assets/poke.png"
@@ -56,6 +77,7 @@ function PageItens({
                 />
               </button>
             </div>
+            {/* Campo de Input */}
             <input
               className="w-100 rounded-1 border-0 h-input-principal sombra"
               placeholder="Pesquise pelo nome do item"
@@ -69,20 +91,23 @@ function PageItens({
             />
           </div>
 
+          {/* Painel de Exibição dos ItemCards */}
           <div className="pokedex-painel m-5">
             {rows.length === 0 ? (
               <p className="text-white text-center">Nenhum item encontrado.</p>
             ) : (
+              // Mapeia apenas as linhas visíveis
               rows.slice(0, visibleRows).map((chunk, rowIndex) => (
                 <div
                   key={rowIndex}
                   className="w-100 d-flex gap-4 p-2 mt-4 justify-content-between pokedex-fundo"
                 >
+                  {/* Renderiza os ItemCards em cada linha */}
                   {chunk.map((item) => (
                     <div
                       key={item.id}
                       style={{
-                        flexBasis: "23%",
+                        flexBasis: "23%", // Espaço para 4 itens por linha
                         flexGrow: 1,
                         minWidth: "100px",
                       }}
@@ -94,10 +119,11 @@ function PageItens({
                         img={item.img}
                         cost={item.cost}
                         category={item.category}
-                        onSelectItem={() => onSelectItem(item.name)}
+                        onSelectItem={() => onSelectItem(item.name)} // Ao clicar, define o item para ser detalhado
                       />
                     </div>
                   ))}
+                  {/* Preenche a última linha com divs vazias para manter o alinhamento */}
                   {chunk.length < itemsPerRow &&
                     Array.from({ length: itemsPerRow - chunk.length }).map(
                       (_, k) => (
@@ -111,6 +137,7 @@ function PageItens({
               ))
             )}
 
+            {/* Botão "Carregar mais" */}
             {visibleRows < rows.length && (
               <div className="d-flex justify-content-center mt-3">
                 <button
@@ -124,6 +151,7 @@ function PageItens({
           </div>
         </div>
 
+        {/* Coluna da direita: Painel de Detalhes do Item */}
         <div className="col-12 col-md-4 col-lg-3 d-flex justify-content-center mt-5 mt-md-0">
           <div
             className="w-100 bg-light rounded-5 d-flex flex-column shadow align-items-center p-3 text-dark scrollable-panel"
@@ -134,6 +162,7 @@ function PageItens({
               zIndex: 1,
             }}
           >
+            {/* Imagem do Item Detalhado */}
             <div
               className="align-items-center image-wrapper w-100 text-center"
               style={{ minHeight: "100px", paddingTop: "20px" }}
@@ -155,9 +184,11 @@ function PageItens({
               )}
             </div>
 
+            {/* Conteúdo de Detalhes do Item */}
             <div className="w-100 d-flex flex-column justify-content-center p-3 text-dark">
               {itemDetail ? (
                 <>
+                  {/* Nome e ID */}
                   <h1 className="fs-3 fw-bold text-capitalize mt-2">
                     {itemDetail.name}
                   </h1>
@@ -165,6 +196,7 @@ function PageItens({
                     #{itemDetail.id.toString().padStart(3, "0")}
                   </h4>
 
+                  {/* Categoria */}
                   <div className="mt-4">
                     <h6 className="fw-bold text-uppercase">Categoria</h6>
                     <p className="text-muted small text-capitalize">
@@ -172,6 +204,7 @@ function PageItens({
                     </p>
                   </div>
 
+                  {/* Preço */}
                   <div className="mt-4">
                     <h6 className="fw-bold text-uppercase">Preço</h6>
                     <p className="small text-success fw-bold">
@@ -179,6 +212,7 @@ function PageItens({
                     </p>
                   </div>
 
+                  {/* Efeito */}
                   <div className="mt-4">
                     <h6 className="fw-bold text-uppercase">Efeito</h6>
                     <p className="small text-muted">{itemDetail.effect}</p>

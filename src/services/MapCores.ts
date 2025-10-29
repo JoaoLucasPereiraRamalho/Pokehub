@@ -20,6 +20,5 @@ export const typeColors: { [key: string]: string } = {
 };
 
 export function getTypeColor(type: string): string {
-  // Retorna a cor, ou um cinza escuro padrão se o tipo não for encontrado
   return typeColors[type.toLowerCase()] || "#6C757D";
 }

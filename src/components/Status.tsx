@@ -5,7 +5,6 @@ interface StatusProps {
   pokemonDetail: PokemonDetail | null;
 }
 
-// Mapeamento das estatísticas para seus rótulos de botão
 const STAT_LABELS: { [key: string]: string } = {
   hp: "HP",
   attack: "ATK",
@@ -15,7 +14,6 @@ const STAT_LABELS: { [key: string]: string } = {
   speed: "SPD",
 };
 
-// Array na ordem correta para iteração
 const STAT_KEYS: Array<keyof PokemonDetail> = [
   "hp",
   "attack",

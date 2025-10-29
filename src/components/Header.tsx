@@ -1,12 +1,7 @@
 import React from "react";
-// 1. Importa o hook useNavigate para navegação programática
+
 import { useNavigate } from "react-router-dom";
 
-// ==========================================================
-// SIMULAÇÃO DE COMPONENTES (Para garantir a compilação)
-// ==========================================================
-
-// Simulação do componente Button com prop 'onClick'
 const Button = ({
   children,
   onClick,
@@ -23,7 +18,6 @@ const Button = ({
   </button>
 );
 
-// Simulação do componente ButtonBorder com prop 'onClick'
 const ButtonBorder = ({
   children,
   onClick,
@@ -40,15 +34,9 @@ const ButtonBorder = ({
   </button>
 );
 
-// ==========================================================
-// COMPONENTE HEADER
-// ==========================================================
-
 function Header() {
-  // Inicializa o hook de navegação
   const navigate = useNavigate();
 
-  // Função centralizada para navegação
   const handleNavigate = (path: string) => {
     navigate(path);
   };
@@ -59,7 +47,6 @@ function Header() {
       className="navbar navbar-expand-md"
     >
       <div className="container-fluid">
-        {/* Logo que navega para /home ao ser clicado */}
         <div
           className="w-100 w-md-25 p-2"
           onClick={() => handleNavigate("/home")}
@@ -94,7 +81,6 @@ function Header() {
         >
           <div className="navbar-nav d-flex flex-column flex-md-row align-items-md-center w-100 justify-content-end gap-2 p-3 p-md-0">
             <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4">
-              {/* Navegação para as rotas */}
               <Button onClick={() => handleNavigate("/home")}>HOME</Button>
               <Button onClick={() => handleNavigate("/pokemons")}>
                 POKEMONS
@@ -119,5 +105,4 @@ function Header() {
   );
 }
 
-// O componente precisa estar dentro de <BrowserRouter> para que useNavigate funcione.
 export default Header;
