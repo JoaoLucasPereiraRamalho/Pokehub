@@ -57,7 +57,7 @@ Siga os passos abaixo para configurar e executar o **PokePortal** na sua máquin
 
    ```bash
    git clone https://github.com/JoaoLucasPereiraRamalho/Pokehub.git
-   cd pokehub
+   cd Pokehub
    ```
 
 2. **Instale as Dependências:**

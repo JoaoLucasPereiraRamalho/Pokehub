@@ -327,7 +327,7 @@ function App() {
       <Routes>
         {/* Rota da Página Inicial (Home) */}
         <Route
-          path="/home"
+          path="/"
           element={
             <>
               <InitialSection />

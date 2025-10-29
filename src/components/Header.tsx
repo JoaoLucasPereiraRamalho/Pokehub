@@ -49,7 +49,7 @@ function Header() {
       <div className="container-fluid">
         <div
           className="w-100 w-md-25 p-2"
-          onClick={() => handleNavigate("/home")}
+          onClick={() => handleNavigate("/")}
           style={{ cursor: "pointer" }}
         >
           <img
@@ -81,7 +81,7 @@ function Header() {
         >
           <div className="navbar-nav d-flex flex-column flex-md-row align-items-md-center w-100 justify-content-end gap-2 p-3 p-md-0">
             <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4">
-              <Button onClick={() => handleNavigate("/home")}>HOME</Button>
+              <Button onClick={() => handleNavigate("/")}>HOME</Button>
               <Button onClick={() => handleNavigate("/pokemons")}>
                 POKEMONS
               </Button>
