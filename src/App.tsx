@@ -18,27 +18,37 @@ import Noticias from "./components/Noticias";
 import PageItens from "./components/PageItens";
 import ComparePage from "./components/ComparePage";
 
-// Importa todas as funções de serviço e tipos
+// =================================================================
+// IMPORTS CORRIGIDOS (REFATORAÇÃO)
+// =================================================================
+
+// Tipos
 import {
-  getPokemonInfoCards,
-  getPokemonPorNome,
-  getDescricaoPokemonPorNome,
-  filterPokemonsCombined, // Função de filtro combinada
-  getItems,
-  getItemInfoCards,
-  filterItemsByName,
-  getItemDetailByName,
-  getPokemonNameList,
   type ItemData,
   type ItemCardInfo,
-  ALL_POKEMON_TYPES,
-  POKEMON_GENERATIONS,
   type PokemonDetail,
   type DescricaoPokemon,
   type PokemonInfoCard,
   type ItemDetail,
   type PokemonName,
+} from "./types";
+
+// Funções de Filtro
+import { filterPokemonsCombined, filterItemsByName } from "./utils/filters";
+
+// Chamadas de API
+import {
+  getPokemonInfoCards,
+  getPokemonPorNome,
+  getDescricaoPokemonPorNome,
+  getItems,
+  getItemInfoCards,
+  getItemDetailByName,
+  getPokemonNameList,
 } from "./services/PokemonService";
+
+// Constantes (agora vêm da pasta 'utils/constants')
+import { ALL_POKEMON_TYPES, POKEMON_GENERATIONS } from "./utils/constants";
 
 function App() {
   // =====================================================================
