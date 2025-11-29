@@ -63,104 +63,16 @@ export const ALL_POKEMON_TYPES = [
 // 2. DEFINIÇÃO DE TIPOS (INTERFACES)
 // =========================================================================
 
-/**
- * Tipo básico para um item de lista retornado pela API (nome e URL).
- */
-export type PokemonName = {
-  name: string;
-  url: string;
-};
-
-/**
- * Tipo básico para um item de lista retornado pela API (nome e URL).
- * Usada aqui para Pokemons.
- */
-export type Pokemon = {
-  name: string;
-  url: string;
-};
-
-/**
- * Tipo para dados resumidos do Pokémon, usado em cards e listas.
- */
-export type PokemonInfoCard = {
-  name: string;
-  id: number;
-  type1: string;
-  type2?: string;
-  img: string; // URL da imagem
-  generation: string; // Nome da geração (ex: "Kanto")
-};
-
-/**
- * Tipo para a descrição de Flavor Text (texto de Pokédex).
- */
-export type DescricaoPokemon = {
-  flavor_text: string;
-};
-
-/**
- * Tipo para os dados detalhados de um Pokémon (Status, Habilidades, etc.).
- */
-export type PokemonDetail = {
-  // Stats (Estatísticas)
-  hp: number;
-  attack: number;
-  defense: number;
-  specialAttack: number;
-  specialDefense: number;
-  speed: number;
-
-  // Tipos
-  type1: string;
-  type2?: string;
-
-  // Habilidades
-  abilitie1: string;
-  abilitie2?: string;
-
-  // Dados básicos
-  name: string;
-  id: number;
-  height: number;
-  weight: number;
-  is_default: boolean;
-
-  // Sprites
-  img: string; // Imagem oficial (artwork)
-  imgAnimada: string; // Imagem animada (showdown)
-};
-
-/**
- * Tipo para o item de lista retornado pela API (nome e URL).
- */
-export type ItemData = {
-  name: string;
-  url: string;
-};
-
-/**
- * Tipo para dados resumidos de um Item, usado em cards e listas.
- */
-export type ItemCardInfo = {
-  name: string;
-  id: number;
-  cost: number;
-  category: string;
-  img: string; // URL do sprite do item
-};
-
-/**
- * Tipo para os dados detalhados de um Item.
- */
-export type ItemDetail = {
-  name: string;
-  id: number;
-  cost: number;
-  category: string;
-  effect: string; // Descrição do efeito/flavor text
-  sprite: string; // URL do sprite do item
-};
+import type {
+  PokemonName,
+  Pokemon,
+  PokemonInfoCard,
+  DescricaoPokemon,
+  PokemonDetail,
+  ItemData,
+  ItemCardInfo,
+  ItemDetail,
+} from "../types";
 
 // =========================================================================
 // 3. FUNÇÕES DE BUSCA DA POKÉMON API (Dados de Pokémon)
