@@ -80,3 +80,18 @@ export const getTypeColor = (type?: string): string => {
   if (!type) return "#777777";
   return TYPE_COLORS[type.toLowerCase()] || "#777777";
 };
+
+export const POPULAR_ITEMS = [
+  { id: 1, name: "master-ball", cost: 0, category: "standard-balls" },
+  { id: 2, name: "ultra-ball", cost: 800, category: "standard-balls" },
+  { id: 3, name: "great-ball", cost: 600, category: "standard-balls" },
+  { id: 4, name: "poke-ball", cost: 200, category: "standard-balls" },
+  { id: 26, name: "fresh-water", cost: 200, category: "healing" },
+  { id: 28, name: "lemonade", cost: 350, category: "healing" },
+  { id: 29, name: "moomoo-milk", cost: 500, category: "healing" },
+  { id: 80, name: "sun-stone", cost: 2100, category: "evolution" },
+  { id: 82, name: "fire-stone", cost: 2100, category: "evolution" },
+];
+
+export const getItemImageUrl = (name: string) =>
+  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${name}.png`;
