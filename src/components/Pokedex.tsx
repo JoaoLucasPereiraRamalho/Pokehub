@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import PokemonCard from "./PokemonCard";
+import PokemonCard from "./cards/PokemonCard";
 import {
   type PokemonDetail,
   type PokemonInfoCard,
   type DescricaoPokemon,
 } from "../services/PokemonService";
-import Status from "./Status";
+import Status from "./ui/Status";
 import { getTypeColor } from "../services/MapCores";
 
 // Tipo auxiliar para funções de filtro

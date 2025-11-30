@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Card from "./Card";
+import Card from "../cards/Card";
 import {
   getPokemonInfoCards,
   getPokemonPorNome,
   type PokemonInfoCard,
   type PokemonDetail,
-} from "../services/PokemonService";
+} from "../../services/PokemonService";
 
 function PokemonsHome() {
   // Estados para gerenciar dados e carregamento

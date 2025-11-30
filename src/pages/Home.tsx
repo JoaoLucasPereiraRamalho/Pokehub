@@ -1,9 +1,9 @@
-import InitialSection from "../components/InitialSection";
-import PokemonsHome from "../components/PokemonsHome";
-import Compare from "../components/Compare";
-import FeaturedSection from "../components/FeaturedSection";
-import News from "../components/News";
-import Itens from "../components/Itens";
+import InitialSection from "../components/home/InitialSection";
+import PokemonsHome from "../components/home/PokemonsHome";
+import Compare from "../components/home/Compare";
+import FeaturedSection from "../components/home/FeaturedSection";
+import News from "../components/home/News";
+import Itens from "../components/home/Itens";
 import Battle from "./Battle";
 
 const Home = () => {

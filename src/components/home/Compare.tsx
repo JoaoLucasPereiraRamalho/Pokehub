@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Card from "./Card";
+import Card from "../cards/Card";
 import {
   getPokemonPorNome,
   type PokemonDetail,
-} from "../services/PokemonService";
+} from "../../services/PokemonService";
 
 function Compare() {
   const [pokemon1, setPokemon1] = useState<PokemonDetail | null>(null);

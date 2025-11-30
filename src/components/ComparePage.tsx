@@ -3,8 +3,8 @@ import {
   type PokemonDetail,
   type PokemonName,
 } from "../services/PokemonService";
-import CompareCircle from "./CompareCircle";
-import Card from "./Card";
+import CompareCircle from "./vizualizations/CompareCircle";
+import Card from "./cards/Card";
 
 // =====================================================================
 // 1. DEFINIÇÃO DE TIPOS E CONSTANTES

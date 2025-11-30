@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, MouseEvent } from "react";
-import CardItem from "./CardItem";
+import CardItem from "../cards/CardItem";
 
 function Itens() {
   const sliderRef = useRef<HTMLDivElement>(null);

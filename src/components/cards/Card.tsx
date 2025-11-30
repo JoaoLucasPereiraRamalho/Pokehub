@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { type PokemonDetail } from "../services/PokemonService";
+import { type PokemonDetail } from "../../services/PokemonService";
 
 interface CardProps {
   pokemon: PokemonDetail | null;

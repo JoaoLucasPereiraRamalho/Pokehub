@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import ItemCard from "./ItemCard"; // Card para itens
+import ItemCard from "./cards/ItemCard"; // Card para itens
 
 import { type ItemCardInfo, type ItemDetail } from "../services/PokemonService";
 

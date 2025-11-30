@@ -1,5 +1,5 @@
 import React from "react";
-import { type PokemonDetail } from "../services/PokemonService";
+import { type PokemonDetail } from "../../services/PokemonService";
 
 interface StatusProps {
   pokemonDetail: PokemonDetail | null;
