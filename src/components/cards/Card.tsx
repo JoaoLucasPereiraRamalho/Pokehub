@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
-import { type PokemonDetail } from "../../services/PokemonService";
+import { type PokemonDetail } from "../../types";
+// Importamos a função de cor centralizada
+import { getTypeColor } from "../../utils/constants";
 
 interface CardProps {
   pokemon: PokemonDetail | null;
@@ -8,22 +10,9 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
-  const cardColorClass = useMemo(() => {
-    if (!pokemon) return "bg-secondary";
-
-    const typeColors: Record<string, string> = {
-      grass: "bg-success",
-      bug: "bg-success",
-      fire: "bg-danger",
-      fighting: "bg-danger",
-      water: "bg-info",
-      ice: "bg-info",
-      electric: "bg-warning",
-      ghost: "bg-dark",
-      poison: "bg-dark",
-    };
-
-    return typeColors[pokemon.type1.toLowerCase()] || "bg-secondary";
+  // Calculamos a cor exata usando a constante
+  const cardColor = useMemo(() => {
+    return getTypeColor(pokemon?.type1);
   }, [pokemon]);
 
   if (!pokemon) {
@@ -39,8 +28,8 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
 
   return (
     <div
-      style={{ minWidth: 200, overflow: "hidden" }}
-      className={`rounded-3 sombra ${cardColorClass}`}
+      style={{ minWidth: 200, overflow: "hidden", backgroundColor: cardColor }} // APLICAMOS A COR AQUI
+      className="rounded-3 sombra" // Removemos as classes bg-secondary, bg-success, etc
     >
       <div className="position-relative text-white p-2">
         <h6 className="position-absolute end-0 m-2 fw-bold">
@@ -56,10 +45,12 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
 
       <div className="bg-light p-3">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fs-3 fw-bold text-black m-0">{pokemon.name}</h2>
+          <h2 className="fs-3 fw-bold text-black m-0 text-capitalize">
+            {pokemon.name}
+          </h2>
           <span
-            className={`badge ${cardColorClass} text-white p-2 rounded-circle d-flex align-items-center justify-content-center`}
-            style={{ width: 30, height: 30 }}
+            className="text-white p-2 rounded-circle d-flex align-items-center justify-content-center"
+            style={{ width: 30, height: 30, backgroundColor: cardColor }} // Badge com a mesma cor
           >
             <small className="text-uppercase">
               {pokemon.abilitie1.charAt(0)}
@@ -84,7 +75,8 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
 
           <div className="d-flex flex-column gap-2" style={{ width: "40%" }}>
             <button
-              className={`border-0 ${cardColorClass} text-white rounded-pill px-3 py-1 fw-bold`}
+              className="border-0 text-white rounded-pill px-3 py-1 fw-bold"
+              style={{ backgroundColor: cardColor }} // Botão BST com a cor do tipo
             >
               BST: {bst}
             </button>

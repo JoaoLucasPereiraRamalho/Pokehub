@@ -6,7 +6,7 @@ import {
   type DescricaoPokemon,
 } from "../services/PokemonService";
 import Status from "./ui/Status";
-import { getTypeColor } from "../services/MapCores";
+import { getTypeColor } from "../utils/constants";
 
 // Tipo auxiliar para funções de filtro
 type SetFilter = (value: string | null) => void;
