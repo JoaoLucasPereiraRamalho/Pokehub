@@ -1,11 +1,18 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./ui/Button";
 
 function Header() {
   const navigate = useNavigate();
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const handleNavigate = (path: string) => {
     navigate(path);
+    setIsNavOpen(false);
+  };
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
   };
 
   return (
@@ -28,15 +35,15 @@ function Header() {
           />
         </div>
 
-        {/* TOGGLER (Mobile) */}
+        {/* TOGGLER (BOTÃO MOBILE) */}
         <button
           className="navbar-toggler me-3"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          onClick={toggleNav}
           aria-controls="navbarNav"
-          aria-expanded="false"
+          aria-expanded={isNavOpen}
           aria-label="Toggle navigation"
+          style={{ border: "1px solid white" }}
         >
           <span
             className="navbar-toggler-icon"
@@ -46,12 +53,13 @@ function Header() {
 
         {/* LINKS DE NAVEGAÇÃO */}
         <div
-          className="collapse navbar-collapse w-100 w-md-75 justify-content-end"
+          className={`collapse navbar-collapse w-100 w-md-75 justify-content-end ${
+            isNavOpen ? "show" : ""
+          }`}
           id="navbarNav"
         >
           <div className="navbar-nav d-flex flex-column flex-md-row align-items-md-center w-100 justify-content-end gap-2 p-3 p-md-0">
-            <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4">
-              {/* Botões Normais (Primary) */}
+            <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4 text-center">
               <Button variant="primary" onClick={() => handleNavigate("/")}>
                 HOME
               </Button>
@@ -81,8 +89,7 @@ function Header() {
               </Button>
             </div>
 
-            {/* Botão de Destaque (Border) */}
-            <div className="mt-2 mt-md-0">
+            <div className="mt-2 mt-md-0 text-center">
               <Button
                 variant="border"
                 onClick={() => handleNavigate("/Battle")}
