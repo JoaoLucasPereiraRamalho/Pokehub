@@ -5,6 +5,7 @@ import {
 } from "../services/PokemonService";
 import CompareCircle from "./vizualizations/CompareCircle";
 import Card from "./cards/Card";
+import { STAT_DISPLAY_NAMES, STAT_KEYS } from "../utils/constants";
 
 // =====================================================================
 // 1. DEFINIÇÃO DE TIPOS E CONSTANTES
@@ -19,30 +20,6 @@ interface ComparePageProps {
   onSelectPokemon1: (name: string) => void;
   onSelectPokemon2: (name: string) => void;
 }
-
-/**
- * Nomes das chaves de estatísticas no objeto PokemonDetail que devem ser comparadas.
- */
-const STAT_NAMES: Array<keyof PokemonDetail> = [
-  "hp",
-  "attack",
-  "defense",
-  "specialAttack",
-  "specialDefense",
-  "speed",
-];
-
-/**
- * Mapeamento das chaves de estatísticas (ex: hp -> HP).
- */
-const STAT_MAP: { [key: string]: string } = {
-  hp: "HP",
-  attack: "ATK",
-  defense: "DEF",
-  specialAttack: "Sp. ATK",
-  specialDefense: "Sp. DEF",
-  speed: "SPD",
-};
 
 // =====================================================================
 // 2. FUNÇÕES AUXILIARES DE LÓGICA
@@ -216,7 +193,7 @@ function ComparePage({
   const bst1 = useMemo(
     () =>
       pokemon1Detail
-        ? STAT_NAMES.reduce(
+        ? STAT_KEYS.reduce(
             (sum, stat) => sum + (pokemon1Detail[stat] as number),
             0
           )
@@ -228,7 +205,7 @@ function ComparePage({
   const bst2 = useMemo(
     () =>
       pokemon2Detail
-        ? STAT_NAMES.reduce(
+        ? STAT_KEYS.reduce(
             (sum, stat) => sum + (pokemon2Detail[stat] as number),
             0
           )
@@ -253,9 +230,10 @@ function ComparePage({
 
     return (
       <div className="w-100 px-3">
-        {STAT_NAMES.map((statName) => {
+        {STAT_KEYS.map((statName) => {
           const value = pokemon[statName] as number;
-          const label = STAT_MAP[statName as keyof typeof STAT_MAP];
+          const label =
+            STAT_DISPLAY_NAMES[statName as keyof typeof STAT_DISPLAY_NAMES];
           const percentage = (value / maxStat) * 100;
 
           return (
@@ -315,10 +293,14 @@ function ComparePage({
             </tr>
           </thead>
           <tbody>
-            {STAT_NAMES.map((statName) => (
+            {STAT_KEYS.map((statName) => (
               <tr key={statName}>
                 <td className="py-3 px-4 fw-semibold text-start text-capitalize">
-                  {STAT_MAP[statName as keyof typeof STAT_MAP]}
+                  {
+                    STAT_DISPLAY_NAMES[
+                      statName as keyof typeof STAT_DISPLAY_NAMES
+                    ]
+                  }
                 </td>
                 {/* Valor do Pokémon 1 com destaque */}
                 <td

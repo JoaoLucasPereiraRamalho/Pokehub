@@ -36,3 +36,21 @@ export const getGenerationName = (id: number): string => {
   );
   return generation ? generation.name : "Desconhecida";
 };
+
+export const STAT_DISPLAY_NAMES: { [key: string]: string } = {
+  hp: "HP",
+  attack: "ATK",
+  defense: "DEF",
+  specialAttack: "SpA",
+  specialDefense: "SpD",
+  speed: "SPD",
+};
+
+export const STAT_KEYS = [
+  "hp",
+  "attack",
+  "defense",
+  "specialAttack",
+  "specialDefense",
+  "speed",
+];

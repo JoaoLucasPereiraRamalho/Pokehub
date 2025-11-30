@@ -1,27 +1,11 @@
 import React from "react";
-import { type PokemonDetail } from "../../services/PokemonService";
+import { type PokemonDetail } from "../../types";
+// Importamos do centralizador
+import { STAT_DISPLAY_NAMES, STAT_KEYS } from "../../utils/constants";
 
 interface StatusProps {
   pokemonDetail: PokemonDetail | null;
 }
-
-const STAT_LABELS: { [key: string]: string } = {
-  hp: "HP",
-  attack: "ATK",
-  defense: "DEF",
-  specialAttack: "SpA",
-  specialDefense: "SpD",
-  speed: "SPD",
-};
-
-const STAT_KEYS: Array<keyof PokemonDetail> = [
-  "hp",
-  "attack",
-  "defense",
-  "specialAttack",
-  "specialDefense",
-  "speed",
-];
 
 const Status: React.FC<StatusProps> = ({ pokemonDetail }) => {
   if (!pokemonDetail) {
@@ -36,19 +20,22 @@ const Status: React.FC<StatusProps> = ({ pokemonDetail }) => {
     <div className="w-100 d-flex flex-column">
       <h6>STATS</h6>
       <div className="d-flex w-100 gap-1 justify-content-between">
+        {/* Usamos a lista global STAT_KEYS para iterar */}
         {STAT_KEYS.map((statKey) => {
-          const label = STAT_LABELS[statKey];
-          const value = pokemonDetail[statKey] as number | undefined;
+          // Precisamos fazer um cast para garantir que a chave existe no objeto
+          const key = statKey as keyof PokemonDetail;
+          const label = STAT_DISPLAY_NAMES[key];
+          const value = pokemonDetail[key] as number | undefined;
 
           return (
             <div
-              key={statKey}
+              key={key}
               className="bg-light rounded-5 d-flex flex-column align-items-center p-1 sombra"
               style={{ flexGrow: 1 }}
             >
               <button
                 className="btn btn-dark rounded-circle w-100 p-1"
-                style={{ aspectRatio: "1 / 1" }}
+                style={{ aspectRatio: "1 / 1", fontSize: "0.7rem" }}
               >
                 {label}
               </button>
