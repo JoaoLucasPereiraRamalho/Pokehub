@@ -27,7 +27,7 @@ const api = axios.create({
  */
 export const getPokemonNameList = async (): Promise<PokemonName[]> => {
   try {
-    const response = await api.get(`pokemon?limit=10000`);
+    const response = await api.get(`pokemon?limit=500`);
     return response.data.results;
   } catch (error) {
     console.error("Erro ao carregar lista de nomes:", error);
@@ -77,35 +77,45 @@ export const getPokemonInfoCards = async (
 };
 
 /**
- * Busca a descrição do Flavor Text (texto de Pokédex) de um Pokémon pelo nome.
+ * Busca a descrição do Flavor Text de um Pokémon pelo nome.
  */
 export const getDescricaoPokemonPorNome = async (
   name: string
 ): Promise<DescricaoPokemon> => {
-  const response = await api.get(`pokemon-species/${name}`);
-  const d = response.data;
+  try {
+    const response = await api.get(`pokemon-species/${name}`);
+    const d = response.data;
 
-  // Tenta pegar a primeira descrição em inglês (en)
-  const englishEntry = d.flavor_text_entries.find(
+    // Tenta achar em Português primeiro, senão vai para Inglês
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (entry: any) => entry.language.name === "en"
-  );
+    const entry =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      d.flavor_text_entries.find((e: any) => e.language.name === "pt-br") ||
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      d.flavor_text_entries.find((e: any) => e.language.name === "en");
 
-  // Limpa quebras de linha e usa a primeira entrada disponível se o inglês não for encontrado
-  const flavorText = englishEntry
-    ? String(englishEntry.flavor_text).replace(/\n/g, " ")
-    : String(d.flavor_text_entries[0]?.flavor_text || "Sem descrição.");
+    if (!entry) {
+      return { flavor_text: "Descrição não disponível." };
+    }
 
-  const descricao: DescricaoPokemon = {
-    flavor_text: flavorText,
-  };
+    // 2. Limpeza do texto
+    let text = String(entry.flavor_text);
 
-  return descricao;
+    text = text
+      .replace(/[\n\f\r]/g, " ")
+      .replace(/\s+/g, " ")
+      .replace("POKéMON", "Pokémon")
+      .trim();
+
+    return {
+      flavor_text: text,
+    };
+  } catch (error) {
+    console.error("Erro ao buscar descrição:", error);
+    return { flavor_text: "Erro ao carregar descrição." };
+  }
 };
 
-/**
- * Busca todos os detalhes de um Pokémon pelo nome.
- */
 export const getPokemonPorNome = async (
   name: string
 ): Promise<PokemonDetail> => {

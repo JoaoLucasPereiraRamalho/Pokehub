@@ -7,9 +7,8 @@ import ItemsPage from "../pages/ItemsPage";
 import Compare from "../pages/Compare";
 
 // Importando componentes que funcionam como páginas
-import Noticias from "../components/Noticias";
-import Battle from "../components/Battle";
-
+import News from "../pages/News";
+import Battle from "../pages/Battle";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -25,8 +24,10 @@ const AppRoutes = () => {
       {/* Rota de Comparação */}
       <Route path="/Comparar" element={<Compare />} />
 
-      {/* Outras Rotas */}
-      <Route path="/Noticias" element={<Noticias />} />
+      {/* Rota de Noticias */}
+      <Route path="/Noticias" element={<News />} />
+
+      {/* Rota de batalha */}
       <Route path="/Battle" element={<Battle />} />
     </Routes>
   );

@@ -4,7 +4,7 @@ import Compare from "../components/Compare";
 import FeaturedSection from "../components/FeaturedSection";
 import News from "../components/News";
 import Itens from "../components/Itens";
-import Battle from "../components/Battle";
+import Battle from "./Battle";
 
 const Home = () => {
   return (
