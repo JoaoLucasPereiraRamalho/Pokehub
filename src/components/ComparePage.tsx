@@ -274,91 +274,94 @@ function ComparePage({
       );
     }
 
+    // ALTERAÇÃO AQUI: Mudamos p-4 para "p-3 p-md-4" (menos padding no celular)
     return (
-      <div className="w-100 mt-5 p-4 bg-white rounded-3 shadow-lg">
+      <div className="w-100 mt-5 p-3 p-md-4 bg-white rounded-3 shadow-lg">
         <h2 className="fs-3 fw-bold text-center mb-4 text-dark">
           Tabela de Estatísticas Base
         </h2>
+        {/* NOVA DIV: table-responsive permite scroll horizontal no mobile */}
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped text-center align-middle">
+            <thead>
+              <tr className="table-secondary">
+                <th className="py-2 px-2 px-md-3 text-start">Estatística</th>
+                <th className="py-2 px-2 px-md-3 text-capitalize">
+                  {pokemon1Detail.name}
+                </th>
+                <th className="py-2 px-2 px-md-3 text-capitalize">
+                  {pokemon2Detail.name}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {STAT_KEYS.map((statKey) => {
+                // Precisamos garantir que a chave é válida para o TypeScript
+                const key = statKey as keyof PokemonDetail;
+                const statLabel = STAT_DISPLAY_NAMES[key];
 
-        <table className="table table-bordered table-striped text-center">
-          <thead>
-            <tr className="table-secondary">
-              <th className="py-2 px-3 align-middle text-start">Estatística</th>
-              <th className="py-2 px-3 align-middle text-capitalize">
-                {pokemon1Detail.name}
-              </th>
-              <th className="py-2 px-3 align-middle text-capitalize">
-                {pokemon2Detail.name}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {STAT_KEYS.map((statName) => (
-              <tr key={statName}>
-                <td className="py-3 px-4 fw-semibold text-start text-capitalize">
-                  {
-                    STAT_DISPLAY_NAMES[
-                      statName as keyof typeof STAT_DISPLAY_NAMES
-                    ]
-                  }
+                return (
+                  <tr key={key}>
+                    <td className="py-2 px-2 px-md-4 fw-semibold text-start text-capitalize">
+                      {statLabel}
+                    </td>
+                    <td
+                      className={`py-2 px-2 px-md-4 ${getWinnerOrLoserClass(
+                        key, // Passamos 'key' que é do tipo correto
+                        pokemon1Detail,
+                        pokemon2Detail,
+                        true
+                      )}`}
+                    >
+                      {pokemon1Detail[key] as number}
+                    </td>
+                    <td
+                      className={`py-2 px-2 px-md-4 ${getWinnerOrLoserClass(
+                        key, // Passamos 'key' que é do tipo correto
+                        pokemon1Detail,
+                        pokemon2Detail,
+                        false
+                      )}`}
+                    >
+                      {pokemon2Detail[key] as number}
+                    </td>
+                  </tr>
+                );
+              })}
+
+              {/* Linha Total BST */}
+              <tr className="fw-bold border-top border-3 border-primary">
+                <td className="py-3 px-2 px-md-4 text-dark fs-6 fs-md-5 text-start">
+                  Total BST
                 </td>
-                {/* Valor do Pokémon 1 com destaque */}
                 <td
-                  className={`py-3 px-4 ${getWinnerOrLoserClass(
-                    statName,
-                    pokemon1Detail,
-                    pokemon2Detail,
-                    true // Checa como P1
-                  )}`}
+                  className={`py-3 px-2 px-md-4 fs-6 fs-md-5 ${
+                    bst1 > bst2
+                      ? "text-success fw-bold"
+                      : bst1 < bst2
+                      ? "text-danger fw-bold"
+                      : ""
+                  }`}
                 >
-                  {pokemon1Detail[statName] as number}
+                  {bst1}
                 </td>
-                {/* Valor do Pokémon 2 com destaque */}
                 <td
-                  className={`py-3 px-4 ${getWinnerOrLoserClass(
-                    statName,
-                    pokemon1Detail,
-                    pokemon2Detail,
-                    false // Checa como P2
-                  )}`}
+                  className={`py-3 px-2 px-md-4 fs-6 fs-md-5 ${
+                    bst2 > bst1
+                      ? "text-success fw-bold"
+                      : bst2 < bst1
+                      ? "text-danger fw-bold"
+                      : ""
+                  }`}
                 >
-                  {pokemon2Detail[statName] as number}
+                  {bst2}
                 </td>
               </tr>
-            ))}
-
-            {/* Linha Total BST (Base Stat Total) */}
-            <tr className="fw-bold border-top border-3 border-primary">
-              <td className="py-3 px-4 text-dark fs-5 text-start">Total BST</td>
-              {/* P1 BST com destaque do vencedor */}
-              <td
-                className={`py-3 px-4 fs-5 ${
-                  bst1 > bst2
-                    ? "text-success fw-bold"
-                    : bst1 < bst2
-                    ? "text-danger fw-bold"
-                    : ""
-                }`}
-              >
-                {bst1}
-              </td>
-              {/* P2 BST com destaque do vencedor */}
-              <td
-                className={`py-3 px-4 fs-5 ${
-                  bst2 > bst1
-                    ? "text-success fw-bold"
-                    : bst2 < bst1
-                    ? "text-danger fw-bold"
-                    : ""
-                }`}
-              >
-                {bst2}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p className="text-sm text-muted mt-3 text-center">
+            </tbody>
+          </table>
+        </div>{" "}
+        {/* Fim da table-responsive */}
+        <p className="text-sm text-muted mt-3 text-center small">
           <span className="text-success fw-bold">Verde</span> indica a
           estatística mais alta.{" "}
           <span className="text-danger fw-bold">Vermelho</span> indica a
