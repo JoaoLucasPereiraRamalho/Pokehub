@@ -1,38 +1,5 @@
-import React from "react";
-
 import { useNavigate } from "react-router-dom";
-
-const Button = ({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) => (
-  <button
-    className="btn text-white text-decoration-none px-3 py-2 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition duration-200 w-full text-left w-md-auto"
-    onClick={onClick}
-    style={{ whiteSpace: "nowrap" }}
-  >
-    {children}
-  </button>
-);
-
-const ButtonBorder = ({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) => (
-  <button
-    className="btn border-2 border-white text-white px-3 py-2 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition duration-200 w-full w-md-auto"
-    onClick={onClick}
-    style={{ whiteSpace: "nowrap" }}
-  >
-    {children}
-  </button>
-);
+import Button from "./ui/Button";
 
 function Header() {
   const navigate = useNavigate();
@@ -47,6 +14,7 @@ function Header() {
       className="navbar navbar-expand-md"
     >
       <div className="container-fluid">
+        {/* LOGO */}
         <div
           className="w-100 w-md-25 p-2"
           onClick={() => handleNavigate("/")}
@@ -60,6 +28,7 @@ function Header() {
           />
         </div>
 
+        {/* TOGGLER (Mobile) */}
         <button
           className="navbar-toggler me-3"
           type="button"
@@ -75,28 +44,51 @@ function Header() {
           ></span>
         </button>
 
+        {/* LINKS DE NAVEGAÇÃO */}
         <div
           className="collapse navbar-collapse w-100 w-md-75 justify-content-end"
           id="navbarNav"
         >
           <div className="navbar-nav d-flex flex-column flex-md-row align-items-md-center w-100 justify-content-end gap-2 p-3 p-md-0">
             <div className="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto me-md-4">
-              <Button onClick={() => handleNavigate("/")}>HOME</Button>
-              <Button onClick={() => handleNavigate("/pokemons")}>
+              {/* Botões Normais (Primary) */}
+              <Button variant="primary" onClick={() => handleNavigate("/")}>
+                HOME
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleNavigate("/pokemons")}
+              >
                 POKEMONS
               </Button>
-              <Button onClick={() => handleNavigate("/Itens")}>ITENS</Button>
-              <Button onClick={() => handleNavigate("/Comparar")}>
+              <Button
+                variant="primary"
+                onClick={() => handleNavigate("/Itens")}
+              >
+                ITENS
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleNavigate("/Comparar")}
+              >
                 COMPARAR
               </Button>
-              <Button onClick={() => handleNavigate("/Noticias")}>
+              <Button
+                variant="primary"
+                onClick={() => handleNavigate("/Noticias")}
+              >
                 NOTICIAS
               </Button>
             </div>
+
+            {/* Botão de Destaque (Border) */}
             <div className="mt-2 mt-md-0">
-              <ButtonBorder onClick={() => handleNavigate("/Battle")}>
+              <Button
+                variant="border"
+                onClick={() => handleNavigate("/Battle")}
+              >
                 BATALHAR
-              </ButtonBorder>
+              </Button>
             </div>
           </div>
         </div>

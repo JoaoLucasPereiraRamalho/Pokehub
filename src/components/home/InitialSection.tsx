@@ -1,3 +1,5 @@
+import Button from "../ui/Button";
+
 function InitialSection() {
   return (
     <div
@@ -15,7 +17,7 @@ function InitialSection() {
           intuitivo e feito para explorar o mundo Pokémon de um jeito totalmente
           novo.
         </h6>
-        <button className="btn-linear">SAIBA MAIS</button>
+        <Button variant="linear">SAIBA MAIS</Button>
       </div>
       <div className="d-flex w-100 w-md-50 w-lg-60 justify-content-center align-items-center image-container mt-4 mt-md-0">
         <img className="img-fluid" src="/src/assets/haunter_sem_fundo.png" />

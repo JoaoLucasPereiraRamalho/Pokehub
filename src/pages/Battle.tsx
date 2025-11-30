@@ -1,3 +1,5 @@
+import Button from "../components/ui/Button";
+
 function Battle() {
   const containerBg = "#091D3C";
 
@@ -59,9 +61,7 @@ function Battle() {
         </div>
 
         <div className="text-center mt-5">
-          <button className="btn btn-danger btn-lg px-5 py-3 fw-bold rounded-1 shadow-lg">
-            BATALHAR
-          </button>
+          <Button variant="danger">BATALHAR</Button>
         </div>
       </div>
     </div>
