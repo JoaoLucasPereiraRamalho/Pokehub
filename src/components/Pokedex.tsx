@@ -4,9 +4,10 @@ import {
   type PokemonDetail,
   type PokemonInfoCard,
   type DescricaoPokemon,
-} from "../services/PokemonService";
+} from "../types";
 import Status from "./ui/Status";
 import { getTypeColor } from "../utils/constants";
+import SearchBar from "./ui/SearchBar";
 
 // Tipo auxiliar para funções de filtro
 type SetFilter = (value: string | null) => void;
@@ -103,28 +104,11 @@ function Pokedex({
           {/* Seção de Filtros e Busca */}
           <div className="d-flex flex-column w-100 mt-5 input-fundo">
             {/* Input de Busca */}
-            <div className="div-btn-red d-flex justify-content-end w-100 px-2 py-1">
-              <button
-                className="btn-red sombra-red p-0 border-0 rounded-2"
-                onClick={handleSearchClick}
-                title="Buscar"
-              >
-                {/* Imagem do botão de busca */}
-                <img
-                  className="w-100 h-100 object-fit-cover rounded-2"
-                  src="/src/assets/poke.png"
-                  alt="buscar"
-                />
-              </button>
-            </div>
-            <input
-              className="w-100 rounded-1 border-0 h-input-principal sombra"
-              placeholder="Pesquise pelo pokemon"
+            <SearchBar
               value={localSearchTerm}
-              onChange={(e) => setLocalSearchTerm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSearchClick();
-              }}
+              onChange={setLocalSearchTerm}
+              onSearch={handleSearchClick}
+              placeholder="Pesquise pelo pokemon"
             />
 
             {/* Selects de Filtro (Tipo e Geração) */}

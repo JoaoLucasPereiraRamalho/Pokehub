@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import ItemCard from "./cards/ItemCard"; // Card para itens
 
-import { type ItemCardInfo, type ItemDetail } from "../services/PokemonService";
+import SearchBar from "./ui/SearchBar";
+import type { ItemCardInfo, ItemDetail } from "../types";
 
 // =========================================================================
 // 1. PROPS
@@ -62,34 +63,13 @@ function PageItens({
         {/* Coluna da esquerda: Busca e Cards de Itens */}
         <div className="col-12 col-md-8 col-lg-9 d-flex flex-column">
           {/* Seção de Busca */}
-          <div className="d-flex flex-column w-100 mt-5 input-fundo">
-            {/* Botão de Busca */}
-            <div className="div-btn-red d-flex justify-content-end w-100 px-2 py-1">
-              <button
-                className="btn-red sombra-red p-0 border-0 rounded-2"
-                onClick={handleSearchClick}
-              >
-                {/* Imagem do botão */}
-                <img
-                  className="w-100 h-100 object-fit-cover rounded-2"
-                  src="/src/assets/poke.png"
-                  alt="Search"
-                />
-              </button>
-            </div>
-            {/* Campo de Input */}
-            <input
-              className="w-100 rounded-1 border-0 h-input-principal sombra"
-              placeholder="Pesquise pelo nome do item"
-              value={localSearchTerm}
-              onChange={(e) => setLocalSearchTerm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearchClick();
-                }
-              }}
-            />
-          </div>
+          <SearchBar
+            value={localSearchTerm}
+            onChange={setLocalSearchTerm}
+            onSearch={handleSearchClick}
+            placeholder="Pesquise pelo nome do item"
+            className="mt-5 input-fundo"
+          />
 
           {/* Painel de Exibição dos ItemCards */}
           <div className="pokedex-painel m-5">
