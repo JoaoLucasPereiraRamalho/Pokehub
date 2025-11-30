@@ -71,7 +71,7 @@ export const TYPE_COLORS: { [key: string]: string } = {
   rock: "#B8A038",
   ghost: "#705898",
   dragon: "#7038F8",
-  steel: "#B8B8D0",
+  steel: "#5c5c61ff",
   dark: "#705848",
   fairy: "#EE99AC",
 };

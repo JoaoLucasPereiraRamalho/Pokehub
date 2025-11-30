@@ -1,17 +1,14 @@
 import React, { useMemo, useState } from "react";
-import {
-  type PokemonDetail,
-  type PokemonName,
-} from "../services/PokemonService";
 import CompareCircle from "./vizualizations/CompareCircle";
 import Card from "./cards/Card";
+import { type PokemonDetail, type PokemonName } from "../types";
 import { STAT_DISPLAY_NAMES, STAT_KEYS } from "../utils/constants";
 
 // =====================================================================
-// 1. DEFINIÇÃO DE TIPOS E CONSTANTES
+// 1. DEFINIÇÃO DE PROPS
 // =====================================================================
 
-interface ComparePageProps {
+interface CompareViewProps {
   pokemonNames: PokemonName[];
   selectedPokemon1: string;
   selectedPokemon2: string;
@@ -26,8 +23,7 @@ interface ComparePageProps {
 // =====================================================================
 
 /**
- * Determina a classe CSS para destacar se a estatística de um Pokémon
- * é superior ou inferior à do seu oponente.
+ * Determina a classe CSS para destacar vencedor/perdedor
  */
 const getWinnerOrLoserClass = (
   statName: keyof PokemonDetail,
@@ -35,47 +31,36 @@ const getWinnerOrLoserClass = (
   p2: PokemonDetail | null,
   isP1: boolean
 ): string => {
-  if (!p1 || !p2) return ""; // Não destaca se algum dado estiver faltando
+  if (!p1 || !p2) return "";
 
+  // Forçamos o tipo para garantir que é number, pois sabemos que os stats são numbers
   const stat1 = p1[statName] as number;
   const stat2 = p2[statName] as number;
 
-  if (stat1 === stat2) {
-    return ""; // Empate
-  }
+  if (stat1 === stat2) return "";
 
-  // Lógica de destaque para o Pokémon 1
   if (isP1) {
-    if (stat1 > stat2) return "text-success fw-bold"; // Vencedor
-    if (stat1 < stat2) return "text-danger fw-bold"; // Perdedor
+    return stat1 > stat2 ? "text-success fw-bold" : "text-danger fw-bold";
+  } else {
+    return stat2 > stat1 ? "text-success fw-bold" : "text-danger fw-bold";
   }
-  // Lógica de destaque para o Pokémon 2
-  else {
-    if (stat2 > stat1) return "text-success fw-bold"; // Vencedor
-    if (stat2 < stat1) return "text-danger fw-bold"; // Perdedor
-  }
-
-  return "";
 };
 
 /**
- * Gera sugestões de autocompletar baseadas na lista completa de nomes e no input atual.
+ * Gera sugestões de autocompletar
  */
 const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
-  if (input.length < 2) return []; // Retorna vazio se houver poucos caracteres
+  if (input.length < 2) return [];
   const lowerInput = input.toLowerCase();
   return names
     .filter((p) => p.name.toLowerCase().startsWith(lowerInput))
-    .slice(0, 10); // Limita a 10 sugestões
+    .slice(0, 10);
 };
 
 // =====================================================================
-// 3. COMPONENTE DE INPUT DE BUSCA (SearchInput)
+// 3. COMPONENTE DE INPUT DE BUSCA (Local)
 // =====================================================================
 
-/**
- * Componente funcional para o campo de busca com autocompletar.
- */
 const SearchInput: React.FC<{
   searchName: string;
   setSearchName: (name: string) => void;
@@ -83,18 +68,14 @@ const SearchInput: React.FC<{
   isPokemon1: boolean;
   onSelect: (name: string) => void;
 }> = ({ searchName, setSearchName, suggestions, isPokemon1, onSelect }) => {
-  // Lida com a confirmação da seleção (clique ou Enter)
   const handleInputConfirm = (name: string) => {
-    // Chama a função passada via props para atualizar o estado no App.tsx
     onSelect(name.toLowerCase().trim());
-    // Atualiza o estado interno do input para refletir a seleção
     setSearchName(name.toLowerCase().trim());
   };
 
   return (
     <div className="position-relative w-100 mb-0">
       <div className="input-group">
-        {/* Campo de input */}
         <input
           type="text"
           className="form-control p-2 text-dark bg-white w-100 text-capitalize shadow-sm border-0"
@@ -104,15 +85,11 @@ const SearchInput: React.FC<{
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
           onBlur={() => {
-            // Pequeno delay para permitir o clique nas sugestões antes de fechar a lista
             setTimeout(() => {
-              // Verifica se o texto digitado corresponde exatamente a uma sugestão
               const exactMatch = suggestions.find(
                 (p) => p.name.toLowerCase() === searchName.toLowerCase()
               );
-              if (exactMatch) {
-                handleInputConfirm(exactMatch.name);
-              }
+              if (exactMatch) handleInputConfirm(exactMatch.name);
             }, 150);
           }}
           onKeyDown={(e) => {
@@ -121,7 +98,7 @@ const SearchInput: React.FC<{
             }
           }}
         />
-        {/* Botão de busca */}
+        {/* Botão de lupa simples */}
         <button
           className="btn btn-outline-secondary border-0 text-dark bg-warning shadow-sm"
           type="button"
@@ -133,7 +110,7 @@ const SearchInput: React.FC<{
         </button>
       </div>
 
-      {/* Lista de Sugestões (Dropdown) */}
+      {/* Lista de Sugestões */}
       {suggestions.length > 0 && searchName.length >= 2 && (
         <ul
           className="list-group position-absolute w-100 mt-1 shadow-lg"
@@ -143,7 +120,6 @@ const SearchInput: React.FC<{
             <li
               key={p.name}
               className="list-group-item list-group-item-action text-capitalize text-start"
-              // Usando onMouseDown para garantir que o clique seja capturado antes do onBlur do input
               onMouseDown={() => handleInputConfirm(p.name)}
               style={{ cursor: "pointer" }}
             >
@@ -157,10 +133,10 @@ const SearchInput: React.FC<{
 };
 
 // =====================================================================
-// 4. COMPONENTE PRINCIPAL (ComparePage)
+// 4. COMPONENTE PRINCIPAL (CompareView)
 // =====================================================================
 
-function ComparePage({
+function CompareView({
   pokemonNames,
   selectedPokemon1,
   selectedPokemon2,
@@ -168,76 +144,64 @@ function ComparePage({
   pokemon2Detail,
   onSelectPokemon1,
   onSelectPokemon2,
-}: ComparePageProps) {
-  // Estados locais para gerenciar o texto de busca nos inputs
+}: CompareViewProps) {
   const [searchName1, setSearchName1] = useState(selectedPokemon1);
   const [searchName2, setSearchName2] = useState(selectedPokemon2);
 
-  //Memos para Autocompletar
-
-  // Sugestões para o Pokémon 1
+  // Memos para Autocompletar
   const suggestions1 = useMemo(
     () => getSuggestions(pokemonNames, searchName1),
     [pokemonNames, searchName1]
   );
 
-  // Sugestões para o Pokémon 2
   const suggestions2 = useMemo(
     () => getSuggestions(pokemonNames, searchName2),
     [pokemonNames, searchName2]
   );
 
-  //Memos para BST
-
-  // Cálculo do BST para o Pokémon 1
+  // Memos para BST (Base Stat Total)
   const bst1 = useMemo(
     () =>
       pokemon1Detail
         ? STAT_KEYS.reduce(
-            (sum, stat) => sum + (pokemon1Detail[stat] as number),
+            (sum, stat) =>
+              sum + (pokemon1Detail[stat as keyof PokemonDetail] as number),
             0
           )
         : 0,
     [pokemon1Detail]
   );
 
-  // Cálculo do BST para o Pokémon 2
   const bst2 = useMemo(
     () =>
       pokemon2Detail
         ? STAT_KEYS.reduce(
-            (sum, stat) => sum + (pokemon2Detail[stat] as number),
+            (sum, stat) =>
+              sum + (pokemon2Detail[stat as keyof PokemonDetail] as number),
             0
           )
         : 0,
     [pokemon2Detail]
   );
 
-  //Funções de Renderização Local
-
-  /**
-   * Renderiza as barras de estatísticas detalhadas.
-   */
+  // --- Renderização de Barras ---
   const renderStatBars = (pokemon: PokemonDetail | null, isP1: boolean) => {
     if (!pokemon)
-      return (
-        <div className="p-4 text-center text-muted">Aguardando seleção...</div>
-      );
-    const maxStat = 255; // Valor máximo de uma estatística base
+      return <div className="p-4 text-center text-muted">Aguardando...</div>;
 
-    // Define a cor da barra com base no Pokémon (verde para P1, vermelho para P2)
+    const maxStat = 255;
     const barColor = isP1 ? "#4CAF50" : "#F44336";
 
     return (
       <div className="w-100 px-3">
-        {STAT_KEYS.map((statName) => {
-          const value = pokemon[statName] as number;
-          const label =
-            STAT_DISPLAY_NAMES[statName as keyof typeof STAT_DISPLAY_NAMES];
+        {STAT_KEYS.map((statKey) => {
+          const key = statKey as keyof PokemonDetail;
+          const value = pokemon[key] as number;
+          const label = STAT_DISPLAY_NAMES[key];
           const percentage = (value / maxStat) * 100;
 
           return (
-            <div key={statName} className="mb-3">
+            <div key={key} className="mb-3">
               <div className="d-flex justify-content-between mb-1">
                 <span className="fw-semibold text-uppercase">{label}</span>
                 <small className="text-white">{value}</small>
@@ -246,14 +210,8 @@ function ComparePage({
                 <div
                   className="progress-bar"
                   role="progressbar"
-                  style={{
-                    width: `${percentage}%`,
-                    backgroundColor: barColor,
-                  }}
-                  aria-valuenow={value}
-                  aria-valuemin={0}
-                  aria-valuemax={maxStat}
-                ></div>
+                  style={{ width: `${percentage}%`, backgroundColor: barColor }}
+                />
               </div>
             </div>
           );
@@ -262,52 +220,47 @@ function ComparePage({
     );
   };
 
-  /**
-   * Renderiza a tabela de comparação de estatísticas, destacando o vencedor.
-   */
+  // --- Renderização da Tabela ---
   const renderComparisonStats = () => {
     if (!pokemon1Detail || !pokemon2Detail) {
       return (
         <p className="text-white text-center mt-5 fs-5 fw-semibold">
-          Selecione dois Pokémon nos menus acima para iniciar a comparação.
+          Selecione dois Pokémon para comparar.
         </p>
       );
     }
 
-    // ALTERAÇÃO AQUI: Mudamos p-4 para "p-3 p-md-4" (menos padding no celular)
     return (
       <div className="w-100 mt-5 p-3 p-md-4 bg-white rounded-3 shadow-lg">
         <h2 className="fs-3 fw-bold text-center mb-4 text-dark">
           Tabela de Estatísticas Base
         </h2>
-        {/* NOVA DIV: table-responsive permite scroll horizontal no mobile */}
+
+        {/* MUDANÇA: Responsividade da tabela */}
         <div className="table-responsive">
           <table className="table table-bordered table-striped text-center align-middle">
             <thead>
               <tr className="table-secondary">
-                <th className="py-2 px-2 px-md-3 text-start">Estatística</th>
-                <th className="py-2 px-2 px-md-3 text-capitalize">
+                <th className="py-2 px-3 text-start">Estatística</th>
+                <th className="py-2 px-3 text-capitalize">
                   {pokemon1Detail.name}
                 </th>
-                <th className="py-2 px-2 px-md-3 text-capitalize">
+                <th className="py-2 px-3 text-capitalize">
                   {pokemon2Detail.name}
                 </th>
               </tr>
             </thead>
             <tbody>
               {STAT_KEYS.map((statKey) => {
-                // Precisamos garantir que a chave é válida para o TypeScript
                 const key = statKey as keyof PokemonDetail;
-                const statLabel = STAT_DISPLAY_NAMES[key];
-
                 return (
                   <tr key={key}>
-                    <td className="py-2 px-2 px-md-4 fw-semibold text-start text-capitalize">
-                      {statLabel}
+                    <td className="py-2 px-3 fw-semibold text-start text-capitalize">
+                      {STAT_DISPLAY_NAMES[key]}
                     </td>
                     <td
-                      className={`py-2 px-2 px-md-4 ${getWinnerOrLoserClass(
-                        key, // Passamos 'key' que é do tipo correto
+                      className={`py-2 px-3 ${getWinnerOrLoserClass(
+                        key,
                         pokemon1Detail,
                         pokemon2Detail,
                         true
@@ -316,8 +269,8 @@ function ComparePage({
                       {pokemon1Detail[key] as number}
                     </td>
                     <td
-                      className={`py-2 px-2 px-md-4 ${getWinnerOrLoserClass(
-                        key, // Passamos 'key' que é do tipo correto
+                      className={`py-2 px-3 ${getWinnerOrLoserClass(
+                        key,
                         pokemon1Detail,
                         pokemon2Detail,
                         false
@@ -328,29 +281,27 @@ function ComparePage({
                   </tr>
                 );
               })}
-
-              {/* Linha Total BST */}
               <tr className="fw-bold border-top border-3 border-primary">
-                <td className="py-3 px-2 px-md-4 text-dark fs-6 fs-md-5 text-start">
+                <td className="py-3 px-3 text-dark fs-5 text-start">
                   Total BST
                 </td>
                 <td
-                  className={`py-3 px-2 px-md-4 fs-6 fs-md-5 ${
+                  className={`py-3 px-3 fs-5 ${
                     bst1 > bst2
-                      ? "text-success fw-bold"
+                      ? "text-success"
                       : bst1 < bst2
-                      ? "text-danger fw-bold"
+                      ? "text-danger"
                       : ""
                   }`}
                 >
                   {bst1}
                 </td>
                 <td
-                  className={`py-3 px-2 px-md-4 fs-6 fs-md-5 ${
+                  className={`py-3 px-3 fs-5 ${
                     bst2 > bst1
-                      ? "text-success fw-bold"
+                      ? "text-success"
                       : bst2 < bst1
-                      ? "text-danger fw-bold"
+                      ? "text-danger"
                       : ""
                   }`}
                 >
@@ -359,34 +310,31 @@ function ComparePage({
               </tr>
             </tbody>
           </table>
-        </div>{" "}
-        {/* Fim da table-responsive */}
+        </div>
+
         <p className="text-sm text-muted mt-3 text-center small">
-          <span className="text-success fw-bold">Verde</span> indica a
-          estatística mais alta.{" "}
-          <span className="text-danger fw-bold">Vermelho</span> indica a
-          estatística mais baixa.
+          <span className="text-success fw-bold">Verde</span> indica o maior
+          valor. <span className="text-danger fw-bold">Vermelho</span> indica o
+          menor valor.
         </p>
       </div>
     );
   };
 
-  //Principal
-
+  // --- Renderização Principal ---
   return (
-    <div className="min-vh-100 fundo-degrade-compare text-white p-5">
+    <div className="min-vh-100 fundo-degrade-compare text-white p-3 p-md-5">
       <div className="container-fluid mx-auto">
-        {/* Título */}
         <div className="d-flex justify-content-center mb-5">
           <h1 className="fs-1 fw-bold mb-2">COMPARE JÁ!</h1>
         </div>
 
-        {/* Seleção de Pokémon (Lado a Lado) */}
-        <div className="d-flex justify-content-center align-items-center gap-5">
-          {/* Coluna do Pokémon 1 */}
+        {/* MUDANÇA: Layout flexível (Coluna no mobile, Linha no desktop) */}
+        <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 gap-md-5">
+          {/* Coluna P1 */}
           <div
-            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
-            style={{ width: "400px", maxWidth: "50%" }}
+            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-4 p-md-5"
+            style={{ width: "100%", maxWidth: "400px" }}
           >
             <SearchInput
               searchName={searchName1}
@@ -395,21 +343,21 @@ function ComparePage({
               isPokemon1={true}
               onSelect={onSelectPokemon1}
             />
-            {/* O componente Card precisa de um ajuste para aceitar PokemonDetail diretamente, 
-                mas aqui ele está sendo usado para renderizar a visualização */}
-            <Card
-              pokemon={pokemon1Detail}
-              bst={bst1}
-              onDetailClick={() => {}} // Não faz nada ao clicar no card de comparação
-            />
+            <div className="mt-4 w-100 d-flex justify-content-center">
+              <Card
+                pokemon={pokemon1Detail}
+                bst={bst1}
+                onDetailClick={() => {}}
+              />
+            </div>
           </div>
 
-          <span className="fs-3 fw-bold text-white d-none d-sm-block">VS</span>
+          <span className="fs-1 fw-bold text-white my-3 my-md-0">VS</span>
 
-          {/* Coluna do Pokémon 2 */}
+          {/* Coluna P2 */}
           <div
-            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-5"
-            style={{ width: "400px", maxWidth: "50%" }}
+            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-4 p-md-5"
+            style={{ width: "100%", maxWidth: "400px" }}
           >
             <SearchInput
               searchName={searchName2}
@@ -418,25 +366,25 @@ function ComparePage({
               isPokemon1={false}
               onSelect={onSelectPokemon2}
             />
-            <Card
-              pokemon={pokemon2Detail}
-              bst={bst2}
-              onDetailClick={() => {}}
-            />
+            <div className="mt-4 w-100 d-flex justify-content-center">
+              <Card
+                pokemon={pokemon2Detail}
+                bst={bst2}
+                onDetailClick={() => {}}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Barras de Estatísticas e Círculo de Comparação */}
+        {/* Gráficos e Barras */}
         <div className="row text-white mt-5 pt-5 align-items-center">
-          {/* Barras do Pokémon 1 */}
           <div className="col-sm-12 col-md-5">
             <h5 className="text-uppercase text-center mb-4 text-success">
-              Estatísticas de {pokemon1Detail?.name || "Pokémon 1"}
+              {pokemon1Detail?.name || "Pokémon 1"}
             </h5>
             {renderStatBars(pokemon1Detail, true)}
           </div>
 
-          {/* Círculo de Comparação Central */}
           <div className="col-sm-12 col-md-2 d-flex justify-content-center align-items-center my-4">
             <CompareCircle
               pokemon1={pokemon1Detail}
@@ -444,20 +392,18 @@ function ComparePage({
             />
           </div>
 
-          {/* Barras do Pokémon 2 */}
           <div className="col-sm-12 col-md-5">
             <h5 className="text-uppercase text-center mb-4 text-danger">
-              Estatísticas de {pokemon2Detail?.name || "Pokémon 2"}
+              {pokemon2Detail?.name || "Pokémon 2"}
             </h5>
             {renderStatBars(pokemon2Detail, false)}
           </div>
         </div>
 
-        {/* Tabela de Comparação (Detalhada) */}
         {renderComparisonStats()}
       </div>
     </div>
   );
 }
 
-export default ComparePage;
+export default CompareView;

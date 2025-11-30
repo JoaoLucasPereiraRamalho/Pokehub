@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ComparePageVisual from "../components/ComparePage";
+import ComparePageVisual from "../components/CompareView";
 import {
   getPokemonNameList,
   getPokemonPorNome,

@@ -1,48 +1,41 @@
 import { useState, useEffect } from "react";
 import Card from "../cards/Card";
+import Button from "../ui/Button";
+
 import {
   getPokemonInfoCards,
   getPokemonPorNome,
-  type PokemonInfoCard,
-  type PokemonDetail,
 } from "../../services/PokemonService";
 
+import { type PokemonDetail } from "../../types";
+
 function PokemonsHome() {
-  // Estados para gerenciar dados e carregamento
-  const [pokemons, setPokemons] = useState<PokemonInfoCard[]>([]);
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Efeito que roda uma vez para carregar os Pokémon
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        // Busca dados básicos para 8 Pokémon
         const basicData = await getPokemonInfoCards(8);
-        setPokemons(basicData);
 
-        // Cria promises para buscar os detalhes de cada um
         const detailsPromises = basicData.map((pokemon) =>
           getPokemonPorNome(pokemon.name)
         );
 
-        // Espera todos os detalhes serem carregados
         const details = await Promise.all(detailsPromises);
         setPokemonDetails(details);
       } catch (error) {
         console.error("Erro ao carregar pokemons:", error);
       } finally {
-        // Termina o estado de carregamento
         setLoading(false);
       }
     };
 
     fetchPokemons();
-  }, []); // Array de dependências vazio: roda apenas no montagem
+  }, []);
 
-  // Exibe "Carregando..." enquanto os dados não chegam
   if (loading) {
-    return <div className="text-center text-white">Carregando...</div>;
+    return <div className="text-center text-white p-5">Carregando...</div>;
   }
 
   return (
@@ -54,20 +47,17 @@ function PokemonsHome() {
         Pokemons
       </h1>
 
-      {/* Grid para exibir os cards */}
       <div
-        className="row justify-content-center g-3 mx-auto"
+        className="row justify-content-center g-4 mx-auto"
         style={{ maxWidth: "1200px" }}
       >
-        {/* Mapeia os detalhes para renderizar cada Card */}
         {pokemonDetails.map((pokemon) => (
           <div
             key={pokemon.id}
-            className="col-6 col-md-3 d-flex justify-content-center"
+            className="col-12 col-sm-6 col-lg-3 d-flex justify-content-center"
           >
             <Card
               pokemon={pokemon}
-              // Calcula o BST (Base Stat Total) para o card
               bst={
                 (pokemon.hp || 0) +
                 (pokemon.attack || 0) +
@@ -76,17 +66,17 @@ function PokemonsHome() {
                 (pokemon.specialDefense || 0) +
                 (pokemon.speed || 0)
               }
-              onDetailClick={(name) => console.log(`Detalhes de ${name}`)} // Função de clique
+              onDetailClick={(name) => console.log(`Detalhes de ${name}`)}
             />
           </div>
         ))}
       </div>
 
-      {/* Botão para carregar mais itens (funcionalidade futura) */}
-      <div className="d-flex justify-content-center">
-        <button className="btn-linear-2 py-3 mt-5 w-50 w-md-25 sombra">
-          <h3>Carregar mais</h3>
-        </button>
+      {/* Botão para carregar mais itens usando o componente Button novo */}
+      <div className="d-flex justify-content-center mt-5">
+        <Button variant="linear-2" className="w-50 w-md-25 py-3">
+          <h3 className="m-0 fs-4">Carregar mais</h3>
+        </Button>
       </div>
     </div>
   );
