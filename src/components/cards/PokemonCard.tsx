@@ -1,5 +1,6 @@
 import React from "react";
 import { getTypeColor } from "../../utils/constants";
+import AsyncImage from "../ui/AsyncImage";
 
 interface PokemonCardProps {
   id: number;
@@ -38,15 +39,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
       style={{ marginTop: "2.5rem", cursor: "pointer" }}
     >
       <div className="d-flex image-wrapper justify-content-center w-100">
-        <img
+        <AsyncImage
           className="image-card-pokedex w-50"
           src={imgAnimada}
           alt={name}
-          // Fallback simples se a imagem falhar
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
-          }}
         />
       </div>
 

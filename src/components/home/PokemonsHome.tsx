@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Card from "../cards/Card";
 import Button from "../ui/Button";
+import Loading from "../ui/Loading";
 
 import {
   getPokemonInfoCards,
@@ -35,7 +36,7 @@ function PokemonsHome() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-white p-5">Carregando...</div>;
+    return <Loading />;
   }
 
   return (

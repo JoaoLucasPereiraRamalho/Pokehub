@@ -428,3 +428,34 @@
   font-weight: bold;
   box-shadow: black 3px 0px 15px, inset 0 0 50px #a3e9ee;
 }
+
+/* Animação de Rotação (Spin) */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 1.5s linear infinite;
+}
+
+/* Animação de Pulso para o texto (opcional, fica bonito) */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
