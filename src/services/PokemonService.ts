@@ -10,7 +10,7 @@ import type {
   ItemDetail,
 } from "../types";
 import { getGenerationName } from "../utils/constants";
-import { Move } from "../types/battle";
+import type { Move } from "../types/battle";
 
 /**
  * Instância do Axios configurada para acessar a base da PokeAPI.
@@ -244,5 +244,29 @@ export const getMoveDetails = async (url: string): Promise<Move> => {
   } catch (error) {
     console.error("Erro ao buscar move:", error);
     return { name: "Struggle", power: 50, type: "normal", accuracy: 100 };
+  }
+};
+
+export const getRandomMoves = async (pokemonName: string): Promise<Move[]> => {
+  try {
+    // 1. Busca a lista completa de movimentos do Pokémon
+    const response = await api.get(`pokemon/${pokemonName}`);
+    const allMoves = response.data.moves;
+
+    if (!allMoves || allMoves.length === 0) return [];
+
+    // 2. Embaralha e pega 4 aleatórios
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const shuffled = allMoves.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 4);
+
+    // 3. Busca os detalhes (Poder, Tipo) desses 4 movimentos
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const movePromises = selected.map((m: any) => getMoveDetails(m.move.url));
+
+    return await Promise.all(movePromises);
+  } catch (error) {
+    console.error("Erro ao sortear moves:", error);
+    return [];
   }
 };

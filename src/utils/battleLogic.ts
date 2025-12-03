@@ -1,4 +1,4 @@
-import { BattlePokemon, Move } from "../types/battle";
+import type { BattlePokemon, Move } from "../types/battle";
 
 export const calculateDamage = (
   attacker: BattlePokemon,

@@ -1,4 +1,4 @@
-import { PokemonDetail } from "./index";
+import type { PokemonDetail } from ".";
 
 export type Move = {
   name: string;
