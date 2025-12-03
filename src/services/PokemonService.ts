@@ -10,6 +10,7 @@ import type {
   ItemDetail,
 } from "../types";
 import { getGenerationName } from "../utils/constants";
+import { Move } from "../types/battle";
 
 /**
  * Instância do Axios configurada para acessar a base da PokeAPI.
@@ -220,4 +221,28 @@ export const getItemDetailByName = async (
   };
 
   return detail;
+};
+
+// =========================================================================
+// 5. FUNÇÕES DE BATALHA (Moves)
+// =========================================================================
+
+/**
+ * Busca detalhes de um movimento (golpe) pela URL.
+ */
+export const getMoveDetails = async (url: string): Promise<Move> => {
+  try {
+    const response = await api.get(url);
+    const d = response.data;
+
+    return {
+      name: d.name.replace("-", " "),
+      power: d.power || 0,
+      type: d.type.name,
+      accuracy: d.accuracy || 100,
+    };
+  } catch (error) {
+    console.error("Erro ao buscar move:", error);
+    return { name: "Struggle", power: 50, type: "normal", accuracy: 100 };
+  }
 };
