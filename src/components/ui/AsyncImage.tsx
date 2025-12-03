@@ -24,7 +24,7 @@ const AsyncImage: React.FC<AsyncImageProps> = ({
       {/* 1. Spinner (Aparece enquanto isLoading for true) */}
       {isLoading && (
         <img
-          src="/src/assets/poke.png"
+          src="/src/assets/Pokebola.png"
           alt="Carregando..."
           className="spinning position-absolute"
           style={{
