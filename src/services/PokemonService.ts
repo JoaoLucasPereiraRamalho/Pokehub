@@ -249,24 +249,46 @@ export const getMoveDetails = async (url: string): Promise<Move> => {
 
 export const getRandomMoves = async (pokemonName: string): Promise<Move[]> => {
   try {
-    // 1. Busca a lista completa de movimentos do Pokémon
     const response = await api.get(`pokemon/${pokemonName}`);
     const allMoves = response.data.moves;
 
     if (!allMoves || allMoves.length === 0) return [];
 
-    // 2. Embaralha e pega 4 aleatórios
+    // 1. Filtrar apenas movimentos aprendidos por LEVEL-UP
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const shuffled = allMoves.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 4);
+    const naturalMoves = allMoves.filter((moveEntry: any) => {
+      const details = moveEntry.version_group_details;
+      // Verifica se em alguma versão o método de aprendizado foi level-up
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return details.some((d: any) => d.move_learn_method.name === "level-up");
+    });
 
-    // 3. Busca os detalhes (Poder, Tipo) desses 4 movimentos
+    // 2. Ordenar pelos que são aprendidos mais tarde (nível 100 -> nível 1)
+    // Isso garante que pegamos os golpes mais "maduros" do Pokémon
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const movePromises = selected.map((m: any) => getMoveDetails(m.move.url));
+    naturalMoves.sort((a: any, b: any) => {
+      // Pega o nível de aprendizado da última versão disponível (geralmente a mais recente)
+      const levelA =
+        a.version_group_details[a.version_group_details.length - 1]
+          .level_learned_at;
+      const levelB =
+        b.version_group_details[b.version_group_details.length - 1]
+          .level_learned_at;
+      return levelB - levelA;
+    });
 
-    return await Promise.all(movePromises);
+    // 3. Pegar APENAS os Top 4 movimentos mais recentes
+    // (Isso já inclui status moves fortes como Dragon Dance ou Swords Dance se forem level alto)
+    const topMoves = naturalMoves.slice(0, 4);
+
+    // 4. Buscar detalhes (Power, Type, Accuracy) apenas desses 4
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const movesPromises = topMoves.map((m: any) => getMoveDetails(m.move.url));
+    const movesWithStats = await Promise.all(movesPromises);
+
+    return movesWithStats;
   } catch (error) {
-    console.error("Erro ao sortear moves:", error);
-    return [];
+    console.error("Erro ao selecionar moves naturais:", error);
+    return [{ name: "Tackle", power: 40, type: "normal", accuracy: 100 }];
   }
 };
