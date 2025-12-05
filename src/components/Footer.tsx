@@ -1,32 +1,146 @@
+import React from "react";
+import { Link } from "react-router-dom"; // Importante para navegação interna
+
 function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div
+    <footer
       style={{ backgroundColor: "#091D3C" }}
-      className="text-white py-4 px-3 px-md-5 d-flex flex-column flex-md-row justify-content-between align-items-center"
+      className="text-white pt-5 pb-3 border-top border-secondary border-opacity-25"
     >
-      <div className="w-100 w-md-25 d-flex flex-column align-items-center align-items-md-start mb-3 mb-md-0 order-md-1">
-        <h5>TITULO</h5>
-        <h5>SOBRE</h5>
-        <h5>BATALHAS</h5>
-        <h5>COMPARAÇÕES</h5>
-        <h5>NOVIDADES</h5>
+      <div className="container">
+        <div className="row text-center text-md-start">
+          {/* --- COLUNA 1: NAVEGAÇÃO --- */}
+          <div className="col-12 col-md-4 mb-4 mb-md-0">
+            <h5
+              className="text-uppercase fw-bold text-warning mb-3"
+              style={{ letterSpacing: "1px" }}
+            >
+              Explorar
+            </h5>
+            <ul className="list-unstyled d-flex flex-column gap-2">
+              <li>
+                <Link
+                  to="/"
+                  className="text-white-50 text-decoration-none hover-link"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pokemons"
+                  className="text-white-50 text-decoration-none hover-link"
+                >
+                  Pokédex Completa
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/Comparar"
+                  className="text-white-50 text-decoration-none hover-link"
+                >
+                  Comparar Status
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/Battle"
+                  className="text-white-50 text-decoration-none hover-link"
+                >
+                  Arena de Batalha
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/Noticias"
+                  className="text-white-50 text-decoration-none hover-link"
+                >
+                  Últimas Notícias
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* --- COLUNA 2: SOBRE O DESENVOLVEDOR --- */}
+          <div className="col-12 col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center justify-content-start">
+            <div className="d-flex gap-3 mb-4">
+              <a href="#" className="social-icon" aria-label="Facebook">
+                <i className="bi bi-facebook"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="Instagram">
+                <i className="bi bi-instagram"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="WhatsApp">
+                <i className="bi bi-whatsapp"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="LinkedIn">
+                <i className="bi bi-linkedin"></i>
+              </a>
+            </div>
+
+            <div className="mt-3">
+              <span className="fw-bold d-block text-center">
+                Desenvolvido por
+              </span>
+              <span className="text-info d-block text-center">
+                João Lucas Pereira Ramalho
+              </span>
+            </div>
+          </div>
+
+          {/* --- COLUNA 3: CONTATO E LOGO --- */}
+          <div className="col-12 col-md-4 d-flex flex-column align-items-center align-items-md-end">
+            <img
+              src="/src/assets/lunala_2.png"
+              alt="Lunala Logo"
+              className="mb-3 hover-scale transition-all"
+              style={{
+                width: "80px",
+                height: "80px",
+                objectFit: "contain",
+                filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))",
+              }}
+            />
+
+            <div className="text-center text-md-end">
+              <h6 className="fw-bold text-uppercase mb-1">Contato</h6>
+              <a
+                href="mailto:jucasramalho@gmail.com"
+                className="text-white-50 text-decoration-none hover-link"
+              >
+                jucasramalho@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* --- RODAPÉ DO RODAPÉ (COPYRIGHT) --- */}
+        <hr className="my-4 border-secondary opacity-25" />
+
+        <div className="text-center">
+          <small className="text-white-50">
+            &copy; {currentYear} PokeHub. Todos os direitos reservados. Pokémon
+            e nomes de personagens são marcas comerciais da Nintendo.
+          </small>
+        </div>
       </div>
 
-      <div className="w-100 w-md-50 text-center d-flex flex-column justify-content-center mb-3 mb-md-0 order-md-2">
-        <h5 className="mb-1">Desenvolvido por João Lucas Pereira Ramalho</h5>
-        <h5>© 2025 PokeHub. Todos os direitos reservados.</h5>
-      </div>
-
-      <div className="w-100 w-md-25 d-flex flex-column align-items-center align-items-md-end mb-3 mb-md-0 order-md-3">
-        <img
-          className="mb-3"
-          style={{ width: "80px", height: "80px" }}
-          src="/src/assets/lunala_2.png"
-        />
-        <h6>Email de contato:</h6>
-        <h6 className="mb-0">jucasramalho@gmail.com</h6>
-      </div>
-    </div>
+      {/* CSS Local para efeito de Hover nos links */}
+      <style>
+        {`
+          .hover-link:hover {
+            color: #fff !important;
+            padding-left: 5px;
+            transition: all 0.3s ease;
+          }
+          .hover-link {
+            transition: all 0.3s ease;
+          }
+        `}
+      </style>
+    </footer>
   );
 }
 
