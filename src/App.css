@@ -400,19 +400,21 @@
 }
 
 .bg-transparent {
-  background: linear-gradient(
-    to top,
-    rgba(106, 207, 218, 0),
-    #2788a8,
-    rgba(106, 207, 218, 0)
-  );
+  /* ANTES (Linear): */
+  /* background: linear-gradient(90deg, #091d3a 0%, #154c68 100%); */
+
+  /* DEPOIS (Radial): */
+  /* Sintaxe: radial-gradient(forma at posição, cor-interna, cor-externa) */
+  background: radial-gradient(circle at center, #1a658a 0%, #091d3a 100%);
+
+  /* Resto das propriedades continua igual */
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   border: none;
-  padding: 15px 40px;
-  font-size: 1.25rem;
-  font-weight: bold;
-  border-radius: 3%;
   color: white;
-  box-shadow: black 3px 0px 15px, inset 0 0 50px #a3e9ee;
+  min-height: 450px;
+  box-shadow: rgba(0, 0, 0, 0.5) 3px 0px 15px,
+    inset 0 0 30px rgba(163, 233, 238, 0.2);
 }
 
 .bg-transparent-2 {
@@ -462,7 +464,7 @@
 
 .battle-background {
   background-image: url("https://preview.redd.it/d9spuwer2c491.png?width=1050&format=png&auto=webp&s=9ca8c75c63da9f8bb134e955d73e2770d073375e");
-  background: url("https://preview.redd.it/d9spuwer2c491.png?width=1050&format=png&auto=webp&s=9ca8c75c63da9f8bb134e955d73e2770d073375e")
+  background: url("https://www.reddit.com/r/PokemonRMXP/comments/v7hz6t/how_can_i_make_custom_battle_backgrounds/?tl=pt-brhttps://i.pinimg.com/originals/28/92/21/2892212330693257c70529d380967a21.jpg")
     no-repeat center center fixed;
   background-size: cover;
   position: relative;

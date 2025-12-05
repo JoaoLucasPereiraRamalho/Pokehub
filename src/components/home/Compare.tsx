@@ -6,8 +6,10 @@ import Loading from "../ui/Loading";
 
 import { getPokemonPorNome } from "../../services/PokemonService";
 import { type PokemonDetail } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 function Compare() {
+  const navigate = useNavigate();
   const [pokemon1, setPokemon1] = useState<PokemonDetail | null>(null);
   const [pokemon2, setPokemon2] = useState<PokemonDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,6 @@ function Compare() {
 
   if (loading) {
     return (
-      // Um container menor para o banner não ficar gigante no loading
       <div
         style={{ backgroundColor: "#091D3C", minHeight: "500px" }}
         className="d-flex justify-content-center align-items-center"
@@ -60,27 +61,40 @@ function Compare() {
       style={{ backgroundColor: "#091D3C" }}
       className="d-flex justify-content-center p-3 p-md-5"
     >
-      {/* Container Principal "Vidro" */}
-      {/* MUDANÇA: flex-lg-row (Só fica lado a lado em telas GRANDES). 
-          Em tablets e celulares, fica coluna (um em cima do outro) */}
-      <div className="bg-transparent d-flex flex-column flex-lg-row rounded-5 w-100 w-lg-85 align-items-center overflow-hidden">
+      {/* Container Principal */}
+      <div
+        className="d-flex flex-column flex-lg-row rounded-5 w-100 w-lg-85 align-items-center overflow-hidden bg-transparent"
+        style={{
+          minHeight: "450px", // Garante altura
+        }}
+      >
         {/* Lado Esquerdo: Texto */}
-        {/* MUDANÇA: w-lg-40. Centraliza texto no mobile/tablet */}
         <div className="w-100 w-lg-40 p-4 p-md-5 text-center text-lg-start">
           <div className="w-100 mb-4 mb-md-0">
-            <h1 className="text-white display-5 fw-bold">
-              COMPARAR E DESCOBRIR!
+            <h1 className="text-white display-5 fw-bold text-uppercase">
+              COMPARAR E <br /> DESCOBRIR!
             </h1>
-            <h5 className="mb-4 text-white mt-3 fw-light">
+            <h5
+              className="mb-4 text-white-50 mt-3 fw-normal fs-6"
+              style={{ lineHeight: "1.6" }}
+            >
               Compare os status dos pokemons de maneira simples e rápida, veja
               de maneira dinâmica os melhores status, decida qual pokemon usar
               no seu time e descubra quais os pokemons mais fortes!
             </h5>
           </div>
           <div className="mt-4 mt-md-5">
+            {/* MUDANÇA 2: Botão Azul Escuro Sólido */}
             <Button
-              variant="linear-2"
-              className="py-3 px-5 w-100 w-md-auto sombra"
+              variant="primary" // Usamos primary para limpar estilos extras
+              className="py-3 px-5 w-100 w-md-auto shadow-lg fw-bold rounded-pill"
+              onClick={() => navigate("/Comparar")}
+              style={{
+                backgroundColor: "#031224", // Cor exata do design (Azul quase preto)
+                color: "white",
+                border: "none",
+                minWidth: "200px",
+              }}
             >
               COMPARE JÁ
             </Button>
@@ -88,10 +102,12 @@ function Compare() {
         </div>
 
         {/* Lado Direito: Cards */}
-        {/* MUDANÇA: Flex-wrap permite que os cards caiam para baixo se faltar espaço extremo */}
         <div className="w-100 w-lg-60 d-flex flex-column flex-md-row p-4 gap-3 align-items-center justify-content-center">
-          {/* Wrapper para garantir que o card não estoure */}
-          <div className="d-flex justify-content-center w-100 w-md-auto">
+          {/* Card 1 - Largura fixa para ficar igual ao design */}
+          <div
+            className="d-flex justify-content-center"
+            style={{ width: "240px" }}
+          >
             <Card
               pokemon={pokemon1}
               bst={pokemon1 ? calculateBST(pokemon1) : 0}
@@ -99,9 +115,15 @@ function Compare() {
             />
           </div>
 
-          <h1 className="text-white my-3 my-md-0 fw-bold fst-italic">VS</h1>
+          <h1 className="text-white my-3 my-md-0 fw-bold fst-italic mx-2">
+            VS
+          </h1>
 
-          <div className="d-flex justify-content-center w-100 w-md-auto">
+          {/* Card 2 */}
+          <div
+            className="d-flex justify-content-center"
+            style={{ width: "240px" }}
+          >
             <Card
               pokemon={pokemon2}
               bst={pokemon2 ? calculateBST(pokemon2) : 0}
