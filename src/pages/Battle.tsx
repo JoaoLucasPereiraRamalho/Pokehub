@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-// Hook
 import { useBattle } from "../hooks/useBattle";
-// Componentes
 import HealthBar from "../components/battle/HealthBar";
-import PokemonSelector from "../components/battle/PokemonSelector"; // <--- Novo
+import PokemonSelector from "../components/battle/PokemonSelector";
 import Loading from "../components/ui/Loading";
 import Button from "../components/ui/Button";
 import AsyncImage from "../components/ui/AsyncImage";
-// Services e Utils
 import { getPokemonNameList } from "../services/PokemonService";
 import { getTypeColor } from "../utils/constants";
 import type { PokemonName } from "../types";
@@ -16,18 +13,15 @@ function Battle() {
   const { player, enemy, loading, turn, logs, winner, startBattle, attack } =
     useBattle();
 
-  // Estados Locais para a Tela de Seleção
   const [isBattleStarted, setIsBattleStarted] = useState(false);
   const [allNames, setAllNames] = useState<PokemonName[]>([]);
   const [p1Name, setP1Name] = useState("charizard");
   const [p2Name, setP2Name] = useState("blastoise");
 
-  // Carregar lista de nomes ao montar a página
   useEffect(() => {
     getPokemonNameList().then(setAllNames);
   }, []);
 
-  // Função para começar a luta
   const handleStartGame = () => {
     if (p1Name && p2Name) {
       startBattle(p1Name, p2Name);
@@ -35,7 +29,6 @@ function Battle() {
     }
   };
 
-  // Função para reiniciar (voltar para seleção)
   const handleReset = () => {
     setIsBattleStarted(false);
   };
@@ -45,26 +38,33 @@ function Battle() {
   // =========================================================
   if (!isBattleStarted) {
     return (
-      <div
-        style={{ backgroundColor: "#091D3C" }}
-        className="min-vh-100 d-flex align-items-center justify-content-center p-3"
-      >
+      <div className="min-vh-100 d-flex align-items-center justify-content-center p-3 battle-background">
+        {/* Overlay escuro */}
         <div
-          className="bg-white bg-opacity-10 p-5 rounded-4 shadow-lg w-100"
-          style={{ maxWidth: "500px", backdropFilter: "blur(10px)" }}
+          className="position-absolute w-100 h-100"
+          style={{ backgroundColor: "rgba(0,0,0,0.6)", zIndex: 0 }}
+        ></div>
+
+        <div
+          className="bg-dark bg-opacity-75 p-4 p-md-5 rounded-4 shadow-lg w-100 position-relative"
+          style={{ maxWidth: "500px", zIndex: 1, border: "2px solid #555" }}
         >
-          <h1 className="text-white text-center fw-bold mb-4">Nova Batalha</h1>
+          <h1 className="text-white text-center fw-bold mb-4 text-uppercase letter-spacing-2">
+            Nova Batalha
+          </h1>
 
           <div className="d-flex flex-column gap-4">
             <PokemonSelector
-              label="Escolha seu Pokémon"
+              label="Escolha seu Campeão"
               allNames={allNames}
               selectedName={p1Name}
               onSelect={setP1Name}
             />
-
-            <div className="text-center text-white fw-bold fs-4">VS</div>
-
+            <div className="text-center">
+              <span className="badge bg-danger fs-5 rounded-circle p-3">
+                VS
+              </span>
+            </div>
             <PokemonSelector
               label="Escolha o Oponente"
               allNames={allNames}
@@ -74,7 +74,7 @@ function Battle() {
 
             <Button
               variant="linear"
-              className="mt-3 py-3 w-100"
+              className="mt-4 py-3 w-100 fw-bold fs-5 shadow-lg"
               onClick={handleStartGame}
               disabled={!p1Name || !p2Name}
             >
@@ -91,207 +91,202 @@ function Battle() {
   // =========================================================
   if (loading || !player || !enemy) {
     return (
-      <div
-        className="min-vh-100 d-flex justify-content-center align-items-center"
-        style={{ backgroundColor: "#091D3C" }}
-      >
+      <div className="min-vh-100 d-flex justify-content-center align-items-center bg-dark">
         <Loading />
       </div>
     );
   }
 
   // =========================================================
-  // RENDERIZAÇÃO 3: Arena de Batalha (Código anterior)
+  // RENDERIZAÇÃO 3: Arena de Batalha (Estilo Retro)
   // =========================================================
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="min-vh-100 text-white p-3 p-md-5 d-flex flex-column justify-content-center"
-    >
-      <div className="container py-4" style={{ maxWidth: "1000px" }}>
-        {/* --- ARENA --- */}
-        <div className="row g-5 align-items-end mb-5">
-          {/* INIMIGO */}
-          <div className="col-12 d-flex flex-column align-items-center align-items-md-end order-1 order-md-2">
+    <div className="min-vh-100 d-flex flex-column battle-background overflow-hidden">
+      {/* Overlay leve */}
+      <div
+        className="position-absolute w-100 h-100"
+        style={{ backgroundColor: "rgba(0,0,0,0.2)", zIndex: 0 }}
+      ></div>
+
+      <div
+        className="container py-3 flex-grow-1 d-flex flex-column justify-content-center position-relative"
+        style={{ zIndex: 1, maxWidth: "1000px" }}
+      >
+        {/* --- CAMPO DE BATALHA --- */}
+        <div className="row g-0 flex-grow-1 mb-3 position-relative">
+          <div className="col-12 d-flex flex-column align-items-end mb-5">
             <div
-              className="bg-dark bg-opacity-50 p-3 rounded-3 mb-3 w-100 shadow-sm border border-secondary"
-              style={{ maxWidth: "320px" }}
+              className="bg-white bg-opacity-90 text-dark p-3 rounded-start-pill shadow-lg mb-2 border-start border-5 border-danger scale-in-animation"
+              style={{ minWidth: "280px" }}
             >
-              <div className="d-flex justify-content-between align-items-center mb-2">
+              <div className="d-flex justify-content-between align-items-center">
                 <h5 className="m-0 fw-bold text-capitalize">{enemy.name}</h5>
-                <span
-                  className="badge text-uppercase"
-                  style={{ backgroundColor: getTypeColor(enemy.type1) }}
-                >
-                  {enemy.type1}
-                </span>
+                <small className="fw-bold text-muted">Lv.100</small>
               </div>
               <HealthBar current={enemy.currentHp} max={enemy.maxHp} />
             </div>
-            <div className="position-relative">
+
+            <div
+              className="position-relative me-3 me-md-5 mt-2"
+              style={{ width: "200px", height: "200px" }}
+            >
+              <div className="battle-platform"></div> {/* Sombra no chão */}
               <AsyncImage
                 src={enemy.imgAnimada || enemy.img}
                 alt={enemy.name}
                 style={{
-                  width: "180px",
-                  height: "180px",
+                  width: "100%",
+                  height: "100%",
                   objectFit: "contain",
+                  position: "relative",
+                  zIndex: 2,
                 }}
-                className={`transition-all ${
-                  turn === "enemy" ? "animate-pulse scale-110" : ""
-                }`}
+                className={turn === "enemy" ? "animate-pulse" : ""}
               />
             </div>
           </div>
 
-          {/* JOGADOR */}
-          <div className="col-12 d-flex flex-column align-items-center align-items-md-start order-2 order-md-1">
-            <div className="position-relative mb-3">
+          <div className="col-12 d-flex flex-column align-items-start mt-auto">
+            <div
+              className="position-relative ms-3 ms-md-5 mb-2"
+              style={{ width: "220px", height: "220px" }}
+            >
+              <div
+                className="battle-platform"
+                style={{ width: "280px", bottom: "-15px" }}
+              ></div>
               <AsyncImage
                 src={player.imgAnimada || player.img}
                 alt={player.name}
                 style={{
-                  width: "220px",
-                  height: "220px",
+                  width: "100%",
+                  height: "100%",
                   objectFit: "contain",
+                  position: "relative",
+                  zIndex: 2,
                 }}
-                className={`transition-all ${
-                  turn === "player" ? "animate-pulse" : ""
-                }`}
+                className={turn === "player" ? "animate-pulse" : ""}
               />
             </div>
+
+            {/* HUD (Barra de Vida) */}
             <div
-              className="bg-dark bg-opacity-50 p-3 rounded-3 w-100 shadow-sm border border-secondary"
+              className="bg-white bg-opacity-90 text-dark p-3 rounded-end-pill shadow-lg w-100 border-end border-5 border-primary scale-in-animation"
               style={{ maxWidth: "320px" }}
             >
-              <div className="d-flex justify-content-between align-items-center mb-2">
+              <div className="d-flex justify-content-between align-items-center">
                 <h5 className="m-0 fw-bold text-capitalize">{player.name}</h5>
-                <span
-                  className="badge text-uppercase"
-                  style={{ backgroundColor: getTypeColor(player.type1) }}
-                >
-                  {player.type1}
-                </span>
+                <small className="fw-bold text-muted">Lv.100</small>
               </div>
               <HealthBar
                 current={player.currentHp}
                 max={player.maxHp}
                 label="HP"
               />
-              <div className="text-end mt-1">
-                <small className="text-muted">
-                  {player.currentHp} / {player.maxHp}
-                </small>
+              <div className="text-end mt-1 fw-bold font-monospace small">
+                {player.currentHp} / {player.maxHp}
               </div>
             </div>
           </div>
         </div>
 
-        {/* --- CONTROLES --- */}
-        <div className="row mt-4">
-          <div className="col-12 col-md-7 mb-4">
-            <div className="bg-light text-dark p-4 rounded-4 shadow h-100 d-flex flex-column justify-content-center">
-              {winner ? (
-                <div className="text-center">
-                  <h2 className="fw-bold mb-4 display-6">
-                    {winner === player.name
-                      ? "🏆 Você Venceu!"
-                      : "💀 Você Perdeu!"}
-                  </h2>
-                  <div className="d-flex gap-3 justify-content-center">
-                    {/* Botão de Revanche (Mesmos Pokemons) */}
-                    <Button
-                      variant="primary"
-                      className="bg-dark text-white"
-                      onClick={() => startBattle(p1Name, p2Name)}
-                    >
-                      Revanche
-                    </Button>
-                    {/* Botão de Nova Seleção */}
-                    <Button variant="danger" onClick={handleReset}>
-                      Nova Batalha
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <h5 className="fw-bold mb-3 border-bottom pb-2 border-secondary">
-                    {turn === "player"
-                      ? "O que você vai fazer?"
-                      : `Turno de ${enemy.name}...`}
-                  </h5>
-                  {turn === "player" ? (
-                    <div
-                      className="d-grid gap-3"
-                      style={{ gridTemplateColumns: "1fr 1fr" }}
-                    >
-                      {player.moves.map((move, index) => (
-                        <button
-                          key={index}
-                          className="btn btn-outline-dark py-3 text-start position-relative overflow-hidden text-capitalize shadow-sm"
-                          onClick={() => attack(move)}
-                          style={{
-                            borderLeft: `6px solid ${getTypeColor(move.type)}`,
-                          }}
-                        >
-                          <span className="fw-bold d-block">{move.name}</span>
-                          <span className="small text-muted">
-                            {move.type} | Pwr: {move.power || "-"}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-5">
-                      <h4 className="text-muted animate-pulse fst-italic">
-                        Oponente está atacando...
-                      </h4>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="col-12 col-md-5 mb-4">
+        {/* --- CAIXA DE COMANDOS --- */}
+        <div className="row mt-auto">
+          <div className="col-12">
             <div
-              className="bg-black bg-opacity-75 p-3 rounded-3 text-white h-100 border border-secondary d-flex flex-column"
-              style={{ maxHeight: "300px", minHeight: "250px" }}
+              className="retro-dialog-box p-4 d-flex flex-column flex-md-row gap-4 align-items-stretch"
+              style={{ minHeight: "160px" }}
             >
-              <h6 className="text-warning mb-3 fw-bold border-bottom border-secondary pb-2">
-                Log de Batalha
-              </h6>
-              <div className="overflow-auto flex-grow-1 pe-2 custom-scrollbar">
-                <div className="d-flex flex-column-reverse">
-                  {logs.map((log, i) => (
-                    <div
+              <div className="flex-grow-1 d-flex align-items-center justify-content-center justify-content-md-start px-3 text-shadow">
+                {winner ? (
+                  <div className="text-center w-100">
+                    <h2
+                      className={`mb-2 ${
+                        winner === player.name ? "text-warning" : "text-danger"
+                      }`}
+                    >
+                      {winner === player.name ? "Vitória!" : "Derrota..."}
+                    </h2>
+                    <p className="fs-5 mb-3">
+                      {winner === player.name
+                        ? `${player.name} venceu a batalha!`
+                        : `${player.name} não pode mais lutar!`}
+                    </p>
+
+                    <div className="d-flex gap-3 justify-content-center">
+                      <Button
+                        variant="primary"
+                        className="border-white"
+                        onClick={() => startBattle(p1Name, p2Name)}
+                      >
+                        Revanche
+                      </Button>
+                      <Button variant="danger" onClick={handleReset}>
+                        Trocar Time
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-100">
+                    <h4 className="m-0 lh-base typing-effect fw-bold">
+                      {logs.length > 0
+                        ? logs[logs.length - 1].message
+                        : `O que ${player.name} deve fazer?`}
+                    </h4>
+                  </div>
+                )}
+              </div>
+
+              {/* Lado Direito: Menu de Golpes*/}
+              {!winner && turn === "player" && (
+                <div
+                  className="d-grid gap-2 fade-in"
+                  style={{ gridTemplateColumns: "1fr 1fr", minWidth: "320px" }}
+                >
+                  {player.moves.map((move, i) => (
+                    <button
                       key={i}
-                      className="mb-2 p-2 rounded bg-white bg-opacity-10 border-start border-3"
+                      className="btn btn-light text-capitalize fw-bold border-2 border-dark text-start position-relative overflow-hidden"
+                      onClick={() => attack(move)}
                       style={{
-                        borderColor:
-                          log.turn === "player" ? "#4caf50" : "#f44336",
+                        boxShadow: "3px 3px 0px #000",
+                        transform: "translate(-2px, -2px)",
+                        borderLeft: `8px solid ${getTypeColor(move.type)}`,
                       }}
                     >
-                      <p className="mb-0 small text-white">{log.message}</p>
-                    </div>
+                      <span className="d-block">{move.name}</span>
+                      <small className="text-muted d-flex justify-content-between mt-1">
+                        <span>{move.type}</span>
+                        <span>PWR {move.power || "-"}</span>
+                      </small>
+                    </button>
                   ))}
                 </div>
-              </div>
+              )}
+
+              {/* Aviso de Espera*/}
+              {!winner && turn === "enemy" && (
+                <div className="d-flex align-items-center px-5 border-start border-secondary fade-in">
+                  <span className="text-warning fst-italic fs-5 animate-pulse">
+                    Aguardando movimento do oponente...
+                  </span>
+                </div>
+              )}
             </div>
+
+            {/* Botão de Desistir*/}
+            {!winner && (
+              <div className="text-center mt-2">
+                <button
+                  onClick={handleReset}
+                  className="btn btn-sm text-white-50 text-decoration-underline"
+                >
+                  Sair da Batalha
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Botão de Voltar (Sair da Luta no meio) */}
-        {!winner && (
-          <div className="mt-4 text-center">
-            <button
-              className="btn btn-link text-white-50 text-decoration-none"
-              onClick={handleReset}
-            >
-              &larr; Cancelar e Voltar para Seleção
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
