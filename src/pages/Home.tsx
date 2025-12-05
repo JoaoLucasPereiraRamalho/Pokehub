@@ -4,7 +4,7 @@ import Compare from "../components/home/Compare";
 import FeaturedSection from "../components/home/FeaturedSection";
 import News from "../components/home/News";
 import Itens from "../components/home/Itens";
-import Battle from "./Battle";
+import BattleBanner from "../components/BattleBanner";
 
 const Home = () => {
   return (
@@ -15,7 +15,7 @@ const Home = () => {
       <FeaturedSection />
       <News />
       <Itens />
-      <Battle />
+      <BattleBanner />
     </>
   );
 };
