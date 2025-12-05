@@ -1,4 +1,4 @@
-import type { ItemCardInfo, PokemonInfoCard } from "../types";
+import type { ItemCardInfo, PokemonInfoCard, PokemonName } from "../types";
 
 /**
  * Filtra a lista de Pokémon com base no termo de busca (nome).
@@ -69,4 +69,15 @@ export const filterItemsByName = (
   return allItems.filter((item) =>
     item.name.toLowerCase().includes(lowerCaseSearch)
   );
+};
+
+export const getSuggestions = (
+  names: PokemonName[],
+  input: string
+): PokemonName[] => {
+  if (input.length < 2) return [];
+  const lowerInput = input.toLowerCase();
+  return names
+    .filter((p) => p.name.toLowerCase().startsWith(lowerInput))
+    .slice(0, 5); // Limita a 5 sugestões para não poluir a tela
 };
