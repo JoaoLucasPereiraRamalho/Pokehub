@@ -400,14 +400,8 @@
 }
 
 .bg-transparent {
-  /* ANTES (Linear): */
-  /* background: linear-gradient(90deg, #091d3a 0%, #154c68 100%); */
-
-  /* DEPOIS (Radial): */
-  /* Sintaxe: radial-gradient(forma at posição, cor-interna, cor-externa) */
   background: radial-gradient(circle at center, #1a658a 0%, #091d3a 100%);
 
-  /* Resto das propriedades continua igual */
   border-radius: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   border: none;

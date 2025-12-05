@@ -12,20 +12,22 @@ function BattleBanner() {
 
   return (
     <div
-      className="w-100 position-relative overflow-hidden d-flex align-items-center justify-content-center sombra-lg cursor-pointer group-hover"
+      className="w-100 position-relative overflow-hidden d-flex align-items-center justify-content-center cursor-pointer group-hover"
       onClick={() => navigate("/Battle")}
       style={{
         minHeight: "500px",
         background:
-          "linear-gradient(105deg, #FFD700 0%, #1E90FF 50%, #FF4500 50%, #8B0000 100%)",
-        boxShadow: "inset 0 0 100px rgba(0,0,0,0.5)",
+          "linear-gradient(135deg, #091D3C 0%, #1a2a6c 50%, #2a5298 100%)",
+        boxShadow: "inset 0 0 50px rgba(0,0,0,0.5)",
       }}
     >
+      {/* Elementos de Fundo (Partículas/Brilho) */}
       <div
         className="position-absolute w-100 h-100"
         style={{
+          // Brilho central sutil
           background:
-            "radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
+            "radial-gradient(circle at center, rgba(42, 82, 152, 0.4) 0%, transparent 70%)",
           zIndex: 1,
         }}
       />
@@ -37,53 +39,65 @@ function BattleBanner() {
         {/* POKEMON ESQUERDA */}
         <img
           src={leftPokemonImg}
-          alt="Pokemon Left"
+          alt="Zeraora"
           className="position-absolute d-none d-md-block transition-all"
           style={{
             left: "5%",
             bottom: "0",
             height: "90%",
             objectFit: "contain",
-            filter: "drop-shadow(0 0 20px rgba(255, 215, 0, 0.6))",
+            // Sombra ciano para combinar com o azul
+            filter: "drop-shadow(0 0 20px rgba(0, 194, 203, 0.4))",
             transform: "scaleX(-1)",
           }}
         />
 
+        {/* CENTRO */}
         <div className="text-center position-relative" style={{ zIndex: 3 }}>
           <h1
             className="display-1 fw-bolder fst-italic text-white m-0"
             style={{
               fontSize: "8rem",
-              textShadow: "4px 4px 0 #000, -2px -2px 0 #FF4500",
+              // Sombra mais suave em azul escuro
+              textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
               letterSpacing: "-5px",
+              fontFamily: "'Impact', sans-serif",
             }}
           >
             VS
           </h1>
 
-          <h4 className="text-white text-uppercase fw-bold letter-spacing-2 mb-4 text-shadow">
-            A Arena Suprema
+          <h4 className="text-white text-uppercase fw-bold letter-spacing-2 mb-4 text-shadow opacity-75">
+            Desafie seus limites
           </h4>
 
           <div className="transition-all hover-scale">
+            {/* Botão Azul Vibrante (Border ou Linear) */}
             <Button
-              variant="danger"
-              className="px-5 py-3 fs-4 fw-bold rounded-pill sombra-red border-2 border-white"
+              variant="primary"
+              className="px-5 py-3 fs-4 fw-bold rounded-pill border-2 border-white shadow-lg"
+              style={{
+                background: "linear-gradient(90deg, #00C2CB 0%, #2a5298 100%)", // Gradiente Ciano -> Azul
+                boxShadow: "0 0 20px rgba(0, 194, 203, 0.4)",
+              }}
             >
               BATALHAR AGORA
             </Button>
           </div>
         </div>
+
+        {/* POKEMON DIREITA */}
         <img
           src={rightPokemonImg}
-          alt="Pokemon Right"
+          alt="Lucario"
           className="position-absolute d-none d-md-block transition-all"
           style={{
             right: "5%",
             bottom: "0",
             height: "85%",
             objectFit: "contain",
-            filter: "drop-shadow(0 0 20px rgba(255, 69, 0, 0.6))",
+            // Sombra azulada
+            filter: "drop-shadow(0 0 20px rgba(42, 82, 152, 0.6))",
           }}
         />
       </div>
