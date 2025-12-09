@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
   return (
     <div
       className="rounded-3 overflow-hidden shadow-lg bg-white h-100 transition-all hover-scale"
-      style={{ minWidth: "220px" }}
+      style={{ minWidth: "220px", maxWidth: "220px" }}
     >
       {/* --- TOPO COM GRADIENTE --- */}
       <div

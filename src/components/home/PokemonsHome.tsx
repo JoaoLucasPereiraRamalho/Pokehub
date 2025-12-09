@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import Card from "../cards/Card";
 import Button from "../ui/Button";
 import Loading from "../ui/Loading";
-
 import {
   getPokemonInfoCards,
   getPokemonPorNome,
 } from "../../services/PokemonService";
-
 import { type PokemonDetail } from "../../types";
 
 function PokemonsHome() {
@@ -49,7 +47,7 @@ function PokemonsHome() {
       </h1>
 
       <div
-        className="row justify-content-center g-4 mx-auto"
+        className="row justify-content-center g-3 mx-auto"
         style={{ maxWidth: "1200px" }}
       >
         {pokemonDetails.map((pokemon) => (
@@ -75,7 +73,7 @@ function PokemonsHome() {
 
       {/* Botão para carregar mais itens usando o componente Button novo */}
       <div className="d-flex justify-content-center mt-5">
-        <Button variant="linear-2" className="w-50 w-md-25 py-3">
+        <Button variant="linear-2" className="w-25 w-md-25 py-3">
           <h3 className="m-0 fs-4">Carregar mais</h3>
         </Button>
       </div>
