@@ -1,9 +1,6 @@
 function News() {
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="container-fluid py-5"
-    >
+    <div className="container-fluid py-5">
       <div className="d-flex justify-content-center mb-5">
         <div
           className="bg-light p-3 text-center w-75"

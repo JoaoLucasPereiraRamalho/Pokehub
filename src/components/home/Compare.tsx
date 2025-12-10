@@ -57,10 +57,7 @@ function Compare() {
   }
 
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="d-flex justify-content-center p-3 p-md-5"
-    >
+    <div className="d-flex justify-content-center p-3 p-md-5">
       {/* Container Principal */}
       <div
         className="d-flex flex-column flex-lg-row rounded-5 w-100 w-lg-85 align-items-center overflow-hidden bg-transparent"

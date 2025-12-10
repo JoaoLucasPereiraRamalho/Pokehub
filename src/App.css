@@ -209,49 +209,25 @@
   padding: 20px;
 }
 
-.fundo-degrade {
-  background: radial-gradient(
-      circle 750px at 50% 80%,
-      /* 200px de raio, 30% da largura, 60% da altura */ rgba(48, 127, 132, 0.8),
-      transparent
-    ),
-    #091d3c;
-}
+.background-wrapper {
+  background-color: #091d3c;
 
-.fundo-degrade-itens {
-  background: radial-gradient(
-      circle 450px at 50% 80%,
-      /* 200px de raio, 30% da largura, 60% da altura */ rgba(48, 127, 132, 0.8),
-      transparent
-    ),
-    #091d3c;
-}
+  background-image: radial-gradient(
+    circle at center,
+    rgba(48, 127, 132, 0.6) 0%,
 
-.fundo-degrade-compare {
-  background: radial-gradient(
-      circle 1500px at 40% 80%,
-      /* 200px de raio, 30% da largura, 60% da altura */ rgba(48, 127, 132, 0.8),
-      transparent
-    ),
-    #091d3c;
-}
+    rgba(9, 29, 60, 0.8) 50%,
+    #091d3c 100%
+  );
 
-.fundo-degrade-noticias {
-  background: radial-gradient(
-      circle 1100px at 40% 80%,
-      /* 200px de raio, 30% da largura, 60% da altura */ rgba(48, 127, 132, 0.8),
-      transparent
-    ),
-    #091d3c;
-}
+  background-attachment: fixed;
 
-.fundo-degrade-inicio {
-  background: radial-gradient(
-      circle 600px at 40% 80%,
-      /* 200px de raio, 30% da largura, 60% da altura */ rgba(48, 127, 132, 0.8),
-      transparent
-    ),
-    #091d3c;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .w-5 {

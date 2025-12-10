@@ -38,10 +38,7 @@ function PokemonsHome() {
   }
 
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="container-fluid py-5"
-    >
+    <div className="container-fluid py-5">
       <h1 className="d-flex justify-content-center py-5 text-white">
         Pokemons
       </h1>

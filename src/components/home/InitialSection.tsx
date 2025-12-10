@@ -2,10 +2,7 @@ import Button from "../ui/Button";
 
 function InitialSection() {
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="d-flex flex-column flex-md-row py-4 py-md-5 px-3 px-md-5 fundo-degrade-inicio"
-    >
+    <div className="d-flex flex-column flex-md-row py-4 py-md-5 px-3 px-md-5 fundo-degrade-inicio">
       <div className="w-100 w-md-50 w-lg-40 text-white p-3 p-md-5">
         <h1 className="title">DESCUBRA.</h1>
         <h1 className="title">COMPARE.</h1>
