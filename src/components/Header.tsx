@@ -16,10 +16,7 @@ function Header() {
   };
 
   return (
-    <nav
-      style={{ backgroundColor: "#091D3C" }}
-      className="navbar navbar-expand-md"
-    >
+    <nav className="navbar navbar-expand-md">
       <div className="container-fluid">
         {/* LOGO */}
         <div

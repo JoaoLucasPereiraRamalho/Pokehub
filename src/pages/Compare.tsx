@@ -67,17 +67,15 @@ const ComparePageWrapper = () => {
   }, [selectedPokemon2Name]);
 
   return (
-    <BackgroundDegrade>
-      <ComparePageVisual
-        pokemonNames={allPokemonNamesList}
-        selectedPokemon1={selectedPokemon1Name}
-        selectedPokemon2={selectedPokemon2Name}
-        pokemon1Detail={pokemon1Detail}
-        pokemon2Detail={pokemon2Detail}
-        onSelectPokemon1={setSelectedPokemon1Name}
-        onSelectPokemon2={setSelectedPokemon2Name}
-      />
-    </BackgroundDegrade>
+    <ComparePageVisual
+      pokemonNames={allPokemonNamesList}
+      selectedPokemon1={selectedPokemon1Name}
+      selectedPokemon2={selectedPokemon2Name}
+      pokemon1Detail={pokemon1Detail}
+      pokemon2Detail={pokemon2Detail}
+      onSelectPokemon1={setSelectedPokemon1Name}
+      onSelectPokemon2={setSelectedPokemon2Name}
+    />
   );
 };
 

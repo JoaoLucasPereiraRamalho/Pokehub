@@ -2,10 +2,7 @@ import Noticia from "../components/Noticia";
 
 function Noticias() {
   return (
-    <div
-      style={{ backgroundColor: "#091D3C" }}
-      className="fundo-degrade py-5 px-3 px-md-0 fundo-degrade-noticias"
-    >
+    <div className="fundo-degrade py-5 px-3 px-md-0 fundo-degrade-noticias">
       <div className="d-flex justify-content-center mb-4">
         <h1 className="text-white">Noticias</h1>
       </div>
