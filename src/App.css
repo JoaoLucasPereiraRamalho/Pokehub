@@ -209,6 +209,44 @@
   padding: 20px;
 }
 
+.fundo-degrade-inicio {
+  position: relative;
+  overflow: hidden;
+}
+
+.fundo-degrade-inicio::before,
+.fundo-degrade-inicio::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+
+  width: 500px;
+  height: 500px;
+
+  background-image: url("/src/assets/Pokebola.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fundo-degrade-inicio::before {
+  left: -150px;
+  transform: translateY(-50%) rotate(-30deg);
+}
+
+.fundo-degrade-inicio::after {
+  right: -150px;
+  transform: translateY(-50%) rotate(30deg);
+}
+
+.fundo-degrade-inicio > * {
+  position: relative;
+  z-index: 1;
+}
 .background-wrapper {
   background-color: #091d3c;
 
