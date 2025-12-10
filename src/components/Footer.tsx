@@ -67,16 +67,32 @@ function Footer() {
           <div className="col-12 col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center justify-content-start">
             <div className="d-flex gap-3 mb-4">
               <a href="#" className="social-icon" aria-label="Facebook">
-                <i className="bi bi-facebook"></i>
+                <img
+                  src="/src/assets/facebook.png"
+                  alt="Instagram"
+                  style={{ width: "24px" }}
+                />
               </a>
               <a href="#" className="social-icon" aria-label="Instagram">
-                <i className="bi bi-instagram"></i>
+                <img
+                  src="/src/assets/instagram.png"
+                  alt="Instagram"
+                  style={{ width: "24px" }}
+                />
               </a>
               <a href="#" className="social-icon" aria-label="WhatsApp">
-                <i className="bi bi-whatsapp"></i>
+                <img
+                  src="/src/assets/whatsapp.png"
+                  alt="Instagram"
+                  style={{ width: "24px" }}
+                />
               </a>
               <a href="#" className="social-icon" aria-label="LinkedIn">
-                <i className="bi bi-linkedin"></i>
+                <img
+                  src="/src/assets/linkedin.png"
+                  alt="Instagram"
+                  style={{ width: "24px" }}
+                />
               </a>
             </div>
 
