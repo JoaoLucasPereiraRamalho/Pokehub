@@ -57,12 +57,13 @@ function Compare() {
   }
 
   return (
-    <div className="d-flex justify-content-center p-3 p-md-5">
+    <div className="d-flex justify-content-center p-5 p-md-5">
       {/* Container Principal */}
       <div
-        className="d-flex flex-column flex-lg-row rounded-5 w-100 w-lg-85 align-items-center overflow-hidden bg-transparent"
+        className="d-flex flex-column flex-lg-row rounded-5 w-85 w-lg-85 align-items-center overflow-hidden bg-transparent"
         style={{
-          minHeight: "450px", // Garante altura
+          minHeight: "450px",
+          maxHeight: "1100px", // Garante altura
         }}
       >
         {/* Lado Esquerdo: Texto */}
@@ -83,7 +84,7 @@ function Compare() {
           <div className="mt-4 mt-md-5">
             {/* MUDANÇA 2: Botão Azul Escuro Sólido */}
             <Button
-              variant="primary" // Usamos primary para limpar estilos extras
+              variant="linear-3"
               className="py-3 px-5 w-100 w-md-auto shadow-lg fw-bold rounded-pill"
               onClick={() => navigate("/Comparar")}
               style={{

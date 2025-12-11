@@ -23,7 +23,7 @@ function FeaturedSection() {
               </p>
 
               <div className="d-flex justify-content-center justify-content-md-start">
-                <button className="btn-linear-2 rounded-pill w-75 w-md-50">
+                <button className="btn-linear-2 w-75 w-md-50">
                   Saiba mais
                 </button>
               </div>

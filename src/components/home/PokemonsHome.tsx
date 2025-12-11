@@ -45,7 +45,7 @@ function PokemonsHome() {
 
       <div
         className="row justify-content-center g-3 mx-auto"
-        style={{ maxWidth: "1200px" }}
+        style={{ maxWidth: "950px" }}
       >
         {pokemonDetails.map((pokemon) => (
           <div

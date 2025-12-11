@@ -376,7 +376,7 @@
 }
 
 .btn-linear {
-  background: linear-gradient(140deg, #000757, #7c0b71);
+  background: linear-gradient(300deg, #360962, #7c0b71);
   border: none;
   color: white;
   height: 6.5rem;
@@ -387,17 +387,30 @@
   font-weight: bold;
   border-radius: 80px;
   margin-top: 80px;
-  box-shadow: black 3px 3px 6px 1px;
+  box-shadow: rgb(18, 18, 18) 3px 3px 6px 1px;
 }
 
 .btn-linear-2 {
-  background: linear-gradient(to right, #004d80, #0a0a20);
+  background: linear-gradient(300deg, #69d09a, #c5d58d, #69d09a);
   border: none;
   padding: 15px 40px;
   font-size: 1.25rem;
   font-weight: bold;
-  border-radius: 50px;
   color: white;
+}
+
+.btn-linear-3 {
+  background: linear-gradient(300deg, #0d113e, #2788a8);
+  border: none;
+  color: white;
+  height: 3.5rem;
+  width: 9rem;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: lighter;
+  border-radius: 50px;
+  box-shadow: rgb(18, 18, 18) 3px 3px 6px 1px;
 }
 
 .btn-border {

@@ -3,14 +3,14 @@ function News() {
     <div className="container-fluid py-5">
       <div className="d-flex justify-content-center mb-5">
         <div
-          className="bg-light p-3 text-center w-75"
+          className="bg-light p-3 text-center w-60"
           style={{ minWidth: "300px" }}
         >
           <h1>Notícias</h1>
         </div>
       </div>
 
-      <div className="row g-4 mx-auto" style={{ maxWidth: "1200px" }}>
+      <div className="row g-4 mx-auto" style={{ maxWidth: "825px" }}>
         <div className="col-12 col-md-6">
           <div
             className="d-flex flex-column gap-2 h-100"
@@ -56,7 +56,7 @@ function News() {
               className="my-4 img-fluid"
               src="/src/assets/mega-evolution-symbol.png"
               alt="Imagem da Notícia"
-              style={{ maxWidth: "300px" }}
+              style={{ maxWidth: "300px", maxHeight: "100px" }}
             />
 
             <h6 className="text-secondary text-justify mb-4">
@@ -64,11 +64,7 @@ function News() {
               Pokémon que aumenta seu poder, muda sua aparência e, às vezes, seu
               tipo. A mecânica de mega evolução está retornando no jogo futuro
               Pokémon Legends: Z-A e é um elemento central na expansão para o
-              jogo, que incluirá uma série de novas mega evoluções. Nos jogos
-              principais, a mega evolução é ativada durante a batalha quando um
-              treinador e seu Pokémon têm uma forte ligação, e os dois itens
-              necessários para a transformação são o Key Stone (do treinador) e
-              o Mega Stone (do Pokémon).
+              jogo, que incluirá uma série de novas mega evoluções.
             </h6>
             <button className="btn-linear-2 btn-lg mt-3 sombra">
               Ler mais
