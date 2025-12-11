@@ -28,7 +28,7 @@ function InitialSection() {
         <div className="w-100 w-md-50 d-flex justify-content-center justify-content-md-end mt-5 mt-md-0">
           <img
             className="img-fluid hover-scale transition-all"
-            src="/src/assets/haunter_sem_fundo.png"
+            src="/haunter_sem_fundo.png"
             alt="Haunter"
             style={{ maxWidth: "800px", width: "100%" }}
           />

@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         >
           <img
             className="w-100 h-100 object-fit-cover rounded-2"
-            src="/src/assets/poke.png"
+            src="/poke.png"
             alt="buscar"
           />
         </button>

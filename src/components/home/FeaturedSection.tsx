@@ -8,7 +8,7 @@ function FeaturedSection() {
       <div className="featured-background-splitter"></div>
 
       <img
-        src="/src/assets/charizard-mega-x.png"
+        src="/charizard-mega-x.png"
         alt="Pokémon de Destaque"
         className="featured-dragon-img d-none d-md-block"
       />

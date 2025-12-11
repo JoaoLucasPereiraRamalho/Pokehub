@@ -27,7 +27,7 @@ function Header() {
           <img
             style={{ width: "80px", height: "80px" }}
             className="d-block mx-auto mx-md-0"
-            src="/src/assets/logo_pokehub.png"
+            src="/logo_pokehub.png"
             alt="Logo PokeHub"
           />
         </div>

@@ -72,7 +72,7 @@ function Footer() {
                 target="_blank"
               >
                 <img
-                  src="/src/assets/facebook.png"
+                  src="/facebook.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
@@ -84,7 +84,7 @@ function Footer() {
                 target="_blank"
               >
                 <img
-                  src="/src/assets/instagram.png"
+                  src="/instagram.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
@@ -96,7 +96,7 @@ function Footer() {
                 target="_blank"
               >
                 <img
-                  src="/src/assets/whatsapp.png"
+                  src="/whatsapp.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
@@ -108,7 +108,7 @@ function Footer() {
                 target="_blank"
               >
                 <img
-                  src="/src/assets/linkedin.png"
+                  src="/linkedin.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
@@ -128,7 +128,7 @@ function Footer() {
           {/* --- COLUNA 3: CONTATO E LOGO --- */}
           <div className="col-12 col-md-4 d-flex flex-column align-items-center align-items-md-end">
             <img
-              src="/src/assets/lunala_2.png"
+              src="/lunala_2.png"
               alt="Lunala Logo"
               className="mb-3 hover-scale transition-all"
               style={{

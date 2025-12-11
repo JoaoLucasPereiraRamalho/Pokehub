@@ -24,7 +24,7 @@ function News() {
               <div className="w-50 bg-primary shadow-lg overflow-hidden">
                 <img
                   className="w-100 h-100 object-fit-cover"
-                  src="/src/assets/mega-dragnite.jpeg"
+                  src="/mega-dragnite.jpeg"
                   alt="Notícia 1"
                   style={{ minHeight: "70px" }}
                 />
@@ -32,7 +32,7 @@ function News() {
               <div className="w-50 bg-success shadow-lg overflow-hidden">
                 <img
                   className="w-100 h-100 object-fit-cover"
-                  src="/src/assets/Mega-Hawlucha.jpg"
+                  src="/Mega-Hawlucha.jpg"
                   alt="Notícia 2"
                   style={{ minHeight: "70px" }}
                 />
@@ -42,7 +42,7 @@ function News() {
             <div className="w-100 h-100 bg-warning shadow-lg overflow-hidden">
               <img
                 className="w-100 h-100 object-fit-cover"
-                src="/src/assets/drampa.webp"
+                src="/drampa.webp"
                 alt="Haunter em destaque"
               />
             </div>

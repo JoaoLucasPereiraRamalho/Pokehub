@@ -128,7 +128,7 @@ function Pokedex({
                   style={{ width: "40px", height: "40px" }}
                 >
                   <img
-                    src="src/assets/reset.png"
+                    src="/reset.png"
                     className="w-100 h-100 object-fit-cover rounded-1 sombra"
                     alt="resetar"
                   />
