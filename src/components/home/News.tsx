@@ -58,7 +58,7 @@ function News() {
 
             <img
               className="my-4 img-fluid"
-              src="/src/assets/mega-evolution-symbol.png"
+              src="/mega-evolution-symbol.png"
               alt="Imagem da Notícia"
               style={{ maxWidth: "300px", maxHeight: "100px" }}
             />
