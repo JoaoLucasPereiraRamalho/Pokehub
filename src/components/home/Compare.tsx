@@ -85,7 +85,7 @@ function Compare() {
             {/* MUDANÇA 2: Botão Azul Escuro Sólido */}
             <Button
               variant="linear-3"
-              className="py-3 px-5 w-100 w-md-auto shadow-lg fw-bold rounded-pill"
+              className="py-3 px-5 w-100 w-md-auto fw-bold rounded-pill"
               onClick={() => navigate("/Comparar")}
               style={{
                 backgroundColor: "#031224", // Cor exata do design (Azul quase preto)

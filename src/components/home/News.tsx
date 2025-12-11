@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function News() {
+  const navigate = useNavigate();
+
   return (
     <div className="container-fluid py-5">
       <div className="d-flex justify-content-center mb-5">
@@ -66,7 +70,10 @@ function News() {
               Pokémon Legends: Z-A e é um elemento central na expansão para o
               jogo, que incluirá uma série de novas mega evoluções.
             </h6>
-            <button className="btn-linear-2 btn-lg mt-3 sombra">
+            <button
+              className="btn-linear-2 btn-lg mt-3 sombra"
+              onClick={() => navigate("/Noticias")}
+            >
               Ler mais
             </button>
           </div>

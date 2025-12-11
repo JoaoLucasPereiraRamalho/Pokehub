@@ -7,8 +7,11 @@ import {
   getPokemonPorNome,
 } from "../../services/PokemonService";
 import { type PokemonDetail } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 function PokemonsHome() {
+  const navigate = useNavigate();
+
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +74,9 @@ function PokemonsHome() {
       {/* Botão para carregar mais itens usando o componente Button novo */}
       <div className="d-flex justify-content-center mt-5">
         <Button variant="linear-2" className="w-md-25 py-3">
-          <h3 className="m-0 fs-4">Carregar mais</h3>
+          <h3 onClick={() => navigate("/pokemons")} className="m-0 fs-4">
+            Carregar mais
+          </h3>
         </Button>
       </div>
     </div>

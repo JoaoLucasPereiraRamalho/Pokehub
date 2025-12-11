@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function FeaturedSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="featured-section bg-white sombra">
       <div className="featured-background-splitter"></div>
@@ -23,7 +27,10 @@ function FeaturedSection() {
               </p>
 
               <div className="d-flex justify-content-center justify-content-md-start">
-                <button className="btn-linear-2 w-75 w-md-50">
+                <button
+                  onClick={() => navigate("/Noticias")}
+                  className="btn-linear-2 w-75 w-md-50"
+                >
                   Saiba mais
                 </button>
               </div>
