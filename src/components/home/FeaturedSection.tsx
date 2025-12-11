@@ -1,6 +1,6 @@
 function FeaturedSection() {
   return (
-    <section className="featured-section sombra">
+    <section className="featured-section bg-white sombra">
       <div className="featured-background-splitter"></div>
 
       <img

@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <nav className="navbar navbar-expand-md">
+    <nav className="navbar navbar-expand-md px-5">
       <div className="container-fluid">
         {/* LOGO */}
         <div
