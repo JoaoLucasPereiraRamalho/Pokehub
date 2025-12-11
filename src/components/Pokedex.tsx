@@ -10,7 +10,7 @@ import {
 // Importa Componentes de UI Reutilizáveis
 import Status from "./ui/Status";
 import SearchBar from "./ui/SearchBar";
-import Button from "./ui/Button"; // <--- Novo Botão
+import Button from "./ui/Button";
 import { getTypeColor } from "../utils/constants";
 
 // Tipo auxiliar para funções de filtro
@@ -46,7 +46,7 @@ function Pokedex({
   allGenerations,
 }: PokedexProps) {
   // --- Estados Locais ---
-  const [visibleRows, setVisibleRows] = useState(1);
+  const [visibleRows, setVisibleRows] = useState(3);
   const itemsPerRow = 3;
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
@@ -79,10 +79,10 @@ function Pokedex({
 
       {/* Layout Principal: Lista (Esq) + Detalhes (Dir) */}
       <div className="d-flex flex-wrap flex-md-nowrap">
-        {/* --- COLUNA ESQUERDA: Filtros e Grid --- */}
+        {/* --- COLUNA ESQUERDA: Filtros e Grid (SEM ALTERAÇÕES) --- */}
         <div className="col-12 col-md-8 col-lg-9 d-flex flex-column pe-md-4">
           {/* Container de Filtros */}
-          <div className="d-flex flex-column w-100 mt-2 mt-md-5 input-fundo">
+          <div className="d-flex flex-column w-100 mt-2 mt-md-5 input-fundo mt-5 py-5">
             <SearchBar
               value={localSearchTerm}
               onChange={setLocalSearchTerm}
@@ -155,8 +155,6 @@ function Pokedex({
                     {chunk.map((p) => (
                       <div
                         key={p.id ?? p.name}
-                        // Responsividade do Grid:
-                        // col-12 (mobile muito pequeno) -> col-sm-6 -> col-lg-4 (3 por linha)
                         className="col-12 col-sm-6 col-lg-4 d-flex justify-content-center"
                       >
                         <PokemonCard
@@ -165,14 +163,12 @@ function Pokedex({
                           imgAnimada={p?.img}
                           type1={p?.type1}
                           type2={p?.type2}
-                          // Lógica visual: Se for o primeiro card E o detalhe corresponder, anima
                           imgAnimada2={
                             rowIndex === 0 && p === chunk[0]
                               ? pokemonDetail?.imgAnimada
                               : undefined
                           }
                           onSelectPokemon={onSelectPokemon}
-                          // Cores opcionais (o card calcula se não passar)
                           type1Color={
                             p?.type1 ? getTypeColor(p.type1) : undefined
                           }
@@ -202,52 +198,60 @@ function Pokedex({
           </div>
         </div>
 
-        {/* --- COLUNA DIREITA: Painel de Detalhes --- */}
-        <div className="col-12 col-md-4 col-lg-3 d-flex justify-content-center mt-4 mt-md-5 mb-5 h-100 px-3">
+        {/* --- COLUNA DIREITA: Painel de Detalhes--- */}
+        <div className="col-12 col-md-4 col-lg-3 d-flex justify-content-center mt-5 mb-5 h-100 px-3 position-relative">
           <div
-            className="w-100 bg-light rounded-5 d-flex flex-column shadow align-items-center p-4 text-dark position-sticky"
+            className="w-100 bg-light rounded-5 d-flex flex-column shadow align-items-center px-4 pb-4 text-dark position-sticky"
             style={{
-              top: "20px", // Faz o painel grudar no topo ao scrollar (Sticky)
-              maxHeight: "90vh",
-              overflowY: "auto",
-              zIndex: 10,
+              top: "100px",
+              marginTop: "60px",
+              paddingTop: "110px",
+              maxHeight: "115vh",
+              overflowY: "visible",
             }}
           >
-            {/* Imagem */}
+            {/* --- Container da Imagem que "Salta" --- */}
             <div
-              className="align-items-center w-100 text-center mb-3"
-              style={{ minHeight: "120px" }}
+              className="position-absolute align-items-center d-flex justify-content-center"
+              style={{
+                top: 0,
+                left: "50%",
+                transform: "translate(-50%, -55%)",
+                width: "200px",
+                height: "200px",
+                zIndex: 20,
+              }}
             >
               {pokemonDetail?.img ? (
                 <img
-                  className="w-75 object-contain transition-all hover-scale"
+                  className="w-100 h-100 object-contain transition-all hover-scale drop-shadow-lg"
                   src={pokemonDetail.img}
                   alt={pokemonDetail?.name}
-                  style={{ maxHeight: "150px" }}
                 />
               ) : (
-                <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-                  Carregando...
+                // Placeholder redondo enquanto carrega
+                <div className="w-75 h-75 rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center text-muted animate-pulse">
+                  <small>Carregando...</small>
                 </div>
               )}
             </div>
 
-            {/* Info */}
-            <div className="w-100 text-center">
-              <h1 className="fs-2 fw-bold text-capitalize mb-0">
-                {pokemonDetail?.name || "..."}
-              </h1>
-              <span className="text-muted fs-5">
+            {/* --- Info do Pokémon --- */}
+            <div className="w-100 text-center mt-2">
+              <span className="text-muted fs-5 d-block fw-bold mb-1">
                 {pokemonDetail?.id
                   ? `#${pokemonDetail.id.toString().padStart(3, "0")}`
                   : ""}
               </span>
+              <h1 className="fs-2 fw-bold text-capitalize mb-0 text-dark">
+                {pokemonDetail?.name || "Selecione..."}
+              </h1>
 
               {/* Badges de Tipo */}
               <div className="d-flex justify-content-center gap-2 mt-3">
                 {pokemonDetail?.type1 && (
                   <span
-                    className="badge text-uppercase px-3 py-2 shadow-sm"
+                    className="badge text-uppercase px-3 py-2 shadow-sm border border-white"
                     style={{
                       backgroundColor: getTypeColor(pokemonDetail.type1),
                     }}
@@ -257,7 +261,7 @@ function Pokedex({
                 )}
                 {pokemonDetail?.type2 && (
                   <span
-                    className="badge text-uppercase px-3 py-2 shadow-sm"
+                    className="badge text-uppercase px-3 py-2 shadow-sm border border-white"
                     style={{
                       backgroundColor: getTypeColor(pokemonDetail.type2),
                     }}
@@ -277,30 +281,33 @@ function Pokedex({
                 >
                   Pokédex Entry
                 </h6>
-                <p className="text-muted small lh-sm">
-                  {descricaoPokemon?.flavor_text || "..."}
+                <p className="text-muted small lh-sm fst-italic">
+                  {descricaoPokemon?.flavor_text ||
+                    "Selecione um pokémon para ver os detalhes."}
                 </p>
               </div>
 
               {/* Habilidades */}
-              <div className="text-start mt-3">
-                <h6
-                  className="fw-bold text-uppercase text-secondary mb-2"
-                  style={{ fontSize: "0.8rem" }}
-                >
-                  Abilities
-                </h6>
-                <div className="d-flex gap-2 flex-wrap">
-                  <span className="badge bg-light text-dark border border-secondary text-capitalize">
-                    {pokemonDetail?.abilitie1}
-                  </span>
-                  {pokemonDetail?.abilitie2 && (
-                    <span className="badge bg-light text-dark border border-secondary text-capitalize">
-                      {pokemonDetail?.abilitie2}
+              {pokemonDetail && (
+                <div className="text-start mt-4">
+                  <h6
+                    className="fw-bold text-uppercase text-secondary mb-2"
+                    style={{ fontSize: "0.8rem" }}
+                  >
+                    Abilities
+                  </h6>
+                  <div className="d-flex gap-2 flex-wrap">
+                    <span className="badge bg-white text-dark border shadow-sm text-capitalize py-2 px-3">
+                      {pokemonDetail?.abilitie1}
                     </span>
-                  )}
+                    {pokemonDetail?.abilitie2 && (
+                      <span className="badge bg-white text-dark border shadow-sm text-capitalize py-2 px-3">
+                        {pokemonDetail?.abilitie2}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Stats */}
               <div className="mt-4 w-100">
@@ -308,7 +315,7 @@ function Pokedex({
               </div>
 
               {/* Espaço final */}
-              <div style={{ height: "20px" }} />
+              <div style={{ height: "300px" }}></div>
             </div>
           </div>
         </div>

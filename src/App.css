@@ -460,7 +460,7 @@
   box-shadow: rgba(0, 0, 0, 1) 3px 0px 15px;
 }
 
-/* Animação de Rotação (Spin) */
+/* Animação de Rotação */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -474,7 +474,7 @@
   animation: spin 1.5s linear infinite;
 }
 
-/* Animação de Pulso para o texto (opcional, fica bonito) */
+/* Animação de Pulso para o texto */
 @keyframes pulse {
   0% {
     opacity: 0.6;
@@ -542,7 +542,7 @@
   transition: all 0.3s ease;
 }
 
-/* Estilo dos Botões Sociais (Círculos) */
+/* Estilo dos Botões Sociais */
 .social-icon {
   display: flex;
   align-items: center;
@@ -559,24 +559,23 @@
 
 .social-icon:hover {
   background-color: white;
-  color: #091d3c; /* Cor do fundo para o ícone ficar escuro no hover */
+  color: #091d3c;
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* =========================================
-   NOVOS HUDS DE BATALHA (FLUTUANTES)
+  HUDS DE BATALHA (FLUTUANTES)
    ========================================= */
 
 .battle-hud-floating {
-  background-color: rgba(19, 64, 109, 0.681); /* Fundo escuro quase sólido */
+  background-color: rgba(19, 64, 109, 0.681);
   border-radius: 12px;
   padding: 12px 16px;
   color: #fff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   min-width: 280px;
   position: relative;
-  /* Uma pequena seta apontando para baixo (opcional, pode remover se não gostar) */
   margin-bottom: 20px;
 }
 
@@ -588,6 +587,5 @@
 }
 
 .battle-hud-lv {
-  color: #ffc107; /* Amarelo warning */
-  font-weight: bold;
+  color: #ffc107;
 }
