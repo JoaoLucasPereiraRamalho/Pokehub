@@ -66,28 +66,48 @@ function Footer() {
           {/* --- COLUNA 2: SOBRE O DESENVOLVEDOR --- */}
           <div className="col-12 col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center justify-content-start">
             <div className="d-flex gap-3 mb-4">
-              <a href="#" className="social-icon" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/joaolucas.ramalho.5"
+                className="social-icon"
+                aria-label="Facebook"
+                target="_blank"
+              >
                 <img
                   src="/src/assets/facebook.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
               </a>
-              <a href="#" className="social-icon" aria-label="Instagram">
+              <a
+                href="https://www.instagram.com/joaolucapr/"
+                className="social-icon"
+                aria-label="Instagram"
+                target="_blank"
+              >
                 <img
                   src="/src/assets/instagram.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
               </a>
-              <a href="#" className="social-icon" aria-label="WhatsApp">
+              <a
+                href="https://wa.me/37998733682?text=teste,"
+                className="social-icon"
+                aria-label="WhatsApp"
+                target="_blank"
+              >
                 <img
                   src="/src/assets/whatsapp.png"
                   alt="Instagram"
                   style={{ width: "24px" }}
                 />
               </a>
-              <a href="#" className="social-icon" aria-label="LinkedIn">
+              <a
+                href="https://www.linkedin.com/in/joao-lucas-pereira-ramalho-0145722a8/"
+                className="social-icon"
+                aria-label="LinkedIn"
+                target="_blank"
+              >
                 <img
                   src="/src/assets/linkedin.png"
                   alt="Instagram"
