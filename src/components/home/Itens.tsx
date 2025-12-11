@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, MouseEvent } from "react";
+import { useRef, useState, useEffect, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 // Importamos o Card Oficial e os Dados
 import ItemCard from "../cards/ItemCard";
@@ -27,7 +27,7 @@ function Itens() {
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!isDown || !sliderRef.current) return;
     e.preventDefault();
-    setIsDragging(true); // Se moveu, é arrasto
+    setIsDragging(true);
     const x = e.pageX - sliderRef.current.offsetLeft;
     const walk = (x - startX) * 1.5;
     sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -39,10 +39,10 @@ function Itens() {
     sliderRef.current.classList.remove("dragging");
   };
 
-  const handleItemClick = (name: string) => {
-    // Só navega se não estiver arrastando (evita clique acidental ao scrollar)
+  const handleItemClick = () => {
+    // Só navega se não estiver arrastando
     if (!isDragging) {
-      // Navega para a página de itens (poderia passar o nome na URL search futuramente)
+      // Navega para a página de itens
       navigate("/Itens");
     }
   };

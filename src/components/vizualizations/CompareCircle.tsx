@@ -1,5 +1,4 @@
-import React from "react";
-import { type PokemonDetail } from "../../services/PokemonService";
+import type { PokemonDetail } from "../../types";
 
 // =====================================================================
 // 1. DEFINIÇÃO DE TIPOS E CONSTANTES

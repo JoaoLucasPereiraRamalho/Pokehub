@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { BattleLog, BattlePokemon, Move, Turn } from "../types/battle";
 import { getPokemonPorNome, getRandomMoves } from "../services/PokemonService";
-import { calculateDamage, isFainted } from "../utils/battleLogic";
+import { calculateDamage } from "../utils/battleLogic";
 
 export const useBattle = () => {
   const [player, setPlayer] = useState<BattlePokemon | null>(null);

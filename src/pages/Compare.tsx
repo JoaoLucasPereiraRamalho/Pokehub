@@ -5,7 +5,6 @@ import {
   getPokemonPorNome,
 } from "../services/PokemonService";
 import { type PokemonName, type PokemonDetail } from "../types";
-import BackgroundDegrade from "../components/ui/BackgroundDegrade";
 
 const ComparePageWrapper = () => {
   const [allPokemonNamesList, setAllPokemonNamesList] = useState<PokemonName[]>(
