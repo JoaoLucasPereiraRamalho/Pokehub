@@ -133,7 +133,7 @@ function Battle() {
                   style={{ width: "280px", bottom: "-15px" }}
                 ></div>
                 <AsyncImage
-                  src={player.imgAnimada || player.img}
+                  src={player.backImg || player.imgAnimada}
                   alt={player.name}
                   style={{
                     width: "100%",
@@ -141,9 +141,8 @@ function Battle() {
                     objectFit: "contain",
                     position: "relative",
                     zIndex: 2,
-                    transform: "scaleX(-1)", // Espelha para olhar para a direita (inimigo)
                   }}
-                  className={turn === "player" ? "animate-pulse" : ""}
+                  className={turn === "player" ? "" : ""}
                 />
               </div>
             </div>

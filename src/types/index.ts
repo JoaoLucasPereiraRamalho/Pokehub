@@ -39,6 +39,7 @@ export type PokemonDetail = {
   is_default: boolean;
   img: string;
   imgAnimada: string;
+  backImg?: string;
 };
 
 export type ItemData = {

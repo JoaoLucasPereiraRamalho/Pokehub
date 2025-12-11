@@ -35,14 +35,14 @@ export const useBattle = () => {
 
         setPlayer({
           ...p1Data,
-          currentHp: p1Data.hp,
-          maxHp: p1Data.hp,
+          currentHp: p1Data.hp * 4,
+          maxHp: p1Data.hp * 4,
           moves: p1Moves,
         });
         setEnemy({
           ...p2Data,
-          currentHp: p2Data.hp,
-          maxHp: p2Data.hp,
+          currentHp: p2Data.hp * 4,
+          maxHp: p2Data.hp * 4,
           moves: p2Moves,
         });
 

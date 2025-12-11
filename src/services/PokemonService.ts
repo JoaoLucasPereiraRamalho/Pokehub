@@ -150,6 +150,9 @@ export const getPokemonPorNome = async (
     // Sprites
     img: String(d.sprites.other["official-artwork"].front_default),
     imgAnimada: String(d.sprites.other["showdown"].front_default),
+    backImg:
+      d.sprites.versions?.["generation-v"]?.["black-white"]?.animated
+        ?.back_default || d.sprites.back_default,
   };
 
   return detail;
