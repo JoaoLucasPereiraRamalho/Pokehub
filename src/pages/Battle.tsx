@@ -33,37 +33,27 @@ function Battle() {
     setIsBattleStarted(false);
   };
 
-  // =========================================================
-  // RENDERIZAÇÃO 1: Tela de Seleção
-  // =========================================================
+  // 1. TELA DE SELEÇÃO
   if (!isBattleStarted) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center p-3 battle-background">
-        {/* Overlay escuro */}
+        <div className="position-absolute w-100 h-100"></div>
         <div
-          className="position-absolute w-100 h-100"
-          style={{ backgroundColor: "rgba(0,0,0,0.6)", zIndex: 0 }}
-        ></div>
-
-        <div
-          className="bg-dark bg-opacity-75 p-4 p-md-5 rounded-4 shadow-lg w-100 position-relative"
-          style={{ maxWidth: "500px", zIndex: 1, border: "2px solid #555" }}
+          className="bg-transparent-3 p-4 p-md-5 rounded-4 w-100 position-relative"
+          style={{ maxWidth: "500px", zIndex: 1 }}
         >
           <h1 className="text-white text-center fw-bold mb-4 text-uppercase letter-spacing-2">
             Nova Batalha
           </h1>
-
           <div className="d-flex flex-column gap-4">
             <PokemonSelector
-              label="Escolha seu Campeão"
+              label="Escolha seu Pokemon"
               allNames={allNames}
               selectedName={p1Name}
               onSelect={setP1Name}
             />
             <div className="text-center">
-              <span className="badge bg-danger fs-5 rounded-circle p-3">
-                VS
-              </span>
+              <span className="badge bg-dark fs-5 rounded-circle p-3">VS</span>
             </div>
             <PokemonSelector
               label="Escolha o Oponente"
@@ -71,9 +61,8 @@ function Battle() {
               selectedName={p2Name}
               onSelect={setP2Name}
             />
-
             <Button
-              variant="linear"
+              variant="linear-2"
               className="mt-4 py-3 w-100 fw-bold fs-5 shadow-lg"
               onClick={handleStartGame}
               disabled={!p1Name || !p2Name}
@@ -86,9 +75,7 @@ function Battle() {
     );
   }
 
-  // =========================================================
-  // RENDERIZAÇÃO 2: Loading da Batalha
-  // =========================================================
+  // 2. LOADING
   if (loading || !player || !enemy) {
     return (
       <div className="min-vh-100 d-flex justify-content-center align-items-center bg-dark">
@@ -97,106 +84,121 @@ function Battle() {
     );
   }
 
-  // =========================================================
-  // RENDERIZAÇÃO 3: Arena de Batalha (Estilo Retro)
-  // =========================================================
+  // 3. ARENA DE BATALHA
   return (
-    <div className="min-vh-100 d-flex flex-column battle-background overflow-hidden">
-      {/* Overlay leve */}
-      <div
-        className="position-absolute w-100 h-100"
-        style={{ backgroundColor: "rgba(0,0,0,0.2)", zIndex: 0 }}
-      ></div>
+    <div>
+      <div className="min-vh-100 d-flex flex-column battle-background overflow-hidden">
+        {/* Overlay Escuro */}
+        <div
+          className="position-absolute w-100 h-100"
+          style={{ backgroundColor: "rgba(0,0,0,0.2)", zIndex: 0 }}
+        ></div>
 
-      <div
-        className="container py-3 flex-grow-1 d-flex flex-column justify-content-center position-relative"
-        style={{ zIndex: 1, maxWidth: "1000px" }}
-      >
-        {/* --- CAMPO DE BATALHA --- */}
-        <div className="row g-0 flex-grow-1 mb-3 position-relative">
-          <div className="col-12 d-flex flex-column align-items-end mb-5">
+        {/* Container Principal */}
+        <div
+          className="container py-3 flex-grow-1 d-flex flex-column justify-content-center position-relative"
+          style={{ zIndex: 1, maxWidth: "1200px" }}
+        >
+          {/* --- CAMPO DE BATALHA --- */}
+          <div className="d-flex w-100 flex-grow-1 mb-3">
+            {/* ============================================================== */}
+            {/* COLUNA ESQUERDA (JOGADOR / ALIADO) */}
+            {/* ============================================================== */}
             <div
-              className="bg-white bg-opacity-90 text-dark p-3 rounded-start-pill shadow-lg mb-2 border-start border-5 border-danger scale-in-animation"
-              style={{ minWidth: "280px" }}
+              className="w-50 d-flex flex-column align-items-center"
+              style={{ paddingTop: "200px" }}
             >
-              <div className="d-flex justify-content-between align-items-center">
-                <h5 className="m-0 fw-bold text-capitalize">{enemy.name}</h5>
-                <small className="fw-bold text-muted">Lv.100</small>
+              {/* HUD Jogador */}
+              <div className="battle-hud-floating player-side scale-in-animation mb-2">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h5 className="m-0 text-capitalize battle-hud-name">
+                    {player.name}
+                  </h5>
+                  <small className="battle-hud-lv">Lv.100</small>
+                </div>
+                <HealthBar
+                  current={player.currentHp}
+                  max={player.maxHp}
+                  label="HP"
+                />
               </div>
-              <HealthBar current={enemy.currentHp} max={enemy.maxHp} />
-            </div>
 
-            <div
-              className="position-relative me-3 me-md-5 mt-2"
-              style={{ width: "200px", height: "200px" }}
-            >
-              <div className="battle-platform"></div> {/* Sombra no chão */}
-              <AsyncImage
-                src={enemy.imgAnimada || enemy.img}
-                alt={enemy.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  position: "relative",
-                  zIndex: 2,
-                }}
-                className={turn === "enemy" ? "animate-pulse" : ""}
-              />
-            </div>
-          </div>
-
-          <div className="col-12 d-flex flex-column align-items-start mt-auto">
-            <div
-              className="position-relative ms-3 ms-md-5 mb-2"
-              style={{ width: "220px", height: "220px" }}
-            >
+              {/* Imagem Jogador */}
               <div
-                className="battle-platform"
-                style={{ width: "280px", bottom: "-15px" }}
-              ></div>
-              <AsyncImage
-                src={player.imgAnimada || player.img}
-                alt={player.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  position: "relative",
-                  zIndex: 2,
-                }}
-                className={turn === "player" ? "animate-pulse" : ""}
-              />
+                className="position-relative"
+                style={{ width: "220px", height: "220px" }}
+              >
+                <div
+                  className="battle-platform"
+                  style={{ width: "280px", bottom: "-15px" }}
+                ></div>
+                <AsyncImage
+                  src={player.imgAnimada || player.img}
+                  alt={player.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    position: "relative",
+                    zIndex: 2,
+                    transform: "scaleX(-1)", // Espelha para olhar para a direita (inimigo)
+                  }}
+                  className={turn === "player" ? "animate-pulse" : ""}
+                />
+              </div>
             </div>
 
-            {/* HUD (Barra de Vida) */}
+            {/* ============================================================== */}
+            {/* COLUNA DIREITA (INIMIGO) */}
+            {/* ============================================================== */}
             <div
-              className="bg-white bg-opacity-90 text-dark p-3 rounded-end-pill shadow-lg w-100 border-end border-5 border-primary scale-in-animation"
-              style={{ maxWidth: "320px" }}
+              className="w-50 d-flex flex-column align-items-center"
+              // Padding menor para ficar mais no alto
+              style={{ paddingTop: "50px" }}
             >
-              <div className="d-flex justify-content-between align-items-center">
-                <h5 className="m-0 fw-bold text-capitalize">{player.name}</h5>
-                <small className="fw-bold text-muted">Lv.100</small>
+              {/* HUD Inimigo */}
+              <div className="battle-hud-floating enemy-side scale-in-animation mb-2">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h5 className="m-0 text-capitalize battle-hud-name">
+                    {enemy.name}
+                  </h5>
+                  <small className="battle-hud-lv">Lv.100</small>
+                </div>
+                <HealthBar current={enemy.currentHp} max={enemy.maxHp} />
               </div>
-              <HealthBar
-                current={player.currentHp}
-                max={player.maxHp}
-                label="HP"
-              />
-              <div className="text-end mt-1 fw-bold font-monospace small">
-                {player.currentHp} / {player.maxHp}
+
+              {/* Imagem Inimigo */}
+              <div
+                className="position-relative"
+                style={{ width: "200px", height: "200px" }}
+              >
+                <div className="battle-platform"></div>
+                <AsyncImage
+                  src={enemy.imgAnimada || enemy.img}
+                  alt={enemy.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    position: "relative",
+                    zIndex: 2,
+                  }}
+                  className={turn === "enemy" ? "animate-pulse" : ""}
+                />
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* --- CAIXA DE COMANDOS --- */}
-        <div className="row mt-auto">
-          <div className="col-12">
-            <div
-              className="retro-dialog-box p-4 d-flex flex-column flex-md-row gap-4 align-items-stretch"
-              style={{ minHeight: "160px" }}
-            >
+      {/* --- RODAPÉ: CAIXA DE COMANDOS --- */}
+      <div className="row mt-auto position-relative" style={{ zIndex: 10 }}>
+        <div className="col-12">
+          <div
+            className="retro-dialog-box p-4 d-flex flex-column gap-3 align-items-stretch mb-2"
+            style={{ minHeight: "160px" }}
+          >
+            <div className="d-flex flex-column flex-md-row gap-4 align-items-stretch">
               <div className="flex-grow-1 d-flex align-items-center justify-content-center justify-content-md-start px-3 text-shadow">
                 {winner ? (
                   <div className="text-center w-100">
@@ -212,7 +214,6 @@ function Battle() {
                         ? `${player.name} venceu a batalha!`
                         : `${player.name} não pode mais lutar!`}
                     </p>
-
                     <div className="d-flex gap-3 justify-content-center">
                       <Button
                         variant="primary"
@@ -237,11 +238,13 @@ function Battle() {
                 )}
               </div>
 
-              {/* Lado Direito: Menu de Golpes*/}
               {!winner && turn === "player" && (
                 <div
                   className="d-grid gap-2 fade-in"
-                  style={{ gridTemplateColumns: "1fr 1fr", minWidth: "320px" }}
+                  style={{
+                    gridTemplateColumns: "1fr 1fr",
+                    minWidth: "320px",
+                  }}
                 >
                   {player.moves.map((move, i) => (
                     <button
@@ -264,7 +267,6 @@ function Battle() {
                 </div>
               )}
 
-              {/* Aviso de Espera*/}
               {!winner && turn === "enemy" && (
                 <div className="d-flex align-items-center px-5 border-start border-secondary fade-in">
                   <span className="text-warning fst-italic fs-5 animate-pulse">
@@ -274,12 +276,11 @@ function Battle() {
               )}
             </div>
 
-            {/* Botão de Desistir*/}
             {!winner && (
-              <div className="text-center mt-2">
+              <div className="w-100 border-top border-secondary pt-2 mt-2 text-center border-opacity-25">
                 <button
                   onClick={handleReset}
-                  className="btn btn-sm text-white-50 text-decoration-underline"
+                  className="btn btn-sm text-danger text-decoration-underline hover-text-succes transition-all"
                 >
                   Sair da Batalha
                 </button>

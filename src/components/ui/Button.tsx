@@ -33,6 +33,9 @@ const Button: React.FC<ButtonProps> = ({
     case "linear-3":
       baseClass = "btn-linear-3 sombra";
       break;
+    case "border":
+      baseClass = "btn-border";
+      break;
     default:
       baseClass = "btn btn-outline-light border-0 rounded-pill py-1";
       break;

@@ -70,7 +70,7 @@ function PokemonsHome() {
 
       {/* Botão para carregar mais itens usando o componente Button novo */}
       <div className="d-flex justify-content-center mt-5">
-        <Button variant="linear-2" className="w-25 w-md-25 py-3">
+        <Button variant="linear-2" className="w-md-25 py-3">
           <h3 className="m-0 fs-4">Carregar mais</h3>
         </Button>
       </div>

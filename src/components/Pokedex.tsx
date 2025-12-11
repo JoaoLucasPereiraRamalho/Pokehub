@@ -192,7 +192,7 @@ function Pokedex({
               <div className="d-flex justify-content-center my-5">
                 <Button
                   variant="linear-2"
-                  className="w-75 w-md-50 py-3"
+                  className="w-50 w-md-50 py-3"
                   onClick={() => setVisibleRows((v) => v + 1)}
                 >
                   Carregar mais

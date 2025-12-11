@@ -311,9 +311,7 @@
 
 .image-card-pokedex {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: -25%;
+  top: -13%;
   width: 120px;
   height: 120px;
   z-index: 10;
@@ -452,6 +450,16 @@
   box-shadow: black 3px 0px 15px, inset 0 0 50px #a3e9ee;
 }
 
+.bg-transparent-3 {
+  background: radial-gradient(circle at center, #1a658a 0%, #091d3a 100%);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  min-height: 450px;
+  box-shadow: rgba(0, 0, 0, 1) 3px 0px 15px;
+}
+
 /* Animação de Rotação (Spin) */
 @keyframes spin {
   0% {
@@ -484,9 +492,7 @@
 }
 
 .battle-background {
-  background-image: url("https://preview.redd.it/d9spuwer2c491.png?width=1050&format=png&auto=webp&s=9ca8c75c63da9f8bb134e955d73e2770d073375e");
-  background: url("https://www.reddit.com/r/PokemonRMXP/comments/v7hz6t/how_can_i_make_custom_battle_backgrounds/?tl=pt-brhttps://i.pinimg.com/originals/28/92/21/2892212330693257c70529d380967a21.jpg")
-    no-repeat center center fixed;
+  background: url("./assets/pokeArena.png") no-repeat center center;
   background-size: cover;
   position: relative;
 }
@@ -556,4 +562,32 @@
   color: #091d3c; /* Cor do fundo para o ícone ficar escuro no hover */
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================
+   NOVOS HUDS DE BATALHA (FLUTUANTES)
+   ========================================= */
+
+.battle-hud-floating {
+  background-color: rgba(19, 64, 109, 0.681); /* Fundo escuro quase sólido */
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  min-width: 280px;
+  position: relative;
+  /* Uma pequena seta apontando para baixo (opcional, pode remover se não gostar) */
+  margin-bottom: 20px;
+}
+
+/* Ajuste fino nos textos do HUD */
+.battle-hud-name {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.battle-hud-lv {
+  color: #ffc107; /* Amarelo warning */
+  font-weight: bold;
 }
