@@ -58,7 +58,7 @@ const getSuggestions = (names: PokemonName[], input: string): PokemonName[] => {
 };
 
 // =====================================================================
-// 3. COMPONENTE DE INPUT DE BUSCA (Local)
+// 3. COMPONENTE DE INPUT DE BUSCA
 // =====================================================================
 
 const SearchInput: React.FC<{
@@ -68,9 +68,12 @@ const SearchInput: React.FC<{
   isPokemon1: boolean;
   onSelect: (name: string) => void;
 }> = ({ searchName, setSearchName, suggestions, isPokemon1, onSelect }) => {
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const handleInputConfirm = (name: string) => {
     onSelect(name.toLowerCase().trim());
     setSearchName(name.toLowerCase().trim());
+    setShowSuggestions(false); // Fecha sugestões ao confirmar
   };
 
   return (
@@ -84,8 +87,13 @@ const SearchInput: React.FC<{
           }
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
+          // 1. Abre a lista quando foca
+          onFocus={() => setShowSuggestions(true)}
+          // 2. Fecha a lista quando perde o foco
           onBlur={() => {
             setTimeout(() => {
+              setShowSuggestions(false); // Esconde a lista
+
               const exactMatch = suggestions.find(
                 (p) => p.name.toLowerCase() === searchName.toLowerCase()
               );
@@ -99,28 +107,22 @@ const SearchInput: React.FC<{
           }}
         />
         {/* Botão de lupa simples */}
-        <button
-          className="btn btn-outline-secondary border-0 text-dark bg-warning shadow-sm"
-          type="button"
-          onClick={() => handleInputConfirm(searchName)}
-          disabled={!searchName.trim()}
-          style={{ width: "40px" }}
-        >
-          <i className="bi bi-search"></i>
-        </button>
       </div>
 
       {/* Lista de Sugestões */}
-      {suggestions.length > 0 && searchName.length >= 2 && (
+      {showSuggestions && suggestions.length > 0 && searchName.length >= 2 && (
         <ul
-          className="list-group position-absolute w-100 mt-1 shadow-lg"
+          className="list-group position-absolute w-100 mt-1"
           style={{ zIndex: 1050 }}
         >
           {suggestions.map((p) => (
             <li
               key={p.name}
               className="list-group-item list-group-item-action text-capitalize text-start"
-              onMouseDown={() => handleInputConfirm(p.name)}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleInputConfirm(p.name);
+              }}
               style={{ cursor: "pointer" }}
             >
               {p.name}
@@ -133,7 +135,7 @@ const SearchInput: React.FC<{
 };
 
 // =====================================================================
-// 4. COMPONENTE PRINCIPAL (CompareView)
+// 4. COMPONENTE PRINCIPAL
 // =====================================================================
 
 function CompareView({
@@ -326,15 +328,25 @@ function CompareView({
     <div className="min-vh-100 fundo-degrade-compare text-white p-3 p-md-5">
       <div className="container-fluid mx-auto">
         <div className="d-flex justify-content-center mb-5">
-          <h1 className="fs-1 fw-bold mb-2">COMPARE JÁ!</h1>
+          <h1
+            className="display-1 fw-bolder fst-italic text-white m-0"
+            style={{
+              fontSize: "3rem",
+              textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
+              letterSpacing: "1px",
+              fontFamily: "'Impact', sans-serif",
+            }}
+          >
+            COMPARE JÁ!
+          </h1>
         </div>
 
-        {/* MUDANÇA: Layout flexível (Coluna no mobile, Linha no desktop) */}
+        {/* Layout flexível (Coluna no mobile, Linha no desktop) */}
         <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 gap-md-5">
           {/* Coluna P1 */}
           <div
-            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-4 p-md-5"
-            style={{ width: "100%", maxWidth: "400px" }}
+            className="d-flex flex-column align-items-center bg-light rounded-4 sombra p-4 p-md-5"
+            style={{ width: "100%", maxWidth: "350px" }}
           >
             <SearchInput
               searchName={searchName1}
@@ -352,12 +364,23 @@ function CompareView({
             </div>
           </div>
 
-          <span className="fs-1 fw-bold text-white my-3 my-md-0">VS</span>
+          <h1
+            className="display-1 fw-bolder fst-italic text-white m-0"
+            style={{
+              fontSize: "8rem",
+              // Sombra mais suave em azul escuro
+              textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
+              letterSpacing: "-5px",
+              fontFamily: "'Impact', sans-serif",
+            }}
+          >
+            VS
+          </h1>
 
           {/* Coluna P2 */}
           <div
-            className="d-flex flex-column align-items-center bg-light rounded-4 shadow-lg p-4 p-md-5"
-            style={{ width: "100%", maxWidth: "400px" }}
+            className="d-flex flex-column align-items-center bg-light rounded-4 sombra p-4 p-md-5"
+            style={{ width: "100%", maxWidth: "350px" }}
           >
             <SearchInput
               searchName={searchName2}

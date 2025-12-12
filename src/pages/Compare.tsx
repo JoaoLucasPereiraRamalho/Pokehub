@@ -11,9 +11,9 @@ const ComparePageWrapper = () => {
     []
   );
   const [selectedPokemon1Name, setSelectedPokemon1Name] =
-    useState<string>("bulbasaur");
+    useState<string>("alakazam");
   const [selectedPokemon2Name, setSelectedPokemon2Name] =
-    useState<string>("charmander");
+    useState<string>("tyranitar");
 
   const [pokemon1Detail, setPokemon1Detail] = useState<PokemonDetail | null>(
     null

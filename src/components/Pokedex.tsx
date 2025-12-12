@@ -71,7 +71,7 @@ function Pokedex({
   }, [pokemons]);
 
   return (
-    <div className="fundo-abstrato-pokemon fundo-degrade min-vh-100">
+    <div className="fundo-abstrato-pokemon fundo-degrade-inicio min-vh-100">
       {/* Título */}
       <div className="d-flex input-fundo w-100 mb-4">
         <h1 className="text-white fw-bold">Pokedex</h1>

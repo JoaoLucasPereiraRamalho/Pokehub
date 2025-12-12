@@ -28,7 +28,7 @@ const api = axios.create({
  */
 export const getPokemonNameList = async (): Promise<PokemonName[]> => {
   try {
-    const response = await api.get(`pokemon?limit=500`);
+    const response = await api.get(`pokemon?limit=1025`);
     return response.data.results;
   } catch (error) {
     console.error("Erro ao carregar lista de nomes:", error);

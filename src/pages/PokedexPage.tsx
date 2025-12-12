@@ -47,7 +47,7 @@ const PokedexPage = () => {
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        const data = await getPokemonInfoCards(200);
+        const data = await getPokemonInfoCards(1025);
         setAllPokemons(data);
         if (data.length > 0) setPokemonDetalhes(data[0].name);
       } catch (error) {

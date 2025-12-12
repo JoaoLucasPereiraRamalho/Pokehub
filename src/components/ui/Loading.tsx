@@ -5,7 +5,7 @@ const Loading = () => {
       style={{ minHeight: "50vh" }}
     >
       <img
-        src="/src/assets/Pokebola.svg"
+        src="/Pokebola.svg"
         alt="Carregando..."
         className="spinning"
         style={{ width: "80px", height: "80px", opacity: 0.9 }}

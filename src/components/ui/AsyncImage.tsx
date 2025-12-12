@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-interface AsyncImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+type AsyncImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
 const AsyncImage: React.FC<AsyncImageProps> = ({
   src,

@@ -223,7 +223,7 @@
   width: 500px;
   height: 500px;
 
-  background-image: url("/src/assets/Pokebola.png");
+  background-image: url("/Pokebola.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -246,6 +246,13 @@
 .fundo-degrade-inicio > * {
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .fundo-degrade-inicio::before,
+  .fundo-degrade-inicio::after {
+    display: none; /* Remove os elementos da tela */
+  }
 }
 .background-wrapper {
   background-color: #091d3c;

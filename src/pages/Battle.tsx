@@ -16,7 +16,7 @@ function Battle() {
   const [isBattleStarted, setIsBattleStarted] = useState(false);
   const [allNames, setAllNames] = useState<PokemonName[]>([]);
   const [p1Name, setP1Name] = useState("charizard");
-  const [p2Name, setP2Name] = useState("blastoise");
+  const [p2Name, setP2Name] = useState("greninja");
 
   useEffect(() => {
     getPokemonNameList().then(setAllNames);

@@ -17,13 +17,13 @@ function Compare() {
   useEffect(() => {
     const fetchLegendaries = async () => {
       try {
-        const [dialga, rayquaza] = await Promise.all([
-          getPokemonPorNome("dialga"),
-          getPokemonPorNome("rayquaza"),
+        const [zekrom, ceruledge] = await Promise.all([
+          getPokemonPorNome("zekrom"),
+          getPokemonPorNome("ceruledge"),
         ]);
 
-        setPokemon1(dialga);
-        setPokemon2(rayquaza);
+        setPokemon1(zekrom);
+        setPokemon2(ceruledge);
       } catch (error) {
         console.error("Erro ao carregar pokémons lendários:", error);
       } finally {
@@ -113,7 +113,16 @@ function Compare() {
             />
           </div>
 
-          <h1 className="text-white my-3 my-md-0 fw-bold fst-italic mx-2">
+          <h1
+            className="display-1 fw-bolder fst-italic text-white m-0"
+            style={{
+              fontSize: "5rem",
+              // Sombra mais suave em azul escuro
+              textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
+              letterSpacing: "-5px",
+              fontFamily: "'Impact', sans-serif",
+            }}
+          >
             VS
           </h1>
 

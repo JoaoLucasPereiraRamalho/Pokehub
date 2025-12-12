@@ -2,14 +2,14 @@ import Button from "../ui/Button";
 
 function InitialSection() {
   return (
-    <div className="w-100 py-5 fundo-degrade-inicio d-flex justify-content-center">
+    <div className="w-100 py-5 d-flex justify-content-center fundo-degrade-inicio">
       <div
         className="d-flex flex-column flex-md-row align-items-center"
         style={{ maxWidth: "1500px" }}
       >
         {/* Lado Esquerdo: Texto */}
         <div className="d-flex justify-content-center">
-          <div className="w-60 w-md-50 text-white pe-md-4">
+          <div className="w-75 text-white justify-content-center px-sm-5">
             <h1 className="title">DESCUBRA.</h1>
             <h1 className="title">COMPARE.</h1>
             <h1 className="title">BATALHE.</h1>

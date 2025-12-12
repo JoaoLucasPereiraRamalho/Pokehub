@@ -18,7 +18,7 @@ function FeaturedSection() {
           <div className="col-12 col-md-6">
             <div className="featured-content col-6 col-md-12">
               <h2 className="featured-title">Novidade</h2>
-              <p className="featured-text">
+              <p className="featured-text w-75">
                 Explore uma seleção especial de Pokémon com habilidades únicas e
                 histórias fascinantes. Encontre seu próximo companheiro de
                 aventura aqui! Explore uma seleção especial de Pokémon com
@@ -39,7 +39,7 @@ function FeaturedSection() {
 
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-end">
             <img
-              src="/src/assets/charizard-mega-x.png"
+              src="/charizard-mega-x.png"
               alt="Pokémon de Destaque"
               className="img-fluid d-block d-md-none"
               style={{
