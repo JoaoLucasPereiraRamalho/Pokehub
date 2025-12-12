@@ -15,8 +15,8 @@ function Battle() {
 
   const [isBattleStarted, setIsBattleStarted] = useState(false);
   const [allNames, setAllNames] = useState<PokemonName[]>([]);
-  const [p1Name, setP1Name] = useState("charizard");
-  const [p2Name, setP2Name] = useState("greninja");
+  const [p1Name, setP1Name] = useState("haunter");
+  const [p2Name, setP2Name] = useState("charizard");
 
   useEffect(() => {
     getPokemonNameList().then(setAllNames);
@@ -87,7 +87,7 @@ function Battle() {
   // 3. ARENA DE BATALHA
   return (
     <div>
-      <div className="min-vh-100 d-flex flex-column battle-background overflow-hidden">
+      <div className="d-flex flex-column battle-background overflow-hidden">
         {/* Overlay Escuro */}
         <div
           className="position-absolute w-100 h-100"
@@ -97,7 +97,7 @@ function Battle() {
         {/* Container Principal */}
         <div
           className="container py-3 flex-grow-1 d-flex flex-column justify-content-center position-relative"
-          style={{ zIndex: 1, maxWidth: "1200px" }}
+          style={{ zIndex: 1, maxWidth: "1000px", maxHeight: "500px" }}
         >
           {/* --- CAMPO DE BATALHA --- */}
           <div className="d-flex w-100 flex-grow-1 mb-3">
