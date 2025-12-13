@@ -71,7 +71,7 @@ function PokemonsHome() {
         ))}
       </div>
 
-      {/* Botão para carregar mais itens usando o componente Button novo */}
+      {/* Botão para carregar mais itens */}
       <div className="d-flex justify-content-center mt-5">
         <Button variant="linear-2" className="w-md-25 py-3">
           <h3 onClick={() => navigate("/pokemons")} className="m-0 fs-4">

@@ -42,7 +42,7 @@ const PokemonSelector: React.FC<PokemonSelectorProps> = ({
         placeholder="Digite o nome..."
         value={inputValue}
         onChange={handleChange}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} // Delay para permitir o clique
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
       />
 
       {/* Lista de Sugestões Flutuante */}

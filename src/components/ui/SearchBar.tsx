@@ -5,7 +5,7 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   onSearch?: () => void;
   placeholder?: string;
-  className?: string; // <--- NOVA PROP
+  className?: string;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -13,7 +13,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
   onSearch,
   placeholder = "Pesquisar...",
-  className = "", // Valor padrão vazio
+  className = "",
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && onSearch) {

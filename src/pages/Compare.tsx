@@ -22,7 +22,6 @@ const ComparePageWrapper = () => {
     null
   );
 
-  // Carregar lista de nomes para o autocomplete
   useEffect(() => {
     const fetchNames = async () => {
       try {
@@ -35,7 +34,6 @@ const ComparePageWrapper = () => {
     fetchNames();
   }, []);
 
-  // Carregar Pokemon 1
   useEffect(() => {
     const fetchDetail1 = async () => {
       if (!selectedPokemon1Name) return;
@@ -50,7 +48,6 @@ const ComparePageWrapper = () => {
     fetchDetail1();
   }, [selectedPokemon1Name]);
 
-  // Carregar Pokemon 2
   useEffect(() => {
     const fetchDetail2 = async () => {
       if (!selectedPokemon2Name) return;

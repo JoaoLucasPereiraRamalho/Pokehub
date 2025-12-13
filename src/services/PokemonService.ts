@@ -24,7 +24,7 @@ const api = axios.create({
 // =========================================================================
 
 /**
- * Busca a lista completa de nomes de Pokémon (até 10000).
+ * Busca a lista completa de nomes de Pokémon.
  */
 export const getPokemonNameList = async (): Promise<PokemonName[]> => {
   try {
@@ -53,7 +53,6 @@ export const getPokemonInfoCards = async (
 ): Promise<PokemonInfoCard[]> => {
   const pokemonList = await getPokemons(limit);
 
-  // Mapeia a lista para Promises de detalhes do Pokémon
   const detailPromises = pokemonList.map((pokemon) => {
     return api.get(pokemon.url).then((response) => response.data);
   });
@@ -61,16 +60,13 @@ export const getPokemonInfoCards = async (
   // Aguarda todas as requisições de detalhes serem concluídas
   const allDetails = await Promise.all(detailPromises);
 
-  // Mapeia os dados brutos para o formato PokemonInfoCard
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const infoCards: PokemonInfoCard[] = allDetails.map((d: any) => ({
     name: String(d.name),
     id: Number(d.id),
     type1: String(d.types[0].type.name),
     type2: d.types[1] ? String(d.types[1].type.name) : undefined,
-    // Usando o sprite de "showdown" para a imagem do card
     img: String(d.sprites.other["showdown"].front_default),
-    // USANDO O CÁLCULO DA GERAÇÃO
     generation: getGenerationName(Number(d.id)),
   }));
 
@@ -87,19 +83,19 @@ export const getDescricaoPokemonPorNome = async (
     const response = await api.get(`pokemon-species/${name}`);
     const d = response.data;
 
-    // Tenta achar em Português primeiro, senão vai para Inglês
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const entry =
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      d.flavor_text_entries.find((e: any) => e.language.name === "pt-br") ||
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      d.flavor_text_entries.find((e: any) => e.language.name === "en");
+      d.flavor_text_entries.find(
+        (e: { language: { name: string } }) => e.language.name === "pt-br"
+      ) ||
+      d.flavor_text_entries.find(
+        (e: { language: { name: string } }) => e.language.name === "en"
+      );
 
     if (!entry) {
       return { flavor_text: "Descrição não disponível." };
     }
 
-    // 2. Limpeza do texto
+    // Limpeza do texto
     let text = String(entry.flavor_text);
 
     text = text
@@ -176,15 +172,12 @@ export const getItems = async (limite: number): Promise<ItemData[]> => {
 export const getItemInfoCards = async (
   itemList: ItemData[]
 ): Promise<ItemCardInfo[]> => {
-  // Mapeia a lista para Promises de detalhes do Item
   const detailPromises = itemList.map((item) => {
     return api.get(item.url).then((response) => response.data);
   });
 
-  // Aguarda todas as requisições de detalhes serem concluídas
   const allDetails = await Promise.all(detailPromises);
 
-  // Mapeia os dados brutos para o formato ItemCardInfo
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const infoCards: ItemCardInfo[] = allDetails.map((d: any) => ({
     name: String(d.name),
@@ -206,7 +199,6 @@ export const getItemDetailByName = async (
   const response = await api.get(`item/${name}`);
   const d = response.data;
 
-  // Encontra a descrição do efeito priorizando inglês ou português, mas não tem pt-br
   const effectEntry =
     d.effect_entries.find(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -257,20 +249,15 @@ export const getRandomMoves = async (pokemonName: string): Promise<Move[]> => {
 
     if (!allMoves || allMoves.length === 0) return [];
 
-    // 1. Filtrar apenas movimentos aprendidos por LEVEL-UP
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const naturalMoves = allMoves.filter((moveEntry: any) => {
       const details = moveEntry.version_group_details;
-      // Verifica se em alguma versão o método de aprendizado foi level-up
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return details.some((d: any) => d.move_learn_method.name === "level-up");
     });
 
-    // 2. Ordenar pelos que são aprendidos mais tarde (nível 100 -> nível 1)
-    // Isso garante que pegamos os golpes mais "maduros" do Pokémon
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     naturalMoves.sort((a: any, b: any) => {
-      // Pega o nível de aprendizado da última versão disponível (geralmente a mais recente)
       const levelA =
         a.version_group_details[a.version_group_details.length - 1]
           .level_learned_at;
@@ -280,16 +267,29 @@ export const getRandomMoves = async (pokemonName: string): Promise<Move[]> => {
       return levelB - levelA;
     });
 
-    // 3. Pegar APENAS os Top 4 movimentos mais recentes
-    // (Isso já inclui status moves fortes como Dragon Dance ou Swords Dance se forem level alto)
-    const topMoves = naturalMoves.slice(0, 4);
+    const DESIRED = 4;
+    const CHUNK = 12;
+    const damagingMoves: Move[] = [];
+    let idx = 0;
 
-    // 4. Buscar detalhes (Power, Type, Accuracy) apenas desses 4
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const movesPromises = topMoves.map((m: any) => getMoveDetails(m.move.url));
-    const movesWithStats = await Promise.all(movesPromises);
+    while (damagingMoves.length < DESIRED && idx < naturalMoves.length) {
+      const chunk = naturalMoves.slice(idx, idx + CHUNK);
+      const details = await Promise.all(
+        chunk.map((m: { move: { url: string } }) => getMoveDetails(m.move.url))
+      );
+      const filtered = details.filter((d) => d.power > 0);
+      for (const f of filtered) {
+        if (damagingMoves.length >= DESIRED) break;
+        damagingMoves.push(f);
+      }
+      idx += CHUNK;
+    }
 
-    return movesWithStats;
+    if (damagingMoves.length === 0) {
+      return [{ name: "Tackle", power: 40, type: "normal", accuracy: 100 }];
+    }
+
+    return damagingMoves.slice(0, DESIRED);
   } catch (error) {
     console.error("Erro ao selecionar moves naturais:", error);
     return [{ name: "Tackle", power: 40, type: "normal", accuracy: 100 }];

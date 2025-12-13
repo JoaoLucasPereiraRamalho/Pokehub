@@ -57,7 +57,7 @@ export const filterPokemonsCombined = (
 };
 
 /**
- * Filtra a lista de Itens com base no termo de busca (nome).
+ * Filtra a lista de Itens com base no termo de busca.
  */
 export const filterItemsByName = (
   allItems: ItemCardInfo[],
@@ -79,5 +79,5 @@ export const getSuggestions = (
   const lowerInput = input.toLowerCase();
   return names
     .filter((p) => p.name.toLowerCase().startsWith(lowerInput))
-    .slice(0, 5); // Limita a 5 sugestões para não poluir a tela
+    .slice(0, 5);
 };

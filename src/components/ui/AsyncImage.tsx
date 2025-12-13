@@ -11,7 +11,7 @@ const AsyncImage: React.FC<AsyncImageProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Resetar o loading se a URL da imagem mudar (ex: trocou de pokemon)
+  // Resetar o loading se a URL da imagem mudar
   useEffect(() => {
     setIsLoading(true);
   }, [src]);
@@ -21,29 +21,27 @@ const AsyncImage: React.FC<AsyncImageProps> = ({
       className={`d-flex justify-content-center align-items-center position-relative ${className}`}
       style={style}
     >
-      {/* 1. Spinner (Aparece enquanto isLoading for true) */}
+      {/* Spinner */}
       {isLoading && (
         <img
           src="/Pokebola.png"
           alt="Carregando..."
           className="spinning position-absolute"
           style={{
-            width: "50%", // Tamanho relativo ao container
-            maxWidth: "50px", // Tamanho máximo
+            width: "50%",
+            maxWidth: "50px",
             opacity: 0.6,
             zIndex: 0,
           }}
         />
       )}
 
-      {/* 2. Imagem Real (Fica invisível até carregar) */}
+      {/* Imagem Real  */}
       <img
         src={src}
         alt={alt}
         {...props}
-        // Quando o navegador terminar de baixar a imagem:
         onLoad={() => setIsLoading(false)}
-        // Se der erro, para de girar (poderia mostrar uma imagem de erro aqui)
         onError={(e) => {
           setIsLoading(false);
           e.currentTarget.src =
@@ -52,9 +50,9 @@ const AsyncImage: React.FC<AsyncImageProps> = ({
         className={`w-100 h-100 object-contain transition-all ${className}`}
         style={{
           ...style,
-          opacity: isLoading ? 0 : 1, // Esconde a imagem enquanto carrega
+          opacity: isLoading ? 0 : 1,
           zIndex: 1,
-          transition: "opacity 0.3s ease-in-out", // Efeito suave de aparecer
+          transition: "opacity 0.3s ease-in-out",
         }}
       />
     </div>

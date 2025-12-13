@@ -3,17 +3,16 @@ import React from "react";
 interface HealthBarProps {
   current: number;
   max: number;
-  label?: string; // Ex: "HP"
+  label?: string;
 }
 
 const HealthBar: React.FC<HealthBarProps> = ({ current, max, label }) => {
-  // Garante que a porcentagem fique entre 0 e 100
   const percentage = Math.max(0, Math.min(100, (current / max) * 100));
 
-  // Define a cor baseada na porcentagem (Lógica clássica de Pokémon)
+  // Define a cor baseada na porcentagem
   let barColor = "#4caf50"; // Verde
-  if (percentage < 50) barColor = "#ffeb3b"; // Amarelo
-  if (percentage < 20) barColor = "#f44336"; // Vermelho
+  if (percentage < 50) barColor = "#ffeb3b";
+  if (percentage < 20) barColor = "#f44336";
 
   return (
     <div className="w-100">
@@ -39,7 +38,7 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, label }) => {
           style={{
             width: `${percentage}%`,
             backgroundColor: barColor,
-            transition: "width 0.5s ease-out, background-color 0.5s", // Animação suave
+            transition: "width 0.5s ease-out, background-color 0.5s",
           }}
         />
       </div>

@@ -20,9 +20,8 @@ const Status: React.FC<StatusProps> = ({ pokemonDetail }) => {
     <div className="w-100 d-flex flex-column">
       <h6>STATS</h6>
       <div className="d-flex w-100 gap-1 justify-content-between">
-        {/* Usamos a lista global STAT_KEYS para iterar */}
+        {/* Usa a lista global STAT_KEYS para iterar */}
         {STAT_KEYS.map((statKey) => {
-          // Precisamos fazer um cast para garantir que a chave existe no objeto
           const key = statKey as keyof PokemonDetail;
           const label = STAT_DISPLAY_NAMES[key];
           const value = pokemonDetail[key] as number | undefined;

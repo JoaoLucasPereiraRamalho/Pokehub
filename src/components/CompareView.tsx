@@ -33,7 +33,6 @@ const getWinnerOrLoserClass = (
 ): string => {
   if (!p1 || !p2) return "";
 
-  // Forçamos o tipo para garantir que é number, pois sabemos que os stats são numbers
   const stat1 = p1[statName] as number;
   const stat2 = p2[statName] as number;
 
@@ -73,7 +72,7 @@ const SearchInput: React.FC<{
   const handleInputConfirm = (name: string) => {
     onSelect(name.toLowerCase().trim());
     setSearchName(name.toLowerCase().trim());
-    setShowSuggestions(false); // Fecha sugestões ao confirmar
+    setShowSuggestions(false);
   };
 
   return (
@@ -87,12 +86,10 @@ const SearchInput: React.FC<{
           }
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
-          // 1. Abre a lista quando foca
           onFocus={() => setShowSuggestions(true)}
-          // 2. Fecha a lista quando perde o foco
           onBlur={() => {
             setTimeout(() => {
-              setShowSuggestions(false); // Esconde a lista
+              setShowSuggestions(false);
 
               const exactMatch = suggestions.find(
                 (p) => p.name.toLowerCase() === searchName.toLowerCase()
@@ -161,7 +158,7 @@ function CompareView({
     [pokemonNames, searchName2]
   );
 
-  // Memos para BST (Base Stat Total)
+  // Memos para BST
   const bst1 = useMemo(
     () =>
       pokemon1Detail
@@ -341,7 +338,6 @@ function CompareView({
           </h1>
         </div>
 
-        {/* Layout flexível (Coluna no mobile, Linha no desktop) */}
         <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 gap-md-5">
           {/* Coluna P1 */}
           <div
@@ -368,7 +364,6 @@ function CompareView({
             className="display-1 fw-bolder fst-italic text-white m-0"
             style={{
               fontSize: "8rem",
-              // Sombra mais suave em azul escuro
               textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
               letterSpacing: "-5px",
               fontFamily: "'Impact', sans-serif",

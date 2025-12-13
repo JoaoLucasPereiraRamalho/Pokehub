@@ -20,11 +20,10 @@ function BattleBanner() {
         boxShadow: "inset 0 0 50px rgba(0,0,0,0.5)",
       }}
     >
-      {/* Elementos de Fundo (Partículas/Brilho) */}
+      {/* Elementos de Fundo */}
       <div
         className="position-absolute w-100 h-100"
         style={{
-          // Brilho central sutil
           background:
             "radial-gradient(circle at center, rgba(42, 82, 152, 0.4) 0%, transparent 70%)",
           zIndex: 1,
@@ -45,7 +44,6 @@ function BattleBanner() {
             bottom: "0",
             height: "90%",
             objectFit: "contain",
-            // Sombra ciano para combinar com o azul
             filter: "drop-shadow(0 0 20px rgba(0, 194, 203, 0.4))",
             transform: "scaleX(-1)",
           }}
@@ -57,7 +55,6 @@ function BattleBanner() {
             className="display-1 fw-bolder fst-italic text-white m-0"
             style={{
               fontSize: "8rem",
-              // Sombra mais suave em azul escuro
               textShadow: "4px 4px 0 #031224, 0 0 30px rgba(0, 194, 203, 0.5)",
               letterSpacing: "-5px",
               fontFamily: "'Impact', sans-serif",
@@ -71,12 +68,12 @@ function BattleBanner() {
           </h4>
 
           <div className="transition-all hover-scale">
-            {/* Botão Azul Vibrante (Border ou Linear) */}
+            {/* Botão Azul Vibrante */}
             <Button
               variant="primary"
               className="px-5 py-3 fs-4 fw-bold rounded-pill border-2 border-white shadow-lg"
               style={{
-                background: "linear-gradient(90deg, #00C2CB 0%, #2a5298 100%)", // Gradiente Ciano -> Azul
+                background: "linear-gradient(90deg, #00C2CB 0%, #2a5298 100%)",
                 boxShadow: "0 0 20px rgba(0, 194, 203, 0.4)",
               }}
             >
@@ -95,7 +92,6 @@ function BattleBanner() {
             bottom: "0",
             height: "85%",
             objectFit: "contain",
-            // Sombra azulada
             filter: "drop-shadow(0 0 20px rgba(42, 82, 152, 0.6))",
           }}
         />

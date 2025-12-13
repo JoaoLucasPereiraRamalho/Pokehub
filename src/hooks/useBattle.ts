@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import type { BattleLog, BattlePokemon, Move, Turn } from "../types/battle";
 import { getPokemonPorNome, getRandomMoves } from "../services/PokemonService";
-import { calculateDamage } from "../utils/battleLogic";
+import { calculateDamage, checkHit } from "../utils/battleLogic";
+import { getTypeEffectiveness } from "../utils/typeChart";
 
 export const useBattle = () => {
   const [player, setPlayer] = useState<BattlePokemon | null>(null);
@@ -11,9 +12,9 @@ export const useBattle = () => {
   const [winner, setWinner] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const addLog = (message: string, turn: Turn) => {
+  const addLog = useCallback((message: string, turn: Turn) => {
     setLogs((prev) => [...prev, { message, turn }]);
-  };
+  }, []);
 
   const startBattle = useCallback(
     async (playerPokemonName: string, enemyPokemonName: string) => {
@@ -54,57 +55,97 @@ export const useBattle = () => {
         setLoading(false);
       }
     },
-    []
+    [addLog]
   );
 
-  const handleAttack = async (
-    move: Move,
-    attacker: BattlePokemon,
-    defender: BattlePokemon,
-    isPlayer: boolean
-  ) => {
-    const damage = calculateDamage(attacker, defender, move);
+  const handleAttack = useCallback(
+    async (
+      move: Move,
+      attacker: BattlePokemon,
+      defender: BattlePokemon,
+      isPlayer: boolean
+    ): Promise<void> => {
+      const defenderTypeNames: string[] = [defender.type1, defender.type2]
+        .filter(Boolean)
+        .map((t) => t as string);
 
-    const newHp = Math.max(0, defender.currentHp - damage);
+      const effectiveness = getTypeEffectiveness(move.type, defenderTypeNames);
 
-    if (isPlayer) {
-      setEnemy((prev) => (prev ? { ...prev, currentHp: newHp } : null));
-      addLog(
-        `${attacker.name} usou ${move.name} e causou ${damage} de dano!`,
-        "player"
-      );
-    } else {
-      setPlayer((prev) => (prev ? { ...prev, currentHp: newHp } : null));
-      addLog(
-        `${attacker.name} usou ${move.name} e causou ${damage} de dano!`,
-        "enemy"
-      );
-    }
+      const hit = checkHit(move);
+      if (!hit) {
+        const missMessage = `${attacker.name} usou ${move.name}, mas errou!`;
+        if (isPlayer) addLog(missMessage, "player");
+        else addLog(missMessage, "enemy");
+        setTurn(isPlayer ? "enemy" : "player");
+        return;
+      }
 
-    if (newHp === 0) {
-      setWinner(attacker.name);
-      addLog(
-        `${defender.name} desmaiou! ${attacker.name} venceu!`,
-        isPlayer ? "player" : "enemy"
-      );
-      return;
-    }
+      const baseDamage = calculateDamage(attacker, defender, move);
+      const finalDamage = Math.floor(baseDamage * effectiveness);
 
-    setTurn(isPlayer ? "enemy" : "player");
-  };
+      const newHp = Math.max(0, defender.currentHp - finalDamage);
+
+      if (isPlayer) {
+        setEnemy((prev) => (prev ? { ...prev, currentHp: newHp } : null));
+        const formattedMultiplier = `x${Number(
+          effectiveness % 1 === 0
+            ? effectiveness
+            : Number(effectiveness.toFixed(2))
+        )}`;
+        let effectivenessMsg = "";
+        if (effectiveness > 1)
+          effectivenessMsg = ` Foi super efetivo! (${formattedMultiplier})`;
+        else if (effectiveness === 0)
+          effectivenessMsg = ` Não teve efeito... (${formattedMultiplier})`;
+        else if (effectiveness < 1)
+          effectivenessMsg = ` Não foi muito efetivo... (${formattedMultiplier})`;
+
+        const msg = `${attacker.name} usou ${move.name}.${effectivenessMsg} Causou ${finalDamage} de dano!`;
+        addLog(msg, "player");
+      } else {
+        setPlayer((prev) => (prev ? { ...prev, currentHp: newHp } : null));
+        const formattedMultiplier = `x${Number(
+          effectiveness % 1 === 0
+            ? effectiveness
+            : Number(effectiveness.toFixed(2))
+        )}`;
+        let effectivenessMsg = "";
+        if (effectiveness > 1)
+          effectivenessMsg = ` Foi super efetivo! (${formattedMultiplier})`;
+        else if (effectiveness === 0)
+          effectivenessMsg = ` Não teve efeito... (${formattedMultiplier})`;
+        else if (effectiveness < 1)
+          effectivenessMsg = ` Não foi muito efetivo... (${formattedMultiplier})`;
+
+        const msg = `${attacker.name} usou ${move.name}.${effectivenessMsg} Causou ${finalDamage} de dano!`;
+        addLog(msg, "enemy");
+      }
+
+      if (newHp === 0) {
+        setWinner(attacker.name);
+        addLog(
+          `${defender.name} desmaiou! ${attacker.name} venceu!`,
+          isPlayer ? "player" : "enemy"
+        );
+        return;
+      }
+
+      setTurn(isPlayer ? "enemy" : "player");
+    },
+    [addLog]
+  );
 
   useEffect(() => {
     if (turn === "enemy" && !winner && enemy && player) {
       const timer = setTimeout(() => {
-        // Escolhe golpe aleatório
         const randomMove =
           enemy.moves[Math.floor(Math.random() * enemy.moves.length)];
         handleAttack(randomMove, enemy, player, false);
-      }, 1500); // Espera 1.5s para dar emoção
+      }, 1500);
 
       return () => clearTimeout(timer);
     }
-  }, [turn, winner, enemy, player]);
+  }, [turn, winner, enemy, player, handleAttack]);
 
   return {
     player,

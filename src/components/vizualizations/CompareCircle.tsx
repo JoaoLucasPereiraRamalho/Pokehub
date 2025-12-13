@@ -22,22 +22,22 @@ const RADAR_STATS: Array<keyof PokemonDetail> = [
 ];
 
 /**
- * Valor máximo teórico para uma única estatística base em Pokémon (usado para escala do radar).
+ * Valor máximo teórico para uma única estatística base em Pokémon
  */
 const MAX_STAT_VALUE = 255;
 
 /**
- * Dimensão (largura/altura) do viewBox e do SVG.
+ * Dimensão do viewBox e do SVG.
  */
 const SIZE = 200;
 
 /**
- * Coordenada central (metade do tamanho).
+ * Coordenada central.
  */
 const CENTER = SIZE / 2;
 
 /**
- * Número de lados do polígono (igual ao número de estatísticas).
+ * Número de lados do polígono .
  */
 const NUM_SIDES = RADAR_STATS.length;
 
@@ -47,7 +47,7 @@ const NUM_SIDES = RADAR_STATS.length;
 const ANGLE_SLICE = (2 * Math.PI) / NUM_SIDES;
 
 /**
- * Mapeamento das chaves de estatísticas (ex: hp -> HP).
+ * Mapeamento das chaves de estatísticas.
  */
 const STAT_MAP: { [key: string]: string } = {
   hp: "HP",
@@ -62,14 +62,8 @@ const STAT_MAP: { [key: string]: string } = {
 // 2. FUNÇÕES DE CÁLCULO SVG (Radar)
 // =====================================================================
 
-/**
- * Calcula a coordenada (X, Y) para um ponto no gráfico de radar.
- * A distância do centro (raio) é baseada no valor da estatística.
- */
 const getCoordinate = (value: number, index: number) => {
-  // r é o raio: proporção do valor em relação ao valor máximo, ajustado por uma escala (0.7)
   const r = (value / MAX_STAT_VALUE) * (CENTER * 0.7);
-  // O ângulo é calculado e ajustado para iniciar no topo (-Math.PI / 2)
   const angle = ANGLE_SLICE * index - Math.PI / 2;
   return {
     x: CENTER + r * Math.cos(angle),
@@ -77,18 +71,14 @@ const getCoordinate = (value: number, index: number) => {
   };
 };
 
-/**
- * Gera a string de pontos no formato "x1,y1 x2,y2 ..." necessária para o elemento polygon
- */
 const generatePoints = (pokemon: PokemonDetail | null) => {
   if (!pokemon) return "";
 
-  // Mapeia cada estatística para uma coordenada (x, y)
   return RADAR_STATS.map((stat, i) => {
     const value = pokemon[stat] as number;
     const { x, y } = getCoordinate(value, i);
     return `${x},${y}`;
-  }).join(" "); // Une todas as coordenadas em uma única string separada por espaço
+  }).join(" ");
 };
 
 // =====================================================================
@@ -99,7 +89,7 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
   pokemon1,
   pokemon2,
 }) => {
-  // Renderização de carregamento/placeholder se nenhum Pokémon for selecionado
+  // Renderização de carregamento/placeholder
   if (!pokemon1 && !pokemon2) {
     return (
       <div
@@ -120,9 +110,7 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
   const points1 = generatePoints(pokemon1);
   const points2 = generatePoints(pokemon2);
 
-  // Gera as linhas da grade (eixos do radar)
   const gridLines = RADAR_STATS.map((_, i) => {
-    // Coordenada do ponto mais externo para este eixo
     const { x, y } = getCoordinate(MAX_STAT_VALUE, i);
     return (
       <line
@@ -137,9 +125,7 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
     );
   });
 
-  // Gera os rótulos de estatísticas (HP, ATK, etc.)
   const statLabels = RADAR_STATS.map((stat, i) => {
-    // Coordenada ligeiramente fora do círculo máximo (MAX_STAT_VALUE * 1.1)
     const { x, y } = getCoordinate(MAX_STAT_VALUE * 1.1, i);
     return (
       <text
@@ -149,7 +135,7 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
         fill="white"
         fontSize="10"
         fontWeight="bold"
-        textAnchor="middle" // Centraliza o texto no ponto
+        textAnchor="middle"
         alignmentBaseline="middle"
       >
         {STAT_MAP[stat as keyof typeof STAT_MAP]}
@@ -157,7 +143,6 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
     );
   });
 
-  // Estrutura principal do SVG
   return (
     <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
       {/* Círculos da Grade de Referência */}
@@ -186,10 +171,10 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
         strokeWidth="1"
       />
 
-      {/* Linhas da Grade (Eixos) */}
+      {/* Linhas da Grade */}
       {gridLines}
 
-      {/* Polígono do Pokémon 2 (Renderizado primeiro para ficar no fundo) */}
+      {/* Polígono do Pokémon 2 */}
       {points2 && (
         <polygon
           points={points2}
@@ -199,7 +184,7 @@ const CompareCircle: React.FC<CompareCircleProps> = ({
         />
       )}
 
-      {/* Polígono do Pokémon 1 (Renderizado por cima) */}
+      {/* Polígono do Pokémon 1 */}
       {points1 && (
         <polygon
           points={points1}

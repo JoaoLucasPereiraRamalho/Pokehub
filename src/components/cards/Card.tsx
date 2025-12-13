@@ -37,7 +37,7 @@ const Card: React.FC<CardProps> = ({ pokemon, bst, onDetailClick }) => {
     return `linear-gradient(135deg, ${baseColor} 0%, ${darkerColor} 100%)`;
   }, [pokemon]);
 
-  // --- ESTADO VAZIO (Placeholder) ---
+  // --- ESTADO VAZIO ---
   if (!pokemon) {
     return (
       <div

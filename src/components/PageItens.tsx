@@ -9,11 +9,11 @@ import type { ItemCardInfo, ItemDetail } from "../types";
 // =========================================================================
 
 interface PageItensProps {
-  items: ItemCardInfo[]; // Lista filtrada de itens
-  searchTerm: string; // Termo de busca global
-  onSearchChange: (term: string) => void; // Função para atualizar a busca global
-  itemDetail: ItemDetail | null; // Detalhes do item selecionado
-  onSelectItem: (name: string) => void; // Função para selecionar um item para detalhe
+  items: ItemCardInfo[];
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+  itemDetail: ItemDetail | null;
+  onSelectItem: (name: string) => void;
 }
 
 function PageItens({
@@ -27,19 +27,14 @@ function PageItens({
   // 2. ESTADOS E LÓGICA LOCAL
   // =========================================================================
 
-  // Controla quantas linhas de cards estão visíveis
   const [visibleRows, setVisibleRows] = useState(1);
-  const itemsPerRow = 4; // Define 4 itens por linha
+  const itemsPerRow = 4;
 
-  // Estado local para o input de busca
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
 
-  // Função para aplicar a busca global
   const handleSearchClick = () => {
     onSearchChange(localSearchTerm);
   };
-
-  // Divide a lista de itens em linhas para exibição (otimizado com useMemo)
   const rows = useMemo(() => {
     const r: ItemCardInfo[][] = [];
     for (let i = 0; i < items.length; i += itemsPerRow) {
@@ -58,7 +53,7 @@ function PageItens({
         <h1 className="text-white">Itens do Pokémon</h1>
       </div>
 
-      {/* Layout principal: Lista de itens (esquerda) + Painel de detalhes (direita) */}
+      {/* Layout principal */}
       <div className="d-flex flex-wrap flex-md-nowrap">
         {/* Coluna da esquerda: Busca e Cards de Itens */}
         <div className="col-12 col-md-8 col-lg-9 d-flex flex-column">
@@ -76,7 +71,6 @@ function PageItens({
             {rows.length === 0 ? (
               <p className="text-white text-center">Nenhum item encontrado.</p>
             ) : (
-              // Mapeia apenas as linhas visíveis
               rows.slice(0, visibleRows).map((chunk, rowIndex) => (
                 <div
                   key={rowIndex}
@@ -87,7 +81,7 @@ function PageItens({
                     <div
                       key={item.id}
                       style={{
-                        flexBasis: "23%", // Espaço para 4 itens por linha
+                        flexBasis: "23%",
                         flexGrow: 1,
                         minWidth: "100px",
                       }}
@@ -99,7 +93,7 @@ function PageItens({
                         img={item.img}
                         cost={item.cost}
                         category={item.category}
-                        onSelectItem={() => onSelectItem(item.name)} // Ao clicar, define o item para ser detalhado
+                        onSelectItem={() => onSelectItem(item.name)}
                       />
                     </div>
                   ))}

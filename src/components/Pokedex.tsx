@@ -61,7 +61,7 @@ function Pokedex({
     onGenerationChange(null);
   };
 
-  // --- Paginação Local (Divisão em Linhas) ---
+  // --- Paginação Local ---
   const rows = useMemo(() => {
     const r: PokemonInfoCard[][] = [];
     for (let i = 0; i < pokemons.length; i += itemsPerRow) {
@@ -77,9 +77,8 @@ function Pokedex({
         <h1 className="text-white fw-bold">Pokedex</h1>
       </div>
 
-      {/* Layout Principal: Lista (Esq) + Detalhes (Dir) */}
       <div className="d-flex flex-wrap flex-md-nowrap">
-        {/* --- COLUNA ESQUERDA: Filtros e Grid (SEM ALTERAÇÕES) --- */}
+        {/* --- COLUNA ESQUERDA --- */}
         <div className="col-12 col-md-8 col-lg-9 d-flex flex-column pe-md-4">
           {/* Container de Filtros */}
           <div className="d-flex flex-column w-100 mt-2 mt-md-5 input-fundo mt-5 py-5">
@@ -119,7 +118,7 @@ function Pokedex({
                 ))}
               </select>
 
-              {/* Botão Reset (Alinhado à direita) */}
+              {/* Botão Reset */}
               <div className="ms-auto">
                 <button
                   className="btn border-0 p-0 transition-all hover-scale"
@@ -198,7 +197,7 @@ function Pokedex({
           </div>
         </div>
 
-        {/* --- COLUNA DIREITA: Painel de Detalhes--- */}
+        {/* --- COLUNA DIREITA--- */}
         <div className="col-12 col-md-4 col-lg-3 d-flex justify-content-center mt-5 mb-5 h-100 px-3 position-relative">
           <div
             className="w-100 bg-light rounded-5 d-flex flex-column shadow align-items-center px-4 pb-4 text-dark position-sticky"
@@ -210,7 +209,7 @@ function Pokedex({
               overflowY: "visible",
             }}
           >
-            {/* --- Container da Imagem que "Salta" --- */}
+            {/* --- Container da Imagem que sai pra fora --- */}
             <div
               className="position-absolute align-items-center d-flex justify-content-center"
               style={{

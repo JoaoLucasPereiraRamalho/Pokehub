@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-// Importamos o Card Oficial e os Dados
 import ItemCard from "../cards/ItemCard";
 import { POPULAR_ITEMS, getItemImageUrl } from "../../utils/constants";
 
@@ -18,7 +17,7 @@ function Itens() {
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!sliderRef.current) return;
     setIsDown(true);
-    setIsDragging(false); // Reseta flag de arrasto
+    setIsDragging(false);
     sliderRef.current.classList.add("dragging");
     setStartX(e.pageX - sliderRef.current.offsetLeft);
     setScrollLeft(sliderRef.current.scrollLeft);
@@ -40,9 +39,7 @@ function Itens() {
   };
 
   const handleItemClick = () => {
-    // Só navega se não estiver arrastando
     if (!isDragging) {
-      // Navega para a página de itens
       navigate("/Itens");
     }
   };

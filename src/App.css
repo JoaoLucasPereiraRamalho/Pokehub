@@ -251,7 +251,7 @@
 @media (max-width: 768px) {
   .fundo-degrade-inicio::before,
   .fundo-degrade-inicio::after {
-    display: none; /* Remove os elementos da tela */
+    display: none;
   }
 }
 .background-wrapper {

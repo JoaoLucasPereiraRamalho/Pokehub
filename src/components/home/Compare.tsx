@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// Imports atualizados para a nova estrutura
 import Card from "../cards/Card";
 import Button from "../ui/Button";
 import Loading from "../ui/Loading";
@@ -63,7 +62,7 @@ function Compare() {
         className="d-flex flex-column flex-lg-row rounded-5 w-85 w-lg-85 align-items-center overflow-hidden bg-transparent"
         style={{
           minHeight: "450px",
-          maxHeight: "1100px", // Garante altura
+          maxHeight: "1100px",
         }}
       >
         {/* Lado Esquerdo: Texto */}
@@ -82,13 +81,13 @@ function Compare() {
             </h5>
           </div>
           <div className="mt-4 mt-md-5">
-            {/* MUDANÇA 2: Botão Azul Escuro Sólido */}
+            {/* Botão Azul Escuro Sólido */}
             <Button
               variant="linear-3"
               className="py-3 px-5 w-100 w-md-auto fw-bold rounded-pill"
               onClick={() => navigate("/Comparar")}
               style={{
-                backgroundColor: "#031224", // Cor exata do design (Azul quase preto)
+                backgroundColor: "#031224",
                 color: "white",
                 border: "none",
                 minWidth: "200px",
@@ -101,7 +100,7 @@ function Compare() {
 
         {/* Lado Direito: Cards */}
         <div className="w-100 w-lg-60 d-flex flex-column flex-md-row p-4 gap-3 align-items-center justify-content-center">
-          {/* Card 1 - Largura fixa para ficar igual ao design */}
+          {/* Card 1 */}
           <div
             className="d-flex justify-content-center"
             style={{ width: "240px" }}

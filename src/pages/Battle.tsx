@@ -84,7 +84,7 @@ function Battle() {
     );
   }
 
-  // 3. ARENA DE BATALHA
+  // ARENA DE BATALHA
   return (
     <div>
       <div className="d-flex flex-column battle-background overflow-hidden">
@@ -152,7 +152,6 @@ function Battle() {
             {/* ============================================================== */}
             <div
               className="w-50 d-flex flex-column align-items-center"
-              // Padding menor para ficar mais no alto
               style={{ paddingTop: "50px" }}
             >
               {/* HUD Inimigo */}
